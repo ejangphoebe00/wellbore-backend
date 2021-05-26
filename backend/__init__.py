@@ -29,5 +29,8 @@ def create_app():
 
     with app.app_context():
         # import models
-        from .models import (User,us)
+        from .models import (CraneUser, Wellbore, WellboreCore, CoreCatalog,
+                                CatalogSecurityFlag, Company, CoreType, CraneUserLoginHistory,
+                                CraneWebSecurityLevel, FileFormat, FileSecurityGrade, StratLithoUnit
+                                )
         return app
