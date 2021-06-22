@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 2fff787c1bc1
-Revises: 27f519fa76c1
-Create Date: 2021-05-27 02:15:32.971758
+Revision ID: c4bbf1e880cc
+Revises: 
+Create Date: 2021-05-30 15:18:15.399114
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '2fff787c1bc1'
-down_revision = '27f519fa76c1'
+revision = 'c4bbf1e880cc'
+down_revision = None
 branch_labels = None
 depends_on = None
 
@@ -123,6 +123,79 @@ def upgrade():
     sa.Column('RecordChangeStamp', sa.VARBINARY(length='MAX'), nullable=True),
     sa.Column('PreviousLegalName', sa.NVARCHAR(length=100), nullable=True),
     sa.PrimaryKeyConstraint('Company_id')
+    )
+    op.create_table('crane.t_CoreCatalog',
+    sa.Column('CoreCatalog_id', sa.Integer(), nullable=False),
+    sa.Column('WellboreCore_id', sa.Integer(), nullable=True),
+    sa.Column('CoreType', sa.Integer(), nullable=True),
+    sa.Column('StoreIdentifier', sa.NVARCHAR(length=100), nullable=True),
+    sa.Column('CatalogCoreFromDepth', sa.DECIMAL(), nullable=True),
+    sa.Column('CatalogCoreToDepth', sa.DECIMAL(), nullable=True),
+    sa.Column('CoreCatalogSecurityFlag_id', sa.Integer(), nullable=True),
+    sa.Column('WasAnalysed_id', sa.Integer(), nullable=True),
+    sa.Column('TopStratLitho_id', sa.Integer(), nullable=True),
+    sa.Column('BottomStratLitho_id', sa.Integer(), nullable=True),
+    sa.Column('CatalogueCorePictureName', sa.TEXT(), nullable=True),
+    sa.Column('CataloguePictureSoftcopyPath', sa.TEXT(), nullable=True),
+    sa.Column('CataloguePictureHyperlink', sa.TEXT(), nullable=True),
+    sa.Column('CatPictureUploadDate', sa.DateTime(), nullable=True),
+    sa.Column('CatalogueReportSoftcopyPath', sa.TEXT(), nullable=True),
+    sa.Column('CatalogueReportHyperlink', sa.TEXT(), nullable=True),
+    sa.Column('CatReportUploadDate', sa.DateTime(), nullable=True),
+    sa.Column('CatalogReportFormat_id', sa.Integer(), nullable=True),
+    sa.Column('CatalogReportFileSize', sa.DECIMAL(), nullable=True),
+    sa.Column('CatalogReportSecurityGrade_id', sa.Integer(), nullable=True),
+    sa.Column('CoreCatalogName', sa.NVARCHAR(length=100), nullable=True),
+    sa.Column('Comments', sa.NVARCHAR(length=500), nullable=True),
+    sa.Column('CreatedBy_id', sa.Integer(), nullable=True),
+    sa.Column('DateCreated', sa.DateTime(), nullable=True),
+    sa.Column('ModifiedOn', sa.DateTime(), nullable=True),
+    sa.Column('ModifiedBy', sa.NVARCHAR(length=255), nullable=True),
+    sa.PrimaryKeyConstraint('CoreCatalog_id')
+    )
+    op.create_table('crane.t_CraneUser',
+    sa.Column('CraneUser_id', sa.Integer(), nullable=False),
+    sa.Column('FirstName', sa.NVARCHAR(length=255), nullable=False),
+    sa.Column('MiddleName', sa.NVARCHAR(length=255), nullable=True),
+    sa.Column('Surname', sa.NVARCHAR(length=255), nullable=False),
+    sa.Column('LUID', sa.Integer(), nullable=True),
+    sa.Column('CraneUserName', sa.NVARCHAR(length=255), nullable=False),
+    sa.Column('LoginID', sa.NVARCHAR(length=255), nullable=False),
+    sa.Column('LoginIDAlias', sa.NVARCHAR(length=255), nullable=True),
+    sa.Column('UserCompany_id', sa.Integer(), nullable=True),
+    sa.Column('UserCategory_id', sa.Integer(), nullable=True),
+    sa.Column('UserPremsUser_id', sa.Integer(), nullable=True),
+    sa.Column('UserStaff_id', sa.Integer(), nullable=True),
+    sa.Column('OrganisationName', sa.NVARCHAR(length=255), nullable=False),
+    sa.Column('CraneUserID', sa.NVARCHAR(length=255), nullable=True),
+    sa.Column('UserPassword', sa.TEXT(), nullable=False),
+    sa.Column('UserEmailAddress', sa.NVARCHAR(length=255), nullable=False),
+    sa.Column('UserSecurityLevel_id', sa.Integer(), nullable=False),
+    sa.Column('UserWebSecurityLevel_id', sa.Integer(), nullable=False),
+    sa.Column('UserNogtrWebSecurityLevel_id', sa.Integer(), nullable=False),
+    sa.Column('UserPremsWebSecurityLevel_id', sa.Integer(), nullable=False),
+    sa.Column('UserIntranetSecurityLevel_id', sa.Integer(), nullable=False),
+    sa.Column('UserNsdWebSecurityLevel_id', sa.Integer(), nullable=False),
+    sa.Column('LoginErrorCount', sa.Integer(), nullable=True),
+    sa.Column('LoginStatus_id', sa.Integer(), nullable=True),
+    sa.Column('LastSeen', sa.DateTime(), nullable=True),
+    sa.Column('DeactivateAccount', sa.SMALLINT(), nullable=True),
+    sa.Column('ActivationChangeComment', sa.NVARCHAR(length=255), nullable=True),
+    sa.Column('ActivationChangeDate', sa.DateTime(), nullable=True),
+    sa.Column('CredentialsSent', sa.SMALLINT(), nullable=True),
+    sa.Column('UserOnlineStatus', sa.SMALLINT(), nullable=True),
+    sa.Column('Comments', sa.NVARCHAR(length=500), nullable=True),
+    sa.Column('OrganisationUserName', sa.NVARCHAR(length=255), nullable=True),
+    sa.Column('CreatedBy_id', sa.Integer(), nullable=True),
+    sa.Column('DateCreated', sa.DateTime(), nullable=True),
+    sa.Column('ModifiedOn', sa.DateTime(), nullable=True),
+    sa.Column('ModifiedBy', sa.NVARCHAR(length=255), nullable=True),
+    sa.Column('RecordChangeStamp', sa.VARBINARY(length='MAX'), nullable=True),
+    sa.Column('DefaultPassword', sa.NVARCHAR(length=255), nullable=True),
+    sa.Column('DefaultChangeDate', sa.DateTime(), nullable=True),
+    sa.Column('StoredUserPassword', sa.NVARCHAR(length=255), nullable=True),
+    sa.Column('PasswordChangeDate', sa.TIMESTAMP(), nullable=True),
+    sa.PrimaryKeyConstraint('CraneUser_id')
     )
     op.create_table('crane.t_CraneUserLoginHistory',
     sa.Column('UserLoginHistory_id', sa.Integer(), nullable=False),
@@ -262,46 +335,17 @@ def upgrade():
     sa.Column('ModifiedBy', sa.NVARCHAR(length=255), nullable=True),
     sa.PrimaryKeyConstraint('WellboreCore_id')
     )
-    op.create_table('crane.t_CoreCatalog',
-    sa.Column('CoreCatalog_id', sa.Integer(), nullable=False),
-    sa.Column('WellboreCore_id', sa.Integer(), nullable=True),
-    sa.Column('CoreType', sa.Integer(), nullable=True),
-    sa.Column('StoreIdentifier', sa.NVARCHAR(length=100), nullable=True),
-    sa.Column('CatalogCoreFromDepth', sa.DECIMAL(), nullable=True),
-    sa.Column('CatalogCoreToDepth', sa.DECIMAL(), nullable=True),
-    sa.Column('CoreCatalogSecurityFlag_id', sa.Integer(), nullable=True),
-    sa.Column('WasAnalysed_id', sa.Integer(), nullable=True),
-    sa.Column('TopStratLitho_id', sa.Integer(), nullable=True),
-    sa.Column('BottomStratLitho_id', sa.Integer(), nullable=True),
-    sa.Column('CatalogueCorePictureName', sa.TEXT(), nullable=True),
-    sa.Column('CataloguePictureSoftcopyPath', sa.TEXT(), nullable=True),
-    sa.Column('CataloguePictureHyperlink', sa.TEXT(), nullable=True),
-    sa.Column('CatPictureUploadDate', sa.DateTime(), nullable=True),
-    sa.Column('CatalogueReportSoftcopyPath', sa.TEXT(), nullable=True),
-    sa.Column('CatalogueReportHyperlink', sa.TEXT(), nullable=True),
-    sa.Column('CatReportUploadDate', sa.DateTime(), nullable=True),
-    sa.Column('CatalogReportFormat_id', sa.Integer(), nullable=True),
-    sa.Column('CatalogReportFileSize', sa.DECIMAL(), nullable=True),
-    sa.Column('CatalogReportSecurityGrade_id', sa.Integer(), nullable=True),
-    sa.Column('CoreCatalogName', sa.NVARCHAR(length=100), nullable=True),
-    sa.Column('Comments', sa.NVARCHAR(length=500), nullable=True),
-    sa.Column('CreatedBy_id', sa.Integer(), nullable=True),
-    sa.Column('DateCreated', sa.DateTime(), nullable=True),
-    sa.Column('ModifiedOn', sa.DateTime(), nullable=True),
-    sa.Column('ModifiedBy', sa.NVARCHAR(length=255), nullable=True),
-    sa.ForeignKeyConstraint(['WellboreCore_id'], ['crane.t_WellboreCore.WellboreCore_id'], ),
-    sa.PrimaryKeyConstraint('CoreCatalog_id')
-    )
     # ### end Alembic commands ###
 
 
 def downgrade():
     # ### commands auto generated by Alembic - please adjust! ###
-    op.drop_table('crane.t_CoreCatalog')
     op.drop_table('crane.t_WellboreCore')
     op.drop_table('crane.t_Wellbore')
     op.drop_table('crane.t_StratLithoUnit')
     op.drop_table('crane.t_CraneUserLoginHistory')
+    op.drop_table('crane.t_CraneUser')
+    op.drop_table('crane.t_CoreCatalog')
     op.drop_table('crane.t_Company')
     op.drop_table('crane.rt_FileSecurityGrade')
     op.drop_table('crane.rt_FileFormat')

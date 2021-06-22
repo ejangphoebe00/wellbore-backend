@@ -1,5 +1,5 @@
 FLASK_APP=app.py
-#APP_SETTINGS=config.DevelopmentConfig
+#APP_SETTINGS=config.ProductionConfig
 
 SQLALCHEMY_DATABASE_URI="mssql+pyodbc://<user>:<password>@<server>/<database_name>?driver=<database_driver>"
 SECRET_KEY=qwertysecret
