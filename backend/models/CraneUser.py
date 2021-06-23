@@ -1,4 +1,11 @@
 from .. import db
+import enum
+from flask_bcrypt import Bcrypt
+from datetime import datetime
+
+class UserCatgoryEnum(enum.Enum):
+    Admin = 'Admin'
+    Staff = 'Staff'
 
 class CraneUser(db.Model):
     __tablename__ = 'crane.t_CraneUser'
@@ -7,43 +14,43 @@ class CraneUser(db.Model):
     MiddleName = db.Column(db.NVARCHAR(255),nullable=True)
     Surname = db.Column(db.NVARCHAR(255),nullable=False)
     LUID = db.Column(db.Integer)
-    CraneUserName = db.Column(db.NVARCHAR(255),nullable=False)
-    LoginID = db.Column(db.NVARCHAR(255),nullable=False)
+    CraneUserName = db.Column(db.NVARCHAR(255),nullable=False, unique=True)
+    LoginID = db.Column(db.NVARCHAR(255),nullable=True)
     LoginIDAlias = db.Column(db.NVARCHAR(255), nullable=True)
-    UserCategory_id = db.Column(db.Integer)
-    UserCompany_id = db.Column(db.Integer)
-    UserCategory_id = db.Column(db.Integer)
-    UserPremsUser_id = db.Column(db.Integer)
-    UserStaff_id = db.Column(db.Integer)
+    UserCategory = db.Column(db.Enum(UserCatgoryEnum),default='staff')
+    UserCompany_id = db.Column(db.Integer,nullable=True)
+    # UserCategory_id = db.Column(db.Integer,nullable=True)
+    UserPremsUser_id = db.Column(db.Integer,nullable=True, unique=True)
+    UserStaff_id = db.Column(db.Integer, unique=True)
     OrganisationName = db.Column(db.NVARCHAR(255),nullable=False)
-    CraneUserID = db.Column(db.NVARCHAR(255))
-    UserPassword = db.Column(db.TEXT,nullable=False)
-    UserEmailAddress = db.Column(db.NVARCHAR(255),nullable=False)
+    # CraneUserID = db.Column(db.NVARCHAR(255), nullable=True)
+    UserPassword = db.Column(db.TEXT,nullable=True)
+    UserEmailAddress = db.Column(db.NVARCHAR(255),nullable=False, unique=True)
     UserSecurityLevel_id = db.Column(db.Integer,nullable=False)
     UserWebSecurityLevel_id = db.Column(db.Integer,nullable=False)
     UserNogtrWebSecurityLevel_id = db.Column(db.Integer,nullable=False)
     UserPremsWebSecurityLevel_id = db.Column(db.Integer,nullable=False)
     UserIntranetSecurityLevel_id = db.Column(db.Integer,nullable=False)
     UserNsdWebSecurityLevel_id = db.Column(db.Integer,nullable=False)
-    LoginErrorCount = db.Column(db.Integer)
-    LoginStatus_id = db.Column(db.Integer)
-    LastSeen = db.Column(db.DateTime)
-    DeactivateAccount = db.Column(db.SMALLINT)
-    ActivationChangeComment = db.Column(db.NVARCHAR(255))
-    ActivationChangeDate = db.Column(db.DateTime)
-    CredentialsSent = db.Column(db.SMALLINT)
-    UserOnlineStatus = db.Column(db.SMALLINT)
-    Comments = db.Column(db.NVARCHAR(500))
-    OrganisationUserName = db.Column(db.NVARCHAR(255))
+    LoginErrorCount = db.Column(db.Integer,nullable=True)
+    LoginStatus_id = db.Column(db.Integer,nullable=True)
+    LastSeen = db.Column(db.DateTime,nullable=True)
+    DeactivateAccount = db.Column(db.SMALLINT,nullable=True)
+    ActivationChangeComment = db.Column(db.NVARCHAR(255),nullable=True)
+    ActivationChangeDate = db.Column(db.DateTime,nullable=True)
+    CredentialsSent = db.Column(db.SMALLINT,nullable=True)
+    UserOnlineStatus = db.Column(db.SMALLINT,nullable=True)
+    Comments = db.Column(db.NVARCHAR(500),nullable=True)
+    OrganisationUserName = db.Column(db.NVARCHAR(255),nullable=True)
     CreatedBy_id = db.Column(db.Integer)
-    DateCreated = db.Column(db.DateTime)
-    ModifiedOn = db.Column(db.DateTime)
-    ModifiedBy = db.Column(db.NVARCHAR(255))
-    RecordChangeStamp = db.Column(db.VARBINARY('MAX'))
-    DefaultPassword = db.Column(db.NVARCHAR(255))
-    DefaultChangeDate = db.Column(db.DateTime)
-    StoredUserPassword = db.Column(db.NVARCHAR(255))
-    PasswordChangeDate = db.Column(db.TIMESTAMP)
+    DateCreated = db.Column(db.DateTime,default=datetime.utcnow)
+    ModifiedOn = db.Column(db.DateTime,onupdate=db.func.current_timestamp())
+    ModifiedBy = db.Column(db.NVARCHAR(255),nullable=True)
+    RecordChangeStamp = db.Column(db.VARBINARY('MAX'),nullable=True)
+    DefaultPassword = db.Column(db.NVARCHAR(255),nullable=True)
+    DefaultChangeDate = db.Column(db.DateTime, onupdate=db.func.current_timestamp())
+    # StoredUserPassword = db.Column(db.NVARCHAR(255),nullable=True)
+    PasswordChangeDate = db.Column(db.TIMESTAMP,nullable=True)
     
     def __repr__(self):
         return '<CraneUser {}>'.format(self.CraneUserName)
@@ -54,6 +61,21 @@ class CraneUser(db.Model):
         for column in self.__table__.columns:
             json_obj[column.name] = str(getattr(self, column.name))
         return json_obj
+    
+    # can be called without an object for this class
+    @staticmethod
+    def hash_password(password):
+        '''use bcrypt to hash passwords'''
+        return Bcrypt().generate_password_hash(password).decode()
+
+    def is_password_valid(self, password):
+        '''Check the password against it's hash to validates the user's password
+            (returns True if passwords match)
+        '''
+        if self.UserPassword is not None:
+            return Bcrypt().check_password_hash(self.UserPassword, password)
+        else:
+            return Bcrypt().check_password_hash(self.DefaultPassword, password)
     
     def save(self):
         db.session.add(self)

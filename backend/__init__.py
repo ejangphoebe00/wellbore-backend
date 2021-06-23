@@ -3,6 +3,7 @@ import os
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
+from flask_jwt_extended import JWTManager
 
 # instantiating db object
 db = SQLAlchemy()
@@ -22,6 +23,8 @@ def create_app():
     # (https://stackoverflow.com/questions/25594893/how-to-enable-cors-in-flask)
     CORS(app)
 
+    jwt = JWTManager(app)
+
     # database migrations
     migrate = Migrate(app, db)
     db.init_app(app)
@@ -31,6 +34,15 @@ def create_app():
         # import models
         from .models import (CraneUser, Wellbore, WellboreCore, CoreCatalog,
                                 CatalogSecurityFlag, Company, CoreType, CraneUserLoginHistory,
-                                CraneWebSecurityLevel, FileFormat, FileSecurityGrade, StratLithoUnit
+                                CraneWebSecurityLevel, FileFormat, FileSecurityGrade, StratLithoUnit,
+                                Token
                                 )
+
+         # revoke tokens
+        @jwt.token_in_blocklist_loader
+        def check_if_token_is_revoked(jwt_header, jwt_payload):
+            jti = jwt_payload["jti"]
+            token = db.session.query(Token.RevokedTokenModel.id).filter_by(jti=jti).scalar()
+            return token is not None
+
         return app
