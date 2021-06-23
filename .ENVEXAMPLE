@@ -3,3 +3,7 @@ FLASK_APP=app.py
 
 SQLALCHEMY_DATABASE_URI="mssql+pyodbc://<user>:<password>@<server>/<database_name>?driver=<database_driver>"
 SECRET_KEY=qwertysecret
+MAIL_USERNAME = 'email@gmail.com'
+MAIL_PASSWORD = 'password'
+SECURITY_PASSWORD_SALT = 'any_random_strong_characters'
+MAIL_DEFAULT_SENDER = 'email.cs@gmail.com'

@@ -4,9 +4,13 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
+from flask_mail import Mail
+# from flask_caching import Cache
 
 # instantiating db object
 db = SQLAlchemy()
+mail = Mail()
+
 
 
 def create_app():
@@ -18,16 +22,19 @@ def create_app():
     # to DevelopmentConfig by default.
     env_config = os.getenv("APP_SETTINGS", "config.DevelopmentConfig")
     app.config.from_object(env_config)
+    # app.config["CACHE_TYPE"] = "null"
 
+    # Application Objects () 
     # Enable Cross Origin Resource Sharing 
-    # (https://stackoverflow.com/questions/25594893/how-to-enable-cors-in-flask)
+    # (https://stackoverflow.com/questions/25594893/how-to-enable-cors-in-flask)    
     CORS(app)
-
     jwt = JWTManager(app)
-
+    mail.init_app(app)
     # database migrations
     migrate = Migrate(app, db)
     db.init_app(app)
+    # cache = Cache(app)
+    # cache.init_app(app)
     
 
     with app.app_context():

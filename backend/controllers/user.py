@@ -10,6 +10,7 @@ from flask_jwt_extended import (
     )
 # reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
 from datetime import datetime, timedelta
+from .helper_functions import send_security_alert_email
 
 
 auth_bp = Blueprint('auth_bp', __name__)
@@ -32,10 +33,11 @@ def login():
             # increment counter
             user.LoginErrorCount += 1
             user.update()
+            if user.LoginErrorCount >= 3:
+                # do something (maybe lock account and send email to user, or just send email)
+                print('so many attempts')
+                send_security_alert_email(email)
             return make_response(jsonify({"message":"Invalid credentials"}),400)
-        if user.LoginErrorCount >= 3:
-            # do something (maybe lock account and send email to user, or just send email)
-            pass
         # reset counter
         user.LoginErrorCount = 0
         user.UserOnlineStatus = 1

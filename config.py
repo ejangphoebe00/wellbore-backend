@@ -15,6 +15,17 @@ class Config(object):
     JWT_SECRET_KEY = environ.get('SECRET_KEY')
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=1)
 
+    # email
+    MAIL_SERVER = 'smtp.gmail.com'
+    MAIL_PORT = 587
+    MAIL_USE_TLS = True
+    MAIL_USE_SSL = False
+    MAIL_USERNAME = environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = str(environ.get('MAIL_PASSWORD'))
+    MAIL_DEFAULT_SENDER = environ.get('MAIL_DEFAULT_SENDER')
+    SECURITY_PASSWORD_SALT = environ.get('SECURITY_PASSWORD_SALT')
+    # print(environ.get('MAIL_PASSWORD'))
+
 class DevelopmentConfig(Config):
     """ app development configuration class """
     ENV = "development"
