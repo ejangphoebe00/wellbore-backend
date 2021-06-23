@@ -6,8 +6,9 @@ class CatalogSecurityFlag(db.Model):
     CatalogSecurityFlagName = db.Column(db.NVARCHAR(255))
     SortOrder = db.Column(db.Integer)    
     Comments = db.Column(db.NVARCHAR(500))
-    ModifiedOn = db.Column(db.TIMESTAMP)
-    ModifiedBy = db.Column(db.NVARCHAR(255))
+    ModifiedOn = db.Column(db.DateTime, default=db.func.current_timestamp(),
+        onupdate=db.func.current_timestamp())
+    ModifiedBy = db.Column(db.VARCHAR(50))
 
 
     def serialise(self):

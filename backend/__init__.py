@@ -38,6 +38,12 @@ def create_app():
                                 Token
                                 )
 
+        # Import controller blueprints
+        from .controllers.user import auth_bp
+
+        # Register Blueprints
+        app.register_blueprint(auth_bp)
+
          # revoke tokens
         @jwt.token_in_blocklist_loader
         def check_if_token_is_revoked(jwt_header, jwt_payload):
