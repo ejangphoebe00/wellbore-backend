@@ -47,9 +47,11 @@ def create_app():
 
         # Import controller blueprints
         from .controllers.user import auth_bp
+        from .controllers.web_security import web_security_level_bp
 
         # Register Blueprints
         app.register_blueprint(auth_bp)
+        app.register_blueprint(web_security_level_bp)
 
          # revoke tokens
         @jwt.token_in_blocklist_loader

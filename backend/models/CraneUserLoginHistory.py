@@ -7,13 +7,13 @@ class CraneUserLoginHistory(db.Model):
     LogStaff_id = db.Column(db.Integer)
     CraneCompany_id = db.Column(db.Integer)   
     LogCompanyAuthorisedUser_id = db.Column(db.Integer)
-    LogAuthorisedUserName = db.Column(db.TEXT) 
+    LogAuthorisedUserName = db.Column(db.VARCHAR(100)) 
     LoginStatus_id = db.Column(db.Integer)   
     UserOnlineStatus = db.Column(db.SMALLINT)  
     LogLoginDate = db.Column(db.DateTime)  
     LogLogoutDate = db.Column(db.DateTime) 
-    UserLoginLogName = db.Column(db.TEXT) 
-    UserAcessLogName = db.Column(db.TEXT)   
+    UserLoginLogName = db.Column(db.VARCHAR(100)) 
+    UserAcessLogName = db.Column(db.VARCHAR(100))   
     Comments = db.Column(db.NVARCHAR(500))
     
     def __repr__(self):

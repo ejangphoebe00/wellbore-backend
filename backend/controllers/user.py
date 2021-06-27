@@ -1,6 +1,7 @@
 from flask import Blueprint, request, make_response, jsonify
 from ..models.CraneUser import CraneUser, UserCatgoryEnum
 from ..models.Token import RevokedTokenModel
+from ..models.CraneUserLoginHistory import CraneUserLoginHistory
 from flask_jwt_extended import (
     create_access_token,
     create_refresh_token,
@@ -42,6 +43,22 @@ def login():
         user.LoginErrorCount = 0
         user.UserOnlineStatus = 1
         user.update()
+
+        # update login history
+        login_history = CraneUserLoginHistory(
+            HistLogUser_id = user.CraneUser_id,
+            LogStaff_id = user.UserStaff_id,
+            CraneCompany_id = user.UserCompany_id,   
+            LogCompanyAuthorisedUser_id = user.CraneUser_id,
+            LogAuthorisedUserName = user.CraneUserName, 
+            LoginStatus_id = 0,   
+            UserOnlineStatus = 1,
+            LogLoginDate = datetime.now(),
+            UserLoginLogName = user.CraneUserName,
+            UserAcessLogName = user.CraneUserName,
+            Comments = user.Comments
+        )
+        login_history.save()
         resp = jsonify({'access_token':access_token,'refresh_token':refresh_token,'message':'Login Successful'})
         return make_response(resp,200)
     except:
@@ -87,7 +104,7 @@ def register_user():
                         CredentialsSent = 1,
                         UserEmailAddress = data['UserEmailAddress'],
                         UserSecurityLevel_id = data['UserSecurityLevel_id'],
-                        UserWebSecurityLevel_id = data['UserWebSecurityLevel_id'],
+                        UserWebSecurityLevel_id = data['UserWebSecurityLevel_id'],#should come from websecurity model as forign key
                         UserNogtrWebSecurityLevel_id = data['UserNogtrWebSecurityLevel_id'],
                         UserPremsWebSecurityLevel_id = data['UserPremsWebSecurityLevel_id'],
                         UserIntranetSecurityLevel_id = data['UserIntranetSecurityLevel_id'],
@@ -115,6 +132,7 @@ def get_all_users():
         return make_response(jsonify(users),200)
     except:
        return make_response(jsonify({'message':'Something went wrong'}),500)
+
 
 # deactivate account
 @auth_bp.route('/user/deactivate_account/<int:CraneUser_id>', methods=['PUT'])
@@ -197,6 +215,11 @@ def logout(CraneUser_id):
         user.LastSeen = datetime.now()
         user.UserOnlineStatus = 0
         user.update()
+
+        # update login history (update last inserted)
+        login_history = CraneUserLoginHistory.query.filter(CraneUserLoginHistory.HistLogUser_id==CraneUser_id)[-1]
+        login_history.LogLogoutDate = datetime.now()
+        login_history.update()
         return make_response(jsonify({'message': 'Logout successful'}),200)
     except:
         return make_response(jsonify({'message': 'Something went wrong'}), 500)

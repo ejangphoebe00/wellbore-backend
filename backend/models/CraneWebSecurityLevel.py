@@ -7,7 +7,7 @@ class CraneWebSecurityLevel(db.Model):
     WebSecurityLevelDescription = db.Column(db.NVARCHAR(255))
     WebSecurityLevelAbbreviation = db.Column(db.NVARCHAR(255))    
     Comments = db.Column(db.NVARCHAR(500))
-    ModifiedOn = db.Column(db.TIMESTAMP)
+    ModifiedOn = db.Column(db.DateTime)
     ModifiedBy = db.Column(db.NVARCHAR(255))
     
     def __repr__(self):
