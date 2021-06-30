@@ -231,3 +231,14 @@ def refresh_token():
     current_user = get_jwt_identity()
     access_token = create_access_token(identity = current_user)
     return make_response(jsonify({'access_token': access_token}),200)
+
+
+@auth_bp.route('/user/get_user_logs', methods=['GET'])
+@jwt_required()
+def get_user_logs():
+    try:
+        logs = [z.serialise() for z in CraneUserLoginHistory.query.all()]
+        return make_response(jsonify(logs),200)
+    except:
+       return make_response(jsonify({'message':'Something went wrong'}),500)
+
