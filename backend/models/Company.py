@@ -27,7 +27,7 @@ class Company(db.Model):
     CompanyOtherEmails = db.Column(db.NVARCHAR(255))
     NSDQualificationDate = db.Column(db.DateTime)
     NSDQualificationYear = db.Column(db.String(10))
-    CompanyOtherEmails = db.Column(db.NVARCHAR(100))
+    # CompanyOtherEmails = db.Column(db.NVARCHAR(100))
     PrimaryContactEntity = db.Column(db.NVARCHAR(50))
     ContactEntityEmail = db.Column(db.NVARCHAR(100))
     ContactEntityTelephone = db.Column(db.NVARCHAR(55))
@@ -50,10 +50,10 @@ class Company(db.Model):
     ContactEntityFax = db.Column(db.NVARCHAR(55))
     NSD_FromDate = db.Column(db.Date)
     NSD_ToDate = db.Column(db.Date)
-    ImportedFromNSD = db.Column(db.SMALLINT)
+    ImportedFromNSD = db.Column(db.SMALLINT) #should be between 0 and 1
     ImportedDate = db.Column(db.DateTime)
     ExportedDate = db.Column(db.DateTime)
-    ExportedToNogtr = db.Column(db.SMALLINT)
+    ExportedToNogtr = db.Column(db.SMALLINT) #should be between 0 and 1
     CreatedBy = db.Column(db.Integer)
     DateCreated = db.Column(db.DateTime)
     ModifiedOn = db.Column(db.DateTime)

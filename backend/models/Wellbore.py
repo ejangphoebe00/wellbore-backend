@@ -30,7 +30,7 @@ class Wellbore(db.Model):
     TD_MD = db.Column(db.Float)
     TD_TVD = db.Column(db.Float)
     TD_Date = db.Column(db.Date)
-    WellboreCore_id = db.Column(db.Integer)
+    # WellboreCore_id = db.Column(db.Integer)
     CoreContractor_id = db.Column(db.Integer)
     RCI_Taken_id = db.Column(db.Integer)
     MDT_Done_id = db.Column(db.Integer)

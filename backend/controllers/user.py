@@ -59,7 +59,13 @@ def login():
             Comments = user.Comments
         )
         login_history.save()
-        resp = jsonify({'access_token':access_token,'refresh_token':refresh_token,'message':'Login Successful'})
+        if user.UserCategory == UserCatgoryEnum.Admin:
+            user_role = "Admin"
+        else:
+            user_role = "Staff"
+        resp = jsonify({"user_role":user_role,'access_token':access_token,
+                        'refresh_token':refresh_token,'message':'Login Successful'
+                    })
         return make_response(resp,200)
     except:
         return make_response(jsonify({'message':'something went wrong'}),500)
@@ -115,7 +121,7 @@ def register_user():
                         DeactivateAccount = 0,
                         LoginErrorCount = 0,
                         DefaultPassword = CraneUser.hash_password(data['DefaultPassword']),
-                        )
+                    )
         new_user.save()
 
         resp = jsonify({'message': 'account created successfully'})
@@ -233,12 +239,22 @@ def refresh_token():
     return make_response(jsonify({'access_token': access_token}),200)
 
 
-@auth_bp.route('/user/get_user_logs', methods=['GET'])
+@auth_bp.route('/user/get_users_logs', methods=['GET'])
 @jwt_required()
-def get_user_logs():
+def get_users_logs():
     try:
         logs = [z.serialise() for z in CraneUserLoginHistory.query.all()]
         return make_response(jsonify(logs),200)
     except:
        return make_response(jsonify({'message':'Something went wrong'}),500)
 
+# get logs per user
+@auth_bp.route('/user/get_user_logs/<int:CraneUser_id>', methods=['GET'])
+@jwt_required()
+def get_user_logs(CraneUser_id):
+    try:
+        logs = [z.serialise() for z in CraneUserLoginHistory.query.filter(CraneUserLoginHistory.HistLogUser_id == CraneUser_id)]
+        return make_response(jsonify(logs),200)
+    except:
+       return make_response(jsonify({'message':'Something went wrong'}),500)
+       
