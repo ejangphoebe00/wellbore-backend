@@ -51,6 +51,11 @@ def create_app():
         from .controllers.company import company_bp
         from .controllers.welbore import wellbore_bp
         from .controllers.welbore_core import welbore_core_bp
+        from .controllers.file_format import file_format_bp
+        from .controllers.file_security_grade import file_security_grade_bp
+        from .controllers.strat_litho_unit import strat_litho_unit_bp
+        from .controllers.catalog_security_flag import catalog_security_flag_bp
+
 
         # Register Blueprints
         app.register_blueprint(auth_bp)
@@ -58,8 +63,13 @@ def create_app():
         app.register_blueprint(company_bp)
         app.register_blueprint(wellbore_bp)
         app.register_blueprint(welbore_core_bp)
+        app.register_blueprint(file_security_grade_bp)
+        app.register_blueprint(file_format_bp)
+        app.register_blueprint(strat_litho_unit_bp)
+        app.register_blueprint(catalog_security_flag_bp)
 
-         # revoke tokens
+
+        # revoke tokens
         @jwt.token_in_blocklist_loader
         def check_if_token_is_revoked(jwt_header, jwt_payload):
             jti = jwt_payload["jti"]

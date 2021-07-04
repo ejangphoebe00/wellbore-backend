@@ -20,7 +20,7 @@ def add_welbore_core():
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
     try:
         new_welbore_core = WellboreCore(
-                        Wellbore_id = data['Wellbore_id'],
+                        Wellbore_id = data['Wellbore_id'],#comes from welbore
                         CoreNumber = data['CoreNumber'],
                         CoringDate = data['CoringDate'],
                         WBCoringContractor_id = data['WBCoringContractor_id'],
@@ -40,9 +40,9 @@ def add_welbore_core():
                         CoreReportSoftcopyPath = data['CoreReportSoftcopyPath'],
                         CoreReportHyperlink = data['CoreReportHyperlink'],
                         ReportUploadDate = data['ReportUploadDate'],
-                        ReportFormat_id = data['ReportFormat_id'],
+                        ReportFormat_id = data['ReportFormat_id'],#should come from file format
                         ReportFileSize = data['ReportFileSize'],
-                        CoreReportSecurityGrade_id = data['CoreReportSecurityGrade_id'],
+                        CoreReportSecurityGrade_id = data['CoreReportSecurityGrade_id'],#comes from file security grade
                         ReportOpenDueDate = data['ReportOpenDueDate'],
                         ReportDocumentTitle = data['ReportDocumentTitle'],
                         ReportReceivedDate = data['ReportReceivedDate'],
