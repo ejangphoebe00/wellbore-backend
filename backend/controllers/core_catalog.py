@@ -20,7 +20,7 @@ def add_core_catalog():
     try:
         new_core_catalog = CoreCatalog(
                         WellboreCore_id = data['WellboreCore_id'], # comes from welbore core
-                        CoreType = data['CoreType'],
+                        CoreType = data['CoreType'], # comes from core type
                         StoreIdentifier = data['StoreIdentifier'],
                         CatalogCoreFromDepth = data['CatalogCoreFromDepth'],
                         CatalogCoreToDepth = data['CatalogCoreToDepth'],

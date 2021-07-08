@@ -2,6 +2,7 @@ from .. import db
 import enum
 from flask_bcrypt import Bcrypt
 from datetime import datetime
+from .CraneWebSecurityLevel import CraneWebSecurityLevel
 
 class UserCatgoryEnum(enum.Enum):
     Admin = 'Admin'
@@ -27,7 +28,7 @@ class CraneUser(db.Model):
     UserPassword = db.Column(db.NVARCHAR(255),nullable=True)
     UserEmailAddress = db.Column(db.NVARCHAR(255),nullable=False, unique=True)
     UserSecurityLevel_id = db.Column(db.Integer)
-    UserWebSecurityLevel_id = db.Column(db.Integer)
+    UserWebSecurityLevel_id = db.Column(db.Integer, db.ForeignKey('CraneWebSecurityLevel.WebSecurityLevel_id'),nullable=False) 
     UserNogtrWebSecurityLevel_id = db.Column(db.Integer)
     UserPremsWebSecurityLevel_id = db.Column(db.Integer)
     UserIntranetSecurityLevel_id = db.Column(db.Integer)
@@ -35,7 +36,7 @@ class CraneUser(db.Model):
     LoginErrorCount = db.Column(db.Integer)
     LoginStatus_id = db.Column(db.Integer)
     LastSeen = db.Column(db.DateTime,nullable=True)
-    DeactivateAccount = db.Column(db.SMALLINT,nullable=True)
+    DeactivateAccount = db.Column(db.SMALLINT,nullable=False)
     ActivationChangeComment = db.Column(db.NVARCHAR(255),nullable=True)
     ActivationChangeDate = db.Column(db.DateTime,nullable=True)
     CredentialsSent = db.Column(db.SMALLINT,nullable=True)

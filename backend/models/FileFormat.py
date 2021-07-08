@@ -1,4 +1,5 @@
 from .. import db
+from .CraneUser import CraneUser
 
 class FileFormat(db.Model):
     __tablename__ = 'crane.rt_FileFormat'
@@ -7,7 +8,7 @@ class FileFormat(db.Model):
     SortOrder = db.Column(db.Integer)    
     Comments = db.Column(db.NVARCHAR(500))
     ModifiedOn = db.Column(db.TIMESTAMP)
-    ModifiedBy = db.Column(db.NVARCHAR(255))
+    ModifiedBy = db.Column(db.Integer, db.ForeignKey('CraneUser.CraneUser_id'),nullable=True)
     
     def __repr__(self):
         return '<FileFormat {}>'.format(self.FileFormatName)

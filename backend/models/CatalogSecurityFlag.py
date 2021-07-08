@@ -1,4 +1,5 @@
 from .. import db
+from .CraneUser import CraneUser
 
 class CatalogSecurityFlag(db.Model):
     __tablename__ = 'crane.rt_CatalogSecurityFlag'
@@ -8,7 +9,7 @@ class CatalogSecurityFlag(db.Model):
     Comments = db.Column(db.NVARCHAR(500))
     ModifiedOn = db.Column(db.DateTime, default=db.func.current_timestamp(),
         onupdate=db.func.current_timestamp())
-    ModifiedBy = db.Column(db.VARCHAR(50))
+    ModifiedBy = db.Column(db.Integer, db.ForeignKey('CraneUser.CraneUser_id'),nullable=True)
 
 
     def serialise(self):

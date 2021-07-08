@@ -197,6 +197,10 @@ def edit_profile(CraneUser_id):
                 user.UserPassword = CraneUser.hash_password(data.get('UserPassword')) if data.get('UserPassword') else None
                 user.PasswordChangeDate = datetime.now() if data.get('UserPassword') else user.PasswordChangeDate
         else:
+            user.FirstName = data['FirstName']
+            user.MiddleName = data['MiddleName']
+            user.Surname = data['Surname']
+            user.UserEmailAddress = data['UserEmailAddress']
             user.UserPassword = CraneUser.hash_password(data['UserPassword'])
             user.PasswordChangeDate = datetime.now()        
         user.update()

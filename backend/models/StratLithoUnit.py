@@ -1,4 +1,5 @@
 from .. import db
+from .CraneUser import CraneUser
 
 class StratLithoUnit(db.Model):
     __tablename__ = 'crane.t_StratLithoUnit'
@@ -16,10 +17,10 @@ class StratLithoUnit(db.Model):
     MapPortalLithoStratMapLink = db.Column(db.TEXT)
     LithoStratFactsiteUrl = db.Column(db.TEXT)
     Comments = db.Column(db.NVARCHAR(500))
-    CreatedBy_id = db.Column(db.Integer)
+    CreatedBy_id = db.Column(db.Integer, db.ForeignKey('CraneUser.CraneUser_id'),nullable=False)
     DateCreated = db.Column(db.DateTime)
     ModifiedOn = db.Column(db.DateTime)
-    ModifiedBy = db.Column(db.NVARCHAR(255))
+    ModifiedBy = db.Column(db.Integer, db.ForeignKey('CraneUser.CraneUser_id'),nullable=True)
     
 
     def serialise(self):

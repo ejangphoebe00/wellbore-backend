@@ -23,7 +23,7 @@ def add_welbore_core():
                         Wellbore_id = data['Wellbore_id'],#comes from welbore
                         CoreNumber = data['CoreNumber'],
                         CoringDate = data['CoringDate'],
-                        WBCoringContractor_id = data['WBCoringContractor_id'],
+                        WBCoringContractor_id = data['WBCoringContractor_id'], # should come from company
                         CoreTopMDRT = data['CoreTopMDRT'],
                         CoreBtmMDRT = data['CoreBtmMDRT'],
                         CoreTopTVD = data['CoreTopTVD'],
@@ -32,8 +32,8 @@ def add_welbore_core():
                         CutLengthTVD = data['CutLengthTVD'],
                         RecoveredLength = data['RecoveredLength'],
                         CoreRecovery = data['CoreRecovery'],
-                        CoreTopStratLitho_id = data['CoreTopStratLitho_id'],
-                        CoreBottomStratLitho_id = data['CoreBottomStratLitho_id'],
+                        CoreTopStratLitho_id = data['CoreTopStratLitho_id'], # should come from stratlitho
+                        CoreBottomStratLitho_id = data['CoreBottomStratLitho_id'], # should come from stratlitho
                         CorePictureSoftcopyPath = data['CorePictureSoftcopyPath'],
                         CorePictureHyperlink = data['CorePictureHyperlink'],
                         PictureUploadDate = data['PictureUploadDate'],

@@ -1,11 +1,12 @@
 from .. import db
+from .CraneUser import CraneUser
 
 class Company(db.Model):
     __tablename__ = 'crane.t_Company'
     Company_id = db.Column(db.Integer,primary_key=True)
     PAUID = db.Column(db.NVARCHAR(255),nullable=False)
-    CompanyLongName = db.Column(db.NVARCHAR(255),nullable=True)
-    CompanyShortName = db.Column(db.NVARCHAR(255),nullable=False)
+    CompanyLongName = db.Column(db.NVARCHAR(255),nullable=False)
+    CompanyShortName = db.Column(db.NVARCHAR(255),nullable=True)
     NSD_Number = db.Column(db.NVARCHAR(255),nullable=False)
     CompanyCategory_id = db.Column(db.Integer)
     CountryOfOrigin_id = db.Column(db.Integer)
@@ -54,10 +55,10 @@ class Company(db.Model):
     ImportedDate = db.Column(db.DateTime)
     ExportedDate = db.Column(db.DateTime)
     ExportedToNogtr = db.Column(db.SMALLINT) #should be between 0 and 1
-    CreatedBy = db.Column(db.Integer)
+    CreatedBy = db.Column(db.Integer, db.ForeignKey('CraneUser.CraneUser_id'),nullable=False)
     DateCreated = db.Column(db.DateTime)
     ModifiedOn = db.Column(db.DateTime)
-    ModifiedBy = db.Column(db.NVARCHAR(100))
+    ModifiedBy = db.Column(db.Integer, db.ForeignKey('CraneUser.CraneUser_id'),nullable=True)
     RecordChangeStamp = db.Column(db.VARBINARY('MAX'))
     PreviousLegalName = db.Column(db.NVARCHAR(100))
     
