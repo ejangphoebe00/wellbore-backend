@@ -1,5 +1,4 @@
 from .. import db
-from .CraneUser import CraneUser
 
 class CraneWebSecurityLevel(db.Model):
     __tablename__ = 'crane.rt_CraneWebSecurityLevel'
@@ -9,7 +8,7 @@ class CraneWebSecurityLevel(db.Model):
     WebSecurityLevelAbbreviation = db.Column(db.NVARCHAR(255))    
     Comments = db.Column(db.NVARCHAR(500))
     ModifiedOn = db.Column(db.DateTime)
-    ModifiedBy = db.Column(db.Integer, db.ForeignKey('CraneUser.CraneUser_id'),nullable=True)
+    ModifiedBy = db.Column(db.NVARCHAR(255))
     
     def __repr__(self):
         return '<CraneWebSecurityLevel {}>'.format(self.WebSecurityLevelName)
