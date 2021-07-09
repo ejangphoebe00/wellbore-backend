@@ -21,7 +21,7 @@ def add_strat_litho_unit():
         new_strat_litho_unit = StratLithoUnit(
                         PAUID = data['PAUID'],
                         StratLithoName = data['StratLithoName'],
-                        ReserviorUnit = data['ReserviorUnit'],
+                        ReserviorUnit = data['ReserviorUnit'],  # should be 0 or 1
                         LithoStratAlias = data['LithoStratAlias'],
                         IsReservoirUnit_id = data['IsReservoirUnit_id'],
                         LithoStratAge_id = data['LithoStratAge_id'],

@@ -6,7 +6,7 @@ class StratLithoUnit(db.Model):
     StratLitho_id = db.Column(db.Integer,primary_key=True)
     PAUID = db.Column(db.Integer)
     StratLithoName = db.Column(db.NVARCHAR(100))
-    ReserviorUnit = db.Column(db.SMALLINT)
+    ReserviorUnit = db.Column(db.SMALLINT) # should be 0 or 1
     LithoStratAlias = db.Column(db.NVARCHAR(100))
     IsReservoirUnit_id = db.Column(db.Integer)
     LithoStratAge_id = db.Column(db.Integer)

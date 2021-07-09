@@ -7,7 +7,7 @@ class FileSecurityGrade(db.Model):
     FileSecurityGradeName = db.Column(db.NVARCHAR(255))
     SortOrder = db.Column(db.Integer)    
     Comments = db.Column(db.NVARCHAR(500))
-    ModifiedOn = db.Column(db.TIMESTAMP)
+    ModifiedOn = db.Column(db.DateTime)
     ModifiedBy = db.Column(db.Integer, db.ForeignKey('crane.t_CraneUser.CraneUser_id'),nullable=True)
     
     def __repr__(self):

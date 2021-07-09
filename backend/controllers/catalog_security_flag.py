@@ -37,6 +37,7 @@ def edit_catalog_security_flag(CatalogSecurityFlag_id):
         catalog_security_flag = CatalogSecurityFlag.query.get(CatalogSecurityFlag_id)
         catalog_security_flag.CatalogSecurityFlagName = data['CatalogSecurityFlagName']
         catalog_security_flag.Comments = data['Comments']
+        catalog_security_flag.SortOrder = data['SortOrder'] 
         catalog_security_flag.ModifiedOn = datetime.datetime.today()
         catalog_security_flag.ModifiedBy = user.CraneUser_id
         catalog_security_flag.update()

@@ -37,6 +37,7 @@ def edit_file_format(FileFormat_id):
         file_format = FileFormat.query.get(FileFormat_id)
         file_format.FileFormatName = data['FileFormatName']
         file_format.Comments = data['Comments']
+        file_format.SortOrder = data['SortOrder']
         file_format.ModifiedOn = datetime.datetime.today()
         file_format.ModifiedBy = user.CraneUser_id
         file_format.update()

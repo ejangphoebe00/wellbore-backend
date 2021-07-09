@@ -37,6 +37,7 @@ def edit_core_type(CoreType_id):
         core_type = CoreType.query.get(CoreType_id)
         core_type.CoreTypeName = data['CoreTypeName']
         core_type.Comments = data['Comments']
+        core_type.SortOrder = data['SortOrder']
         core_type.ModifiedOn = datetime.datetime.today()
         core_type.ModifiedBy = user.CraneUser_id
         core_type.update()

@@ -54,6 +54,8 @@ def create_app():
         from .controllers.file_security_grade import file_security_grade_bp
         from .controllers.strat_litho_unit import strat_litho_unit_bp
         from .controllers.catalog_security_flag import catalog_security_flag_bp
+        from .controllers.core_type import core_type_bp
+        from .controllers.core_catalog import core_catalog_bp
 
 
         # Register Blueprints
@@ -66,6 +68,8 @@ def create_app():
         app.register_blueprint(file_format_bp)
         app.register_blueprint(strat_litho_unit_bp)
         app.register_blueprint(catalog_security_flag_bp)
+        app.register_blueprint(core_type_bp)
+        app.register_blueprint(core_catalog_bp)
 
 
         # revoke tokens

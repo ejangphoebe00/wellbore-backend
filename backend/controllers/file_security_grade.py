@@ -37,6 +37,7 @@ def edit_file_security_grade(FileSecurityGrade_id):
         file_security_grade = FileSecurityGrade.query.get(FileSecurityGrade_id)
         file_security_grade.FileSecurityGradeName = data['FileSecurityGradeName']
         file_security_grade.Comments = data['Comments']
+        file_security_grade.SortOrder = data['SortOrder']
         file_security_grade.ModifiedOn = datetime.datetime.today()
         file_security_grade.ModifiedBy = user.CraneUser_id
         file_security_grade.update()

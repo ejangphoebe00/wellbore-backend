@@ -26,8 +26,8 @@ def add_core_catalog():
                         CatalogCoreToDepth = data['CatalogCoreToDepth'],
                         CoreCatalogSecurityFlag_id = data['CoreCatalogSecurityFlag_id'], # comes from catalog security flag
                         WasAnalysed_id = data['WasAnalysed_id'],
-                        TopCoreCatalog_id = data['TopCoreCatalog_id'], # comes from strat litho
-                        BottomCoreCatalog_id = data['BottomCoreCatalog_id'], # comes from strat litho
+                        TopStratLitho_id = data['TopStratLitho_id'], # comes from strat litho
+                        BottomStratLitho_id = data['BottomStratLitho_id'], # comes from strat litho
                         CatalogueCorePictureName = data['CatalogueCorePictureName'],
                         CataloguePictureSoftcopyPath = data['CataloguePictureSoftcopyPath'],
                         CataloguePictureHyperlink = data['CataloguePictureHyperlink'],
@@ -64,8 +64,8 @@ def edit_core_catalog(CoreCatalog_id):
         core_catalog.CatalogCoreToDepth = data['CatalogCoreToDepth']
         core_catalog.CoreCatalogSecurityFlag_id = data['CoreCatalogSecurityFlag_id'] # comes from catalog security flag
         core_catalog.WasAnalysed_id = data['WasAnalysed_id']
-        core_catalog.TopCoreCatalog_id = data['TopCoreCatalog_id'] # comes from strat litho
-        core_catalog.BottomCoreCatalog_id = data['BottomCoreCatalog_id'] # comes from strat litho
+        core_catalog.TopStratLitho_id = data['TopStratLitho_id'] # comes from strat litho
+        core_catalog.BottomStratLitho_id = data['BottomStratLitho_id'] # comes from strat litho
         core_catalog.CatalogueCorePictureName = data['CatalogueCorePictureName']
         core_catalog.CataloguePictureSoftcopyPath = data['CataloguePictureSoftcopyPath']
         core_catalog.CataloguePictureHyperlink = data['CataloguePictureHyperlink']
