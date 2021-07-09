@@ -39,15 +39,15 @@ def create_app():
 
     with app.app_context():
         # import models
-        from .models import (CraneUser, Wellbore, WellboreCore, CoreCatalog,
-                                CatalogSecurityFlag, Company, CoreType, CraneUserLoginHistory,
-                                CraneWebSecurityLevel, FileFormat, FileSecurityGrade, StratLithoUnit,
-                                Token
+        from .models import (Token,CraneWebSecurityLevel, CraneUser, CatalogSecurityFlag,
+                                CraneUserLoginHistory, CoreType, FileFormat, FileSecurityGrade, 
+                                Company, Wellbore,
+                                StratLithoUnit, WellboreCore, CoreCatalog
                                 )
 
         # Import controller blueprints
-        from .controllers.user import auth_bp
         from .controllers.web_security import web_security_level_bp
+        from .controllers.user import auth_bp
         from .controllers.company import company_bp
         from .controllers.welbore import wellbore_bp
         from .controllers.welbore_core import welbore_core_bp
@@ -58,8 +58,8 @@ def create_app():
 
 
         # Register Blueprints
-        app.register_blueprint(auth_bp)
         app.register_blueprint(web_security_level_bp)
+        app.register_blueprint(auth_bp)
         app.register_blueprint(company_bp)
         app.register_blueprint(wellbore_bp)
         app.register_blueprint(welbore_core_bp)

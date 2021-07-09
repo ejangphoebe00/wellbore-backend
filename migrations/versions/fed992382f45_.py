@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 5b851931b3d8
-Revises: fdea65fa3e6b
-Create Date: 2021-06-25 18:36:38.324446
+Revision ID: fed992382f45
+Revises: 11e58f868526
+Create Date: 2021-07-09 13:11:17.330407
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '5b851931b3d8'
-down_revision = 'fdea65fa3e6b'
+revision = 'fed992382f45'
+down_revision = '11e58f868526'
 branch_labels = None
 depends_on = None
 
@@ -35,7 +35,7 @@ def upgrade():
     sa.Column('UserPassword', sa.NVARCHAR(length=255), nullable=True),
     sa.Column('UserEmailAddress', sa.NVARCHAR(length=255), nullable=False),
     sa.Column('UserSecurityLevel_id', sa.Integer(), nullable=True),
-    sa.Column('UserWebSecurityLevel_id', sa.Integer(), nullable=True),
+    sa.Column('UserWebSecurityLevel_id', sa.Integer(), nullable=False),
     sa.Column('UserNogtrWebSecurityLevel_id', sa.Integer(), nullable=True),
     sa.Column('UserPremsWebSecurityLevel_id', sa.Integer(), nullable=True),
     sa.Column('UserIntranetSecurityLevel_id', sa.Integer(), nullable=True),
@@ -43,7 +43,7 @@ def upgrade():
     sa.Column('LoginErrorCount', sa.Integer(), nullable=True),
     sa.Column('LoginStatus_id', sa.Integer(), nullable=True),
     sa.Column('LastSeen', sa.DateTime(), nullable=True),
-    sa.Column('DeactivateAccount', sa.SMALLINT(), nullable=True),
+    sa.Column('DeactivateAccount', sa.SMALLINT(), nullable=False),
     sa.Column('ActivationChangeComment', sa.NVARCHAR(length=255), nullable=True),
     sa.Column('ActivationChangeDate', sa.DateTime(), nullable=True),
     sa.Column('CredentialsSent', sa.SMALLINT(), nullable=True),
@@ -58,6 +58,7 @@ def upgrade():
     sa.Column('DefaultPassword', sa.NVARCHAR(length=255), nullable=True),
     sa.Column('DefaultChangeDate', sa.DateTime(), nullable=True),
     sa.Column('PasswordChangeDate', sa.DateTime(), nullable=True),
+    sa.ForeignKeyConstraint(['UserWebSecurityLevel_id'], ['crane.rt_CraneWebSecurityLevel.WebSecurityLevel_id'], ),
     sa.PrimaryKeyConstraint('CraneUser_id'),
     sa.UniqueConstraint('CraneUserName'),
     sa.UniqueConstraint('UserEmailAddress'),

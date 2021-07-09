@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 1068796f4b64
-Revises: 6d16f6cdb4d5
-Create Date: 2021-06-23 16:19:19.813801
+Revision ID: d64797928591
+Revises: 44b9d61cb5ea
+Create Date: 2021-07-09 13:22:53.858329
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '1068796f4b64'
-down_revision = '6d16f6cdb4d5'
+revision = 'd64797928591'
+down_revision = '44b9d61cb5ea'
 branch_labels = None
 depends_on = None
 
@@ -34,16 +34,15 @@ def upgrade():
     sa.Column('OrganisationName', sa.NVARCHAR(length=255), nullable=False),
     sa.Column('UserPassword', sa.NVARCHAR(length=255), nullable=True),
     sa.Column('UserEmailAddress', sa.NVARCHAR(length=255), nullable=False),
-    sa.Column('UserSecurityLevel_id', sa.Integer(), nullable=False),
-    sa.Column('UserWebSecurityLevel_id', sa.Integer(), nullable=False),
-    sa.Column('UserNogtrWebSecurityLevel_id', sa.Integer(), nullable=False),
-    sa.Column('UserPremsWebSecurityLevel_id', sa.Integer(), nullable=False),
-    sa.Column('UserIntranetSecurityLevel_id', sa.Integer(), nullable=False),
-    sa.Column('UserNsdWebSecurityLevel_id', sa.Integer(), nullable=False),
+    sa.Column('UserSecurityLevel_id', sa.Integer(), nullable=True),
+    sa.Column('UserNogtrWebSecurityLevel_id', sa.Integer(), nullable=True),
+    sa.Column('UserPremsWebSecurityLevel_id', sa.Integer(), nullable=True),
+    sa.Column('UserIntranetSecurityLevel_id', sa.Integer(), nullable=True),
+    sa.Column('UserNsdWebSecurityLevel_id', sa.Integer(), nullable=True),
     sa.Column('LoginErrorCount', sa.Integer(), nullable=True),
     sa.Column('LoginStatus_id', sa.Integer(), nullable=True),
     sa.Column('LastSeen', sa.DateTime(), nullable=True),
-    sa.Column('DeactivateAccount', sa.SMALLINT(), nullable=True),
+    sa.Column('DeactivateAccount', sa.SMALLINT(), nullable=False),
     sa.Column('ActivationChangeComment', sa.NVARCHAR(length=255), nullable=True),
     sa.Column('ActivationChangeDate', sa.DateTime(), nullable=True),
     sa.Column('CredentialsSent', sa.SMALLINT(), nullable=True),

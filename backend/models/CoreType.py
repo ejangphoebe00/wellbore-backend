@@ -8,7 +8,7 @@ class CoreType(db.Model):
     SortOrder = db.Column(db.Integer)    
     Comments = db.Column(db.NVARCHAR(500))
     ModifiedOn = db.Column(db.TIMESTAMP)
-    ModifiedBy = db.Column(db.Integer, db.ForeignKey('CraneUser.CraneUser_id'),nullable=True)
+    ModifiedBy = db.Column(db.Integer, db.ForeignKey('crane.t_CraneUser.CraneUser_id'),nullable=True)
 
 
     def serialise(self):

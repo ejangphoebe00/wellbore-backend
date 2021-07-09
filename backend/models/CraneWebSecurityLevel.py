@@ -1,7 +1,7 @@
 from .. import db
 
 class CraneWebSecurityLevel(db.Model):
-    __tablename__ = 'crane.rt_CraneWebSecurityLevel'
+    __tablename__ = "crane.rt_CraneWebSecurityLevel"
     WebSecurityLevel_id = db.Column(db.Integer,primary_key=True)
     WebSecurityLevelName = db.Column(db.NVARCHAR(255))
     WebSecurityLevelDescription = db.Column(db.NVARCHAR(255))

@@ -28,7 +28,7 @@ class CraneUser(db.Model):
     UserPassword = db.Column(db.NVARCHAR(255),nullable=True)
     UserEmailAddress = db.Column(db.NVARCHAR(255),nullable=False, unique=True)
     UserSecurityLevel_id = db.Column(db.Integer)
-    UserWebSecurityLevel_id = db.Column(db.Integer, db.ForeignKey('CraneWebSecurityLevel.WebSecurityLevel_id'),nullable=False) 
+    UserWebSecurityLevel_id = db.Column(db.Integer, db.ForeignKey(CraneWebSecurityLevel.WebSecurityLevel_id),nullable=False) 
     UserNogtrWebSecurityLevel_id = db.Column(db.Integer)
     UserPremsWebSecurityLevel_id = db.Column(db.Integer)
     UserIntranetSecurityLevel_id = db.Column(db.Integer)
