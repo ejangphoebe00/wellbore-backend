@@ -12,7 +12,6 @@ db = SQLAlchemy()
 mail = Mail()
 
 
-
 def create_app():
     """Construct the core application."""
 
