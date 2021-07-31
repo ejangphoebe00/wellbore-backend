@@ -23,8 +23,8 @@ def add_catalog_security_flag():
                     )
         new_catalog_security_flag.save()
         return make_response(jsonify({'message':'Catalog Security Flag added successfuly.'}),201)
-    except:
-        return make_response(jsonify({'message':'Something went wrong'}),500)
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)
 
 
 @catalog_security_flag_bp.route('/apiv1/edit_catalog_security_flag/<int:CatalogSecurityFlag_id>',methods=['PUT'])
@@ -42,8 +42,8 @@ def edit_catalog_security_flag(CatalogSecurityFlag_id):
         catalog_security_flag.ModifiedBy = user.CraneUser_id
         catalog_security_flag.update()
         return make_response(jsonify({'message':'Catalog Security Flag updated successfuly.'}),200)
-    except:
-        return make_response(jsonify({'message':'Something went wrong'}),500)
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)
 
 
 # get single catalog_security_flag object
@@ -53,8 +53,8 @@ def get_catalog_security_flag(CatalogSecurityFlag_id):
     try:
         catalog_security_flag = CatalogSecurityFlag.query.get(CatalogSecurityFlag_id)
         return make_response(jsonify(catalog_security_flag.serialise()),200)
-    except:
-       return make_response(jsonify({'message':'Something went wrong'}),500)
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)
 
 
 @catalog_security_flag_bp.route('/apiv1/get_catalog_security_flags',methods=['GET'])
@@ -63,8 +63,8 @@ def get_all_catalog_security_flags():
     try:
         catalog_security_flags = [z.serialise() for z in CatalogSecurityFlag.query.all()]
         return make_response(jsonify(catalog_security_flags),200)
-    except:
-       return make_response(jsonify({'message':'Something went wrong'}),500)
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)
 
 
 @catalog_security_flag_bp.route('/apiv1/delete_catalog_security_flag/<int:CatalogSecurityFlag_id>',methods=['DELETE'])
@@ -74,5 +74,5 @@ def delete_catalog_security_flag(CatalogSecurityFlag_id):
         catalog_security_flag = CatalogSecurityFlag.query.get(CatalogSecurityFlag_id)
         catalog_security_flag.delete()
         return make_response(jsonify({'message':'Catalog Security Flag successfully deleted.'}),200)
-    except:
-       return make_response(jsonify({'message':'Something went wrong'}),500) 
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)

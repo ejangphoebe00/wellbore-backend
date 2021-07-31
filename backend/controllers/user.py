@@ -67,8 +67,8 @@ def login():
                         'refresh_token':refresh_token,'message':'Login Successful'
                     })
         return make_response(resp,200)
-    except:
-        return make_response(jsonify({'message':'something went wrong'}),500)
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)
 
 
 # User registration
@@ -126,8 +126,8 @@ def register_user():
 
         resp = jsonify({'message': 'account created successfully'})
         return make_response(resp, 201)
-    except:
-        return make_response(jsonify({'message': 'something went wrong'}), 500)
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)
 
 
 @auth_bp.route('/user/get_users', methods=['GET'])
@@ -136,8 +136,8 @@ def get_all_users():
     try:
         users = [z.serialise() for z in CraneUser.query.filter(CraneUser.DeactivateAccount == 0)]
         return make_response(jsonify(users),200)
-    except:
-       return make_response(jsonify({'message':'Something went wrong'}),500)
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)
 
 
 # deactivate account
@@ -149,8 +149,8 @@ def deactivate_account(CraneUser_id):
         user.DeactivateAccount = 1
         user.update()
         return make_response(jsonify({'message':'Account successfully Deactivated'}),200)
-    except:
-       return make_response(jsonify({'message':'Something went wrong'}),500)
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)
 
 
 # Edit profile
@@ -207,8 +207,8 @@ def edit_profile(CraneUser_id):
 
         resp = jsonify({'message': 'Details updated successfully'})
         return make_response(resp, 200)
-    except:
-        return make_response(jsonify({'message': 'something went wrong'}), 500)
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)
 
 
 # user logout
@@ -231,8 +231,8 @@ def logout(CraneUser_id):
         login_history.LogLogoutDate = datetime.now()
         login_history.update()
         return make_response(jsonify({'message': 'Logout successful'}),200)
-    except:
-        return make_response(jsonify({'message': 'Something went wrong'}), 500)
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)
 
 
 @auth_bp.route('/user/token-refresh', methods=['POST'])
@@ -249,8 +249,8 @@ def get_users_logs():
     try:
         logs = [z.serialise() for z in CraneUserLoginHistory.query.all()]
         return make_response(jsonify(logs),200)
-    except:
-       return make_response(jsonify({'message':'Something went wrong'}),500)
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)
 
 # get logs per user
 @auth_bp.route('/user/get_user_logs/<int:CraneUser_id>', methods=['GET'])
@@ -259,6 +259,6 @@ def get_user_logs(CraneUser_id):
     try:
         logs = [z.serialise() for z in CraneUserLoginHistory.query.filter(CraneUserLoginHistory.HistLogUser_id == CraneUser_id)]
         return make_response(jsonify(logs),200)
-    except:
-       return make_response(jsonify({'message':'Something went wrong'}),500)
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)
        

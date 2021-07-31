@@ -80,8 +80,8 @@ def add_wellbore():
                     )
         new_wellbore.save()
         return make_response(jsonify({'message':'Wellbore added successfuly.'}),201)
-    except:
-        return make_response(jsonify({'message':'Something went wrong'}),500)
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)
 
 
 @wellbore_bp.route('/apiv1/edit_wellbore/<int:Wellbore_id>',methods=['PUT'])
@@ -151,8 +151,8 @@ def edit_wellbore(Wellbore_id):
         wellbore.ModifiedBy = user.CraneUser_id
         wellbore.update()
         return make_response(jsonify({'message':'Welbore updated successfuly.'}),200)
-    except:
-        return make_response(jsonify({'message':'Something went wrong'}),500)
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)
 
 
 # get single wellbore object
@@ -162,8 +162,8 @@ def get_wellbore(Wellbore_id):
     try:
         wellbore = Wellbore.query.get(Wellbore_id)
         return make_response(jsonify(wellbore.serialise()),200)
-    except:
-       return make_response(jsonify({'message':'Something went wrong'}),500)
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)
 
 
 @wellbore_bp.route('/apiv1/get_wellbore',methods=['GET'])
@@ -172,8 +172,8 @@ def get_all_wellbore():
     try:
         wellbore = [z.serialise() for z in Wellbore.query.all()]
         return make_response(jsonify(wellbore),200)
-    except:
-       return make_response(jsonify({'message':'Something went wrong'}),500)
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)
 
 
 @wellbore_bp.route('/apiv1/delete_wellbore/<int:Wellbore_id>',methods=['DELETE'])
@@ -183,8 +183,8 @@ def delete_wellbore(Wellbore_id):
         wellbore = Wellbore.query.get(Wellbore_id)
         wellbore.delete()
         return make_response(jsonify({'message':'Welbore successfully deleted.'}),200)
-    except:
-       return make_response(jsonify({'message':'Something went wrong'}),500) 
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)
 
 
 # get wellbore cores of a specific welbore
@@ -194,5 +194,5 @@ def get_all_wellbore_cores(Wellbore_id):
     try:
         wellbore_cores = [z.serialise() for z in WellboreCore.query.filter(WellboreCore.Wellbore_id == Wellbore_id)]
         return make_response(jsonify(wellbore_cores),200)
-    except:
-       return make_response(jsonify({'message':'Something went wrong'}),500)
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)

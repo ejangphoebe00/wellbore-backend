@@ -23,8 +23,8 @@ def add_core_type():
                     )
         new_core_type.save()
         return make_response(jsonify({'message':'Core Type added successfuly.'}),201)
-    except:
-        return make_response(jsonify({'message':'Something went wrong'}),500)
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)
 
 
 @core_type_bp.route('/apiv1/edit_core_type/<int:CoreType_id>',methods=['PUT'])
@@ -42,8 +42,8 @@ def edit_core_type(CoreType_id):
         core_type.ModifiedBy = user.CraneUser_id
         core_type.update()
         return make_response(jsonify({'message':'Core Type updated successfuly.'}),200)
-    except:
-        return make_response(jsonify({'message':'Something went wrong'}),500)
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)
 
 
 # get single core_type object
@@ -53,8 +53,8 @@ def get_core_type(CoreType_id):
     try:
         core_type = CoreType.query.get(CoreType_id)
         return make_response(jsonify(core_type.serialise()),200)
-    except:
-       return make_response(jsonify({'message':'Something went wrong'}),500)
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)
 
 
 @core_type_bp.route('/apiv1/get_core_types',methods=['GET'])
@@ -63,8 +63,8 @@ def get_all_core_types():
     try:
         core_types = [z.serialise() for z in CoreType.query.all()]
         return make_response(jsonify(core_types),200)
-    except:
-       return make_response(jsonify({'message':'Something went wrong'}),500)
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)
 
 
 @core_type_bp.route('/apiv1/delete_core_type/<int:CoreType_id>',methods=['DELETE'])
@@ -74,5 +74,5 @@ def delete_core_type(CoreType_id):
         core_type = CoreType.query.get(CoreType_id)
         core_type.delete()
         return make_response(jsonify({'message':'Core Type successfully deleted.'}),200)
-    except:
-       return make_response(jsonify({'message':'Something went wrong'}),500) 
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)

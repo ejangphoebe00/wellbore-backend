@@ -24,8 +24,8 @@ def add_web_security_level():
                     )
         new_web_security_level.save()
         return make_response(jsonify({'message':'Web security level added successfuly.'}),201)
-    except:
-        return make_response(jsonify({'message':'Something went wrong'}),500)
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)
 
 
 @web_security_level_bp.route('/apiv1/edit_web_security_level/<int:WebSecurityLevel_id>',methods=['PUT'])
@@ -44,8 +44,8 @@ def edit_web_security_level(WebSecurityLevel_id):
         web_security_level.ModifiedBy = user.CraneUser_id
         web_security_level.update()
         return make_response(jsonify({'message':'Web security level updated successfuly.'}),200)
-    except:
-        return make_response(jsonify({'message':'Something went wrong'}),500)
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)
 
 
 # get single web_security_level object
@@ -55,8 +55,8 @@ def get_web_security_level(WebSecurityLevel_id):
     try:
         web_security_level = CraneWebSecurityLevel.query.get(WebSecurityLevel_id)
         return make_response(jsonify(web_security_level.serialise()),200)
-    except:
-       return make_response(jsonify({'message':'Something went wrong'}),500)
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)
 
 
 @web_security_level_bp.route('/apiv1/get_web_security_level',methods=['GET'])
@@ -65,8 +65,8 @@ def get_all_web_security_level():
     try:
         web_security_level = [z.serialise() for z in CraneWebSecurityLevel.query.all()]
         return make_response(jsonify(web_security_level),200)
-    except:
-       return make_response(jsonify({'message':'Something went wrong'}),500)
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)
 
 
 @web_security_level_bp.route('/apiv1/delete_web_security_level/<int:WebSecurityLevel_id>',methods=['DELETE'])
@@ -76,5 +76,5 @@ def delete_web_security_level(WebSecurityLevel_id):
         web_security_level = CraneWebSecurityLevel.query.get(WebSecurityLevel_id)
         web_security_level.delete()
         return make_response(jsonify({'message':'Web security level successfully deleted.'}),200)
-    except:
-       return make_response(jsonify({'message':'Something went wrong'}),500) 
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)

@@ -75,8 +75,8 @@ def add_company():
                     )
         new_company.save()
         return make_response(jsonify({'message':'Company added successfuly.'}),201)
-    except:
-        return make_response(jsonify({'message':'Something went wrong'}),500)
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)
 
 
 @company_bp.route('/apiv1/edit_company/<int:Company_id>',methods=['PUT'])
@@ -85,66 +85,66 @@ def edit_company(Company_id):
     data = request.get_json(force=True)
     current_user_email = get_jwt()
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
-    # try:
-    company = Company.query.get(Company_id)
-    company.PAUID = data['PAUID']
-    company.CompanyLongName = data['CompanyLongName']
-    company.CompanyShortName = data['CompanyShortName']
-    company.NSD_Number = data['NSD_Number']
-    company.CompanyCategory_id = data['CompanyCategory_id']
-    company.CountryOfOrigin_id = data['CountryOfOrigin_id']
-    company.CountryOfRegistration_id = data['CountryOfRegistration_id']
-    company.RegistrationNumber = data['RegistrationNumber']
-    company.TINNumber = data['TINNumber']
-    company.CompanyTelephone = data['CompanyTelephone']
-    company.CompanyEmail = data['CompanyEmail']
-    company.CompanyWebsite = data['CompanyWebsite']
-    company.CompanyEntityType_id = data['CompanyEntityType_id']
-    company.CompanyEntitySubType_id = data['CompanyEntitySubType_id']
-    company.CompanyMajorActivity_id = data['CompanyMajorActivity_id']
-    company.CompanyActivityDivision_id = data['CompanyActivityDivision_id']
-    company.CompanyActivityDivisionClass_id = data['CompanyActivityDivisionClass_id']
-    company.CompanyActivityDivisionClassCategory_id = data['CompanyActivityDivisionClassCategory_id']
-    company.BusinessNatureDescription = data['BusinessNatureDescription']
-    company.CompanyPostalAddress = data['CompanyPostalAddress']
-    company.CompanyPhysicalAddress = data['CompanyPhysicalAddress']
-    company.CompanyOtherEmails = data['CompanyOtherEmails']
-    company.NSDQualificationDate = data['NSDQualificationDate']
-    company.NSDQualificationYear = data['NSDQualificationYear']
-    company.PrimaryContactEntity = data['PrimaryContactEntity']
-    company.ContactEntityEmail = data['ContactEntityEmail']
-    company.ContactEntityTelephone = data['ContactEntityTelephone']
-    company.ContactEntityMobile = data['ContactEntityMobile']
-    company.ContactDesignation = data['ContactDesignation']
-    company.OperatorSortOrder = data['OperatorSortOrder']
-    company.ContractorSortOrder = data['ContractorSortOrder']
-    company.PAURegistrationDate = data['PAURegistrationDate']
-    company.CraneNOGTRID = data['CraneNOGTRID']
-    company.TempNOGTRIPwd = data['TempNOGTRIPwd']
-    company.RegistrationStatus_id = data['RegistrationStatus_id']
-    company.ClassifyAsUgandan_id = data['ClassifyAsUgandan_id']
-    company.Comments = data['Comments']
-    company.PrimaryCompanyKind_id = data['PrimaryCompanyKind_id']
-    company.SecondaryCompanyKind_id = data['SecondaryCompanyKind_id']
-    company.OtherCompanyKind_id = data['OtherCompanyKind_id']
-    company.CompanyGroup_id = data['CompanyGroup_id']
-    company.CompanyMobile = data['CompanyMobile']
-    company.CompanyFax = data['CompanyFax']
-    company.ContactEntityFax = data['ContactEntityFax']
-    company.NSD_FromDate = data['NSD_FromDate']
-    company.NSD_ToDate = data['NSD_ToDate']
-    company.ImportedFromNSD = data['ImportedFromNSD']
-    company.ImportedDate = data['ImportedDate']
-    company.ExportedDate = data['ExportedDate']
-    company.ExportedToNogtr = data['ExportedToNogtr']
-    company.ModifiedBy = user.CraneUser_id
-    company.ModifiedOn = datetime.datetime.now()
-    company.PreviousLegalName = data['PreviousLegalName']
-    company.RecordChangeStamp = data['RecordChangeStamp']
-    company.update()
-    return make_response(jsonify({'message':'Company updated successfuly.'}),200)
-    # except:
-    #     return make_response(jsonify({'message':'Something went wrong'}),500)
+    try:
+        company = Company.query.get(Company_id)
+        company.PAUID = data['PAUID']
+        company.CompanyLongName = data['CompanyLongName']
+        company.CompanyShortName = data['CompanyShortName']
+        company.NSD_Number = data['NSD_Number']
+        company.CompanyCategory_id = data['CompanyCategory_id']
+        company.CountryOfOrigin_id = data['CountryOfOrigin_id']
+        company.CountryOfRegistration_id = data['CountryOfRegistration_id']
+        company.RegistrationNumber = data['RegistrationNumber']
+        company.TINNumber = data['TINNumber']
+        company.CompanyTelephone = data['CompanyTelephone']
+        company.CompanyEmail = data['CompanyEmail']
+        company.CompanyWebsite = data['CompanyWebsite']
+        company.CompanyEntityType_id = data['CompanyEntityType_id']
+        company.CompanyEntitySubType_id = data['CompanyEntitySubType_id']
+        company.CompanyMajorActivity_id = data['CompanyMajorActivity_id']
+        company.CompanyActivityDivision_id = data['CompanyActivityDivision_id']
+        company.CompanyActivityDivisionClass_id = data['CompanyActivityDivisionClass_id']
+        company.CompanyActivityDivisionClassCategory_id = data['CompanyActivityDivisionClassCategory_id']
+        company.BusinessNatureDescription = data['BusinessNatureDescription']
+        company.CompanyPostalAddress = data['CompanyPostalAddress']
+        company.CompanyPhysicalAddress = data['CompanyPhysicalAddress']
+        company.CompanyOtherEmails = data['CompanyOtherEmails']
+        company.NSDQualificationDate = data['NSDQualificationDate']
+        company.NSDQualificationYear = data['NSDQualificationYear']
+        company.PrimaryContactEntity = data['PrimaryContactEntity']
+        company.ContactEntityEmail = data['ContactEntityEmail']
+        company.ContactEntityTelephone = data['ContactEntityTelephone']
+        company.ContactEntityMobile = data['ContactEntityMobile']
+        company.ContactDesignation = data['ContactDesignation']
+        company.OperatorSortOrder = data['OperatorSortOrder']
+        company.ContractorSortOrder = data['ContractorSortOrder']
+        company.PAURegistrationDate = data['PAURegistrationDate']
+        company.CraneNOGTRID = data['CraneNOGTRID']
+        company.TempNOGTRIPwd = data['TempNOGTRIPwd']
+        company.RegistrationStatus_id = data['RegistrationStatus_id']
+        company.ClassifyAsUgandan_id = data['ClassifyAsUgandan_id']
+        company.Comments = data['Comments']
+        company.PrimaryCompanyKind_id = data['PrimaryCompanyKind_id']
+        company.SecondaryCompanyKind_id = data['SecondaryCompanyKind_id']
+        company.OtherCompanyKind_id = data['OtherCompanyKind_id']
+        company.CompanyGroup_id = data['CompanyGroup_id']
+        company.CompanyMobile = data['CompanyMobile']
+        company.CompanyFax = data['CompanyFax']
+        company.ContactEntityFax = data['ContactEntityFax']
+        company.NSD_FromDate = data['NSD_FromDate']
+        company.NSD_ToDate = data['NSD_ToDate']
+        company.ImportedFromNSD = data['ImportedFromNSD']
+        company.ImportedDate = data['ImportedDate']
+        company.ExportedDate = data['ExportedDate']
+        company.ExportedToNogtr = data['ExportedToNogtr']
+        company.ModifiedBy = user.CraneUser_id
+        company.ModifiedOn = datetime.datetime.now()
+        company.PreviousLegalName = data['PreviousLegalName']
+        company.RecordChangeStamp = data['RecordChangeStamp']
+        company.update()
+        return make_response(jsonify({'message':'Company updated successfuly.'}),200)
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)
 
 
 # get single company object
@@ -154,8 +154,8 @@ def get_company(Company_id):
     try:
         company = Company.query.get(Company_id)
         return make_response(jsonify(company.serialise()),200)
-    except:
-       return make_response(jsonify({'message':'Something went wrong'}),500)
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)
 
 
 @company_bp.route('/apiv1/get_companies',methods=['GET'])
@@ -164,8 +164,8 @@ def get_all_companies():
     try:
         company = [z.serialise() for z in Company.query.all()]
         return make_response(jsonify(company),200)
-    except:
-       return make_response(jsonify({'message':'Something went wrong'}),500)
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)
 
 
 @company_bp.route('/apiv1/delete_company/<int:Company_id>',methods=['DELETE'])
@@ -175,5 +175,5 @@ def delete_company(Company_id):
         company = Company.query.get(Company_id)
         company.delete()
         return make_response(jsonify({'message':'Company successfully deleted.'}),200)
-    except:
-       return make_response(jsonify({'message':'Something went wrong'}),500) 
+    except Exception as error:
+        return make_response(jsonify({'message':error}),500)
