@@ -32,7 +32,9 @@ def login():
             return make_response(jsonify({"message":"Account doesn't exist"}),400)
         # test if password was edited before end of 48 hours from account creation date
         current_date = datetime.now()
-        account_creation_date = datetime.strptime(user.DateCreated, '%Y-%m-%d %H:%M:%S.%f')
+        account_creation_date = user.DateCreated
+        if abs((current_date - account_creation_date).days) > 2 and user.UserPassword is None:
+            return make_response(jsonify({"message":"Please contact the administrator for a password update"}),401)
         if not user:
             return make_response(jsonify({"message":"Account doesn't exist"}),400)
         if not user.is_password_valid(password):
