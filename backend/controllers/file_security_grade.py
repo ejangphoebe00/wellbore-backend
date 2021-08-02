@@ -7,6 +7,7 @@ from flask_jwt_extended import (
     )
 # reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
 import datetime
+import traceback
 
 
 file_security_grade_bp = Blueprint('file_security_grade_bp', __name__)
@@ -23,8 +24,8 @@ def add_file_security_grade():
                     )
         new_file_security_grade.save()
         return make_response(jsonify({'message':'File Security Grade added successfuly.'}),201)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 @file_security_grade_bp.route('/apiv1/edit_file_security_grade/<int:FileSecurityGrade_id>',methods=['PUT'])
@@ -42,8 +43,8 @@ def edit_file_security_grade(FileSecurityGrade_id):
         file_security_grade.ModifiedBy = user.CraneUser_id
         file_security_grade.update()
         return make_response(jsonify({'message':'File Security Grade updated successfuly.'}),200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 # get single file_security_grade object
@@ -53,8 +54,8 @@ def get_file_security_grade(FileSecurityGrade_id):
     try:
         file_security_grade = FileSecurityGrade.query.get(FileSecurityGrade_id)
         return make_response(jsonify(file_security_grade.serialise()),200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 @file_security_grade_bp.route('/apiv1/get_file_security_grades',methods=['GET'])
@@ -63,8 +64,8 @@ def get_all_file_security_grades():
     try:
         file_security_grades = [z.serialise() for z in FileSecurityGrade.query.all()]
         return make_response(jsonify(file_security_grades),200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 @file_security_grade_bp.route('/apiv1/delete_file_security_grade/<int:FileSecurityGrade_id>',methods=['DELETE'])
@@ -74,5 +75,5 @@ def delete_file_security_grade(FileSecurityGrade_id):
         file_security_grade = FileSecurityGrade.query.get(FileSecurityGrade_id)
         file_security_grade.delete()
         return make_response(jsonify({'message':'File Security Grade successfully deleted.'}),200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)

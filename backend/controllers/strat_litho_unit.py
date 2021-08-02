@@ -7,6 +7,7 @@ from flask_jwt_extended import (
     )
 # reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
 import datetime
+import traceback
 
 
 strat_litho_unit_bp = Blueprint('strat_litho_unit_bp', __name__)
@@ -37,8 +38,8 @@ def add_strat_litho_unit():
                     )
         new_strat_litho_unit.save()
         return make_response(jsonify({'message':'Strat Litho Unit added successfuly.'}),201)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 @strat_litho_unit_bp.route('/apiv1/edit_strat_litho_unit/<int:StratLitho_id>',methods=['PUT'])
@@ -66,8 +67,8 @@ def edit_strat_litho_unit(StratLitho_id):
         strat_litho_unit.ModifiedBy = user.CraneUser_id
         strat_litho_unit.update()
         return make_response(jsonify({'message':'Strat Litho Unit updated successfuly.'}),200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 # get single strat_litho_unit object
@@ -77,8 +78,8 @@ def get_strat_litho_unit(StratLitho_id):
     try:
         strat_litho_unit = StratLithoUnit.query.get(StratLitho_id)
         return make_response(jsonify(strat_litho_unit.serialise()),200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 @strat_litho_unit_bp.route('/apiv1/get_strat_litho_units',methods=['GET'])
@@ -87,8 +88,8 @@ def get_all_strat_litho_units():
     try:
         strat_litho_units = [z.serialise() for z in StratLithoUnit.query.all()]
         return make_response(jsonify(strat_litho_units),200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 @strat_litho_unit_bp.route('/apiv1/delete_strat_litho_unit/<int:StratLitho_id>',methods=['DELETE'])
@@ -98,5 +99,5 @@ def delete_strat_litho_unit(StratLitho_id):
         strat_litho_unit = StratLithoUnit.query.get(StratLitho_id)
         strat_litho_unit.delete()
         return make_response(jsonify({'message':'Strat Litho Unit successfully deleted.'}),200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)

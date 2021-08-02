@@ -7,6 +7,7 @@ from flask_jwt_extended import (
     )
 # reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
 import datetime
+import traceback
 
 
 company_bp = Blueprint('company_bp', __name__)
@@ -75,8 +76,8 @@ def add_company():
                     )
         new_company.save()
         return make_response(jsonify({'message':'Company added successfuly.'}),201)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 @company_bp.route('/apiv1/edit_company/<int:Company_id>',methods=['PUT'])
@@ -143,8 +144,8 @@ def edit_company(Company_id):
         company.RecordChangeStamp = data['RecordChangeStamp']
         company.update()
         return make_response(jsonify({'message':'Company updated successfuly.'}),200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 # get single company object
@@ -154,8 +155,8 @@ def get_company(Company_id):
     try:
         company = Company.query.get(Company_id)
         return make_response(jsonify(company.serialise()),200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 @company_bp.route('/apiv1/get_companies',methods=['GET'])
@@ -164,8 +165,8 @@ def get_all_companies():
     try:
         company = [z.serialise() for z in Company.query.all()]
         return make_response(jsonify(company),200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 @company_bp.route('/apiv1/delete_company/<int:Company_id>',methods=['DELETE'])
@@ -175,5 +176,5 @@ def delete_company(Company_id):
         company = Company.query.get(Company_id)
         company.delete()
         return make_response(jsonify({'message':'Company successfully deleted.'}),200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)

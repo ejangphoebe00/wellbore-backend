@@ -7,6 +7,7 @@ from flask_jwt_extended import (
     )
 # reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
 import datetime
+import traceback
 
 
 file_format_bp = Blueprint('file_format_bp', __name__)
@@ -23,8 +24,8 @@ def add_file_format():
                     )
         new_file_format.save()
         return make_response(jsonify({'message':'File Format added successfuly.'}),201)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 @file_format_bp.route('/apiv1/edit_file_format/<int:FileFormat_id>',methods=['PUT'])
@@ -42,8 +43,8 @@ def edit_file_format(FileFormat_id):
         file_format.ModifiedBy = user.CraneUser_id
         file_format.update()
         return make_response(jsonify({'message':'File Format updated successfuly.'}),200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 # get single file_format object
@@ -53,8 +54,8 @@ def get_file_format(FileFormat_id):
     try:
         file_format = FileFormat.query.get(FileFormat_id)
         return make_response(jsonify(file_format.serialise()),200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 @file_format_bp.route('/apiv1/get_file_formats',methods=['GET'])
@@ -63,8 +64,8 @@ def get_all_file_formats():
     try:
         file_formats = [z.serialise() for z in FileFormat.query.all()]
         return make_response(jsonify(file_formats),200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 @file_format_bp.route('/apiv1/delete_file_format/<int:FileFormat_id>',methods=['DELETE'])
@@ -74,5 +75,5 @@ def delete_file_format(FileFormat_id):
         file_format = FileFormat.query.get(FileFormat_id)
         file_format.delete()
         return make_response(jsonify({'message':'File Format successfully deleted.'}),200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)

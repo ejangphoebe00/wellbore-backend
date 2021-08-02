@@ -12,10 +12,10 @@ from flask_jwt_extended import (
 # reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
 from datetime import datetime, timedelta
 from .helper_functions import send_security_alert_email
+import traceback
 
 
 auth_bp = Blueprint('auth_bp', __name__)
-
 
 # user login
 @auth_bp.route('/user/login', methods=['POST'])
@@ -28,6 +28,11 @@ def login():
         
         access_token = create_access_token(identity = data['UserEmailAddress'])
         refresh_token = create_refresh_token(identity = data['UserEmailAddress'])
+        if not user:
+            return make_response(jsonify({"message":"Account doesn't exist"}),400)
+        # test if password was edited before end of 48 hours from account creation date
+        current_date = datetime.now()
+        account_creation_date = datetime.strptime(user.DateCreated, '%Y-%m-%d %H:%M:%S.%f')
         if not user:
             return make_response(jsonify({"message":"Account doesn't exist"}),400)
         if not user.is_password_valid(password):
@@ -67,8 +72,8 @@ def login():
                         'refresh_token':refresh_token,'message':'Login Successful'
                     })
         return make_response(resp,200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 # User registration
@@ -126,8 +131,8 @@ def register_user():
 
         resp = jsonify({'message': 'account created successfully'})
         return make_response(resp, 201)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 @auth_bp.route('/user/get_users', methods=['GET'])
@@ -136,8 +141,8 @@ def get_all_users():
     try:
         users = [z.serialise() for z in CraneUser.query.filter(CraneUser.DeactivateAccount == 0)]
         return make_response(jsonify(users),200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 # deactivate account
@@ -149,8 +154,8 @@ def deactivate_account(CraneUser_id):
         user.DeactivateAccount = 1
         user.update()
         return make_response(jsonify({'message':'Account successfully Deactivated'}),200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 # Edit profile
@@ -207,8 +212,8 @@ def edit_profile(CraneUser_id):
 
         resp = jsonify({'message': 'Details updated successfully'})
         return make_response(resp, 200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 # user logout
@@ -231,8 +236,8 @@ def logout(CraneUser_id):
         login_history.LogLogoutDate = datetime.now()
         login_history.update()
         return make_response(jsonify({'message': 'Logout successful'}),200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 @auth_bp.route('/user/token-refresh', methods=['POST'])
@@ -249,8 +254,9 @@ def get_users_logs():
     try:
         logs = [z.serialise() for z in CraneUserLoginHistory.query.all()]
         return make_response(jsonify(logs),200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
+
 
 # get logs per user
 @auth_bp.route('/user/get_user_logs/<int:CraneUser_id>', methods=['GET'])
@@ -259,6 +265,6 @@ def get_user_logs(CraneUser_id):
     try:
         logs = [z.serialise() for z in CraneUserLoginHistory.query.filter(CraneUserLoginHistory.HistLogUser_id == CraneUser_id)]
         return make_response(jsonify(logs),200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
        

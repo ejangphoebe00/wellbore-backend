@@ -8,6 +8,7 @@ from flask_jwt_extended import (
     )
 # reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
 import datetime
+import traceback
 
 
 welbore_core_bp = Blueprint('welbore_core_bp', __name__)
@@ -55,8 +56,8 @@ def add_welbore_core():
                     )
         new_welbore_core.save()
         return make_response(jsonify({'message':'Welbore Core added successfuly.'}),201)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 @welbore_core_bp.route('/apiv1/edit_welbore_core/<int:WellboreCore_id>',methods=['PUT'])
@@ -101,8 +102,8 @@ def edit_welbore_core(WellboreCore_id):
         welbore_core.ModifiedBy = user.CraneUser_id
         welbore_core.update()
         return make_response(jsonify({'message':'Welbore Core updated successfuly.'}),200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 # get single welbore_core object
@@ -112,8 +113,8 @@ def get_welbore_core(WellboreCore_id):
     try:
         welbore_core = WellboreCore.query.get(WellboreCore_id)
         return make_response(jsonify(welbore_core.serialise()),200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 @welbore_core_bp.route('/apiv1/get_welbore_cores',methods=['GET'])
@@ -122,8 +123,8 @@ def get_all_welbore_cores():
     try:
         welbore_cores = [z.serialise() for z in WellboreCore.query.all()]
         return make_response(jsonify(welbore_cores),200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 @welbore_core_bp.route('/apiv1/delete_welbore_core/<int:WellboreCore_id>',methods=['DELETE'])
@@ -133,5 +134,5 @@ def delete_welbore_core(WellboreCore_id):
         welbore_core = WellboreCore.query.get(WellboreCore_id)
         welbore_core.delete()
         return make_response(jsonify({'message':'Welbore Core successfully deleted.'}),200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)

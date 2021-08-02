@@ -7,6 +7,7 @@ from flask_jwt_extended import (
     )
 # reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
 import datetime
+import traceback
 
 
 core_catalog_bp = Blueprint('core_catalog_bp', __name__)
@@ -45,8 +46,8 @@ def add_core_catalog():
                     )
         new_core_catalog.save()
         return make_response(jsonify({'message':'Core Catalog added successfuly.'}),201)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 @core_catalog_bp.route('/apiv1/edit_core_catalog/<int:CoreCatalog_id>',methods=['PUT'])
@@ -81,8 +82,8 @@ def edit_core_catalog(CoreCatalog_id):
         core_catalog.ModifiedBy = user.CraneUser_id
         core_catalog.update()
         return make_response(jsonify({'message':'Core Catalog updated successfuly.'}),200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 # get single core_catalog object
@@ -92,8 +93,8 @@ def get_core_catalog(CoreCatalog_id):
     try:
         core_catalog = CoreCatalog.query.get(CoreCatalog_id)
         return make_response(jsonify(core_catalog.serialise()),200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 @core_catalog_bp.route('/apiv1/get_core_catalogs',methods=['GET'])
@@ -102,8 +103,8 @@ def get_all_core_catalogs():
     try:
         core_catalogs = [z.serialise() for z in CoreCatalog.query.all()]
         return make_response(jsonify(core_catalogs),200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 @core_catalog_bp.route('/apiv1/delete_core_catalog/<int:CoreCatalog_id>',methods=['DELETE'])
@@ -113,5 +114,5 @@ def delete_core_catalog(CoreCatalog_id):
         core_catalog = CoreCatalog.query.get(CoreCatalog_id)
         core_catalog.delete()
         return make_response(jsonify({'message':'Core Catalog successfully deleted.'}),200)
-    except Exception as error:
-        return make_response(jsonify({'message':error}),500)
+    except:
+        return make_response(str(traceback.format_exc()),500)
