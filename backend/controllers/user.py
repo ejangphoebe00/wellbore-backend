@@ -200,9 +200,9 @@ def edit_profile(CraneUser_id):
             user.ActivationChangeComment = data['ActivationChangeComment']
             user.ActivationChangeDate = datetime.now()        
             user.ModifiedBy = loggedin_user.CraneUser_id
-            if user.CraneUser_id == loggedin_user.CraneUser_id:
-                user.UserPassword = CraneUser.hash_password(data.get('UserPassword')) if data.get('UserPassword') else None
-                user.PasswordChangeDate = datetime.now() if data.get('UserPassword') else user.PasswordChangeDate
+            # if user.CraneUser_id == loggedin_user.CraneUser_id:
+            user.UserPassword = CraneUser.hash_password(data.get('UserPassword')) if data.get('UserPassword') else None
+            user.PasswordChangeDate = datetime.now() if data.get('UserPassword') else user.PasswordChangeDate
         else:
             user.FirstName = data['FirstName']
             user.MiddleName = data['MiddleName']
