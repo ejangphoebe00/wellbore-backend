@@ -2,13 +2,13 @@ from .. import db
 from .CraneUser import CraneUser
 
 class FileFormat(db.Model):
-    __tablename__ = 'crane.rt_FileFormat'
+    __tablename__ = 'crane_rt_FileFormat'
     FileFormat_id = db.Column(db.Integer,primary_key=True)
     FileFormatName = db.Column(db.NVARCHAR(255))
     SortOrder = db.Column(db.Integer)    
     Comments = db.Column(db.NVARCHAR(500))
     ModifiedOn = db.Column(db.DateTime)
-    ModifiedBy = db.Column(db.Integer, db.ForeignKey('crane.t_CraneUser.CraneUser_id'),nullable=True)
+    ModifiedBy = db.Column(db.Integer, db.ForeignKey('crane_t_CraneUser.CraneUser_id'),nullable=True)
     
     def __repr__(self):
         return '<FileFormat {}>'.format(self.FileFormatName)

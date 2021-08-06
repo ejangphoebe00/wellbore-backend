@@ -38,8 +38,9 @@ def create_app():
 
     with app.app_context():
         # import models
-        from .models import (Token,CraneWebSecurityLevel, CraneUser, CatalogSecurityFlag,
-                                CraneUserLoginHistory, CoreType, FileFormat, FileSecurityGrade, 
+        from .models import (Token,CraneWebSecurityLevel, CraneUser, CraneUserLoginHistory,
+                                CatalogSecurityFlag,
+                                CoreType, FileFormat, FileSecurityGrade, 
                                 Company, Wellbore,
                                 StratLithoUnit, WellboreCore, CoreCatalog
                                 )

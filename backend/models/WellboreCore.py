@@ -7,12 +7,12 @@ from .Company import Company
 from .StratLithoUnit import StratLithoUnit
 
 class WellboreCore(db.Model):
-    __tablename__ = 'crane.t_WellboreCore'
+    __tablename__ = 'crane_t_WellboreCore'
     WellboreCore_id = db.Column(db.Integer,primary_key=True)
-    Wellbore_id = db.Column(db.Integer, db.ForeignKey('crane.t_Wellbore.Wellbore_id'),nullable=False)
+    Wellbore_id = db.Column(db.Integer, db.ForeignKey('crane_t_Wellbore.Wellbore_id'),nullable=False)
     CoreNumber = db.Column(db.NVARCHAR(255))
     CoringDate = db.Column(db.Date)
-    WBCoringContractor_id = db.Column(db.Integer, db.ForeignKey('crane.t_Company.Company_id'),nullable=True)
+    WBCoringContractor_id = db.Column(db.Integer, db.ForeignKey('crane_t_Company.Company_id'),nullable=True)
     CoreTopMDRT = db.Column(db.DECIMAL)
     CoreBtmMDRT = db.Column(db.DECIMAL)
     CoreTopTVD = db.Column(db.DECIMAL)
@@ -21,17 +21,17 @@ class WellboreCore(db.Model):
     CutLengthTVD = db.Column(db.String(100))
     RecoveredLength = db.Column(db.DECIMAL)
     CoreRecovery = db.Column(db.String(100))
-    CoreTopStratLitho_id = db.Column(db.Integer, db.ForeignKey('crane.t_StratLithoUnit.StratLitho_id'),nullable=True)
-    CoreBottomStratLitho_id = db.Column(db.Integer, db.ForeignKey('crane.t_StratLithoUnit.StratLitho_id'),nullable=True)
+    CoreTopStratLitho_id = db.Column(db.Integer, db.ForeignKey('crane_t_StratLithoUnit.StratLitho_id'),nullable=True)
+    CoreBottomStratLitho_id = db.Column(db.Integer, db.ForeignKey('crane_t_StratLithoUnit.StratLitho_id'),nullable=True)
     CorePictureSoftcopyPath = db.Column(db.TEXT)
     CorePictureHyperlink = db.Column(db.TEXT)
     PictureUploadDate = db.Column(db.DateTime)
     CoreReportSoftcopyPath = db.Column(db.TEXT)
     CoreReportHyperlink = db.Column(db.TEXT)
     ReportUploadDate = db.Column(db.DateTime)
-    ReportFormat_id = db.Column(db.Integer, db.ForeignKey('crane.rt_FileFormat.FileFormat_id'),nullable=True)
+    ReportFormat_id = db.Column(db.Integer, db.ForeignKey('crane_rt_FileFormat.FileFormat_id'),nullable=True)
     ReportFileSize = db.Column(db.DECIMAL)
-    CoreReportSecurityGrade_id = db.Column(db.Integer, db.ForeignKey('crane.rt_FileSecurityGrade.FileSecurityGrade_id'),nullable=True)
+    CoreReportSecurityGrade_id = db.Column(db.Integer, db.ForeignKey('crane_rt_FileSecurityGrade.FileSecurityGrade_id'),nullable=True)
     ReportOpenDueDate = db.Column(db.DateTime)
     ReportDocumentTitle = db.Column(db.NVARCHAR(100))
     ReportReceivedDate = db.Column(db.DateTime)
@@ -39,10 +39,10 @@ class WellboreCore(db.Model):
     ReportDocumentName = db.Column(db.NVARCHAR(100))
     WellboreCoreName = db.Column(db.NVARCHAR(100))
     Comments = db.Column(db.NVARCHAR(500))
-    CreatedBy_id = db.Column(db.Integer, db.ForeignKey('crane.t_CraneUser.CraneUser_id'),nullable=False)
+    CreatedBy_id = db.Column(db.Integer, db.ForeignKey('crane_t_CraneUser.CraneUser_id'),nullable=False)
     DateCreated = db.Column(db.DateTime)
     ModifiedOn = db.Column(db.DateTime)
-    ModifiedBy = db.Column(db.Integer, db.ForeignKey('crane.t_CraneUser.CraneUser_id'),nullable=True)
+    ModifiedBy = db.Column(db.Integer, db.ForeignKey('crane_t_CraneUser.CraneUser_id'),nullable=True)
     
 
     def serialise(self):

@@ -1,7 +1,7 @@
 from .. import db
 
 class CraneWebSecurityLevel(db.Model):
-    __tablename__ = "crane.rt_CraneWebSecurityLevel"
+    __tablename__ = "crane_rt_CraneWebSecurityLevel"
     WebSecurityLevel_id = db.Column(db.Integer,primary_key=True)
     WebSecurityLevelName = db.Column(db.NVARCHAR(255))
     WebSecurityLevelDescription = db.Column(db.NVARCHAR(255))
@@ -9,6 +9,9 @@ class CraneWebSecurityLevel(db.Model):
     Comments = db.Column(db.NVARCHAR(500))
     ModifiedOn = db.Column(db.DateTime)
     ModifiedBy = db.Column(db.NVARCHAR(255))
+
+    # relationships
+    users = db.relationship('crane_t_CraneUser', backref='crane_rt_CraneWebSecurityLevel', lazy=True)
     
     def __repr__(self):
         return '<CraneWebSecurityLevel {}>'.format(self.WebSecurityLevelName)

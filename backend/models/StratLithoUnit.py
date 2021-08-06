@@ -2,7 +2,7 @@ from .. import db
 from .CraneUser import CraneUser
 
 class StratLithoUnit(db.Model):
-    __tablename__ = 'crane.t_StratLithoUnit'
+    __tablename__ = 'crane_t_StratLithoUnit'
     StratLitho_id = db.Column(db.Integer,primary_key=True)
     PAUID = db.Column(db.Integer)
     StratLithoName = db.Column(db.NVARCHAR(100))
@@ -17,10 +17,10 @@ class StratLithoUnit(db.Model):
     MapPortalLithoStratMapLink = db.Column(db.TEXT)
     LithoStratFactsiteUrl = db.Column(db.TEXT)
     Comments = db.Column(db.NVARCHAR(500))
-    CreatedBy_id = db.Column(db.Integer, db.ForeignKey('crane.t_CraneUser.CraneUser_id'),nullable=False)
+    CreatedBy_id = db.Column(db.Integer, db.ForeignKey('crane_t_CraneUser.CraneUser_id'),nullable=False)
     DateCreated = db.Column(db.DateTime)
     ModifiedOn = db.Column(db.DateTime)
-    ModifiedBy = db.Column(db.Integer, db.ForeignKey('crane.t_CraneUser.CraneUser_id'),nullable=True)
+    ModifiedBy = db.Column(db.Integer, db.ForeignKey('crane_t_CraneUser.CraneUser_id'),nullable=True)
     
 
     def serialise(self):

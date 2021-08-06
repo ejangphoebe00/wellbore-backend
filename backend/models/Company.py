@@ -2,7 +2,7 @@ from .. import db
 from .CraneUser import CraneUser
 
 class Company(db.Model):
-    __tablename__ = 'crane.t_Company'
+    __tablename__ = 'crane_t_Company'
     Company_id = db.Column(db.Integer,primary_key=True)
     PAUID = db.Column(db.NVARCHAR(255),nullable=False)
     CompanyLongName = db.Column(db.NVARCHAR(255),nullable=False)
@@ -55,11 +55,11 @@ class Company(db.Model):
     ImportedDate = db.Column(db.DateTime)
     ExportedDate = db.Column(db.DateTime)
     ExportedToNogtr = db.Column(db.SMALLINT) #should be between 0 and 1
-    CreatedBy = db.Column(db.Integer, db.ForeignKey('crane.t_CraneUser.CraneUser_id'),nullable=False)
+    CreatedBy = db.Column(db.Integer, db.ForeignKey('crane_t_CraneUser.CraneUser_id'),nullable=False)
     DateCreated = db.Column(db.DateTime)
     ModifiedOn = db.Column(db.DateTime)
-    ModifiedBy = db.Column(db.Integer, db.ForeignKey('crane.t_CraneUser.CraneUser_id'),nullable=True)
-    RecordChangeStamp = db.Column(db.VARBINARY('MAX'))
+    ModifiedBy = db.Column(db.Integer, db.ForeignKey('crane_t_CraneUser.CraneUser_id'),nullable=True)
+    RecordChangeStamp = db.Column(db.NVARCHAR(100))
     PreviousLegalName = db.Column(db.NVARCHAR(100))
     
     def __repr__(self):

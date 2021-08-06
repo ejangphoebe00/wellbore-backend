@@ -3,7 +3,7 @@ from .CraneUser import CraneUser
 from .Company import Company
 
 class Wellbore(db.Model):
-    __tablename__ = 'crane.t_Wellbore'
+    __tablename__ = 'crane_t_Wellbore'
     Wellbore_id = db.Column(db.Integer,primary_key=True)
     PAUID = db.Column(db.Integer)
     WellboreOfficialName = db.Column(db.NVARCHAR(255),nullable=True)
@@ -16,13 +16,13 @@ class Wellbore(db.Model):
     WellborePurpose_id = db.Column(db.Integer)
     PurposeChangeDate = db.Column(db.DateTime)
     Well_id = db.Column(db.Integer)
-    Prospect_id = db.Column(db.Integer, db.ForeignKey('crane.t_Company.Company_id'),nullable=True)
+    Prospect_id = db.Column(db.Integer, db.ForeignKey('crane_t_Company.Company_id'),nullable=True)
     Discovery_id = db.Column(db.Integer)
     WellboreContent_id = db.Column(db.Integer)
     WellboreStatus_id = db.Column(db.Integer)
     WellboreResponsibleLicence_id = db.Column(db.Integer)
-    LicenseOperatorCompany_id = db.Column(db.Integer, db.ForeignKey('crane.t_Company.Company_id'),nullable=True)
-    DrillingContractorCompany_id = db.Column(db.Integer, db.ForeignKey('crane.t_Company.Company_id'),nullable=True)
+    LicenseOperatorCompany_id = db.Column(db.Integer, db.ForeignKey('crane_t_Company.Company_id'),nullable=True)
+    DrillingContractorCompany_id = db.Column(db.Integer, db.ForeignKey('crane_t_Company.Company_id'),nullable=True)
     WellBoreRigName = db.Column(db.NVARCHAR(255))
     Basin_id = db.Column(db.Integer)
     FormerExplAreaName = db.Column(db.NVARCHAR(255))
@@ -33,16 +33,16 @@ class Wellbore(db.Model):
     TD_TVD = db.Column(db.Float)
     TD_Date = db.Column(db.Date)
     # WellboreCore_id = db.Column(db.Integer)
-    CoreContractor_id = db.Column(db.Integer, db.ForeignKey('crane.t_Company.Company_id'),nullable=True)
+    CoreContractor_id = db.Column(db.Integer, db.ForeignKey('crane_t_Company.Company_id'),nullable=True)
     RCI_Taken_id = db.Column(db.Integer)
     MDT_Done_id = db.Column(db.Integer)
     FET_Done_id = db.Column(db.Integer)
     WFTContractor = db.Column(db.Integer)
     DST_Done_id = db.Column(db.Integer)
     ManifoldFlowTested_id = db.Column(db.Integer)
-    DST_Contractor_id = db.Column(db.Integer, db.ForeignKey('crane.t_Company.Company_id'),nullable=True)
+    DST_Contractor_id = db.Column(db.Integer, db.ForeignKey('crane_t_Company.Company_id'),nullable=True)
     HasPetrophysicalLogs_id = db.Column(db.Integer)
-    PetrophysicalContractor_id = db.Column(db.Integer, db.ForeignKey('crane.t_Company.Company_id'),nullable=True)
+    PetrophysicalContractor_id = db.Column(db.Integer, db.ForeignKey('crane_t_Company.Company_id'),nullable=True)
     TopBasementMD = db.Column(db.Float)
     TopBasementTVD = db.Column(db.Float)
     WellboreTestStatus = db.Column(db.TEXT)
@@ -60,10 +60,10 @@ class Wellbore(db.Model):
     WellboreMapHyperlink = db.Column(db.TEXT)
     MapPortalWellboreMapLink = db.Column(db.TEXT)
     WellboreFactsiteUrl = db.Column(db.TEXT)
-    CreatedBy_id = db.Column(db.Integer, db.ForeignKey('crane.t_CraneUser.CraneUser_id'),nullable=False)
+    CreatedBy_id = db.Column(db.Integer, db.ForeignKey('crane_t_CraneUser.CraneUser_id'),nullable=False)
     DateCreated = db.Column(db.DateTime)
     ModifiedOn = db.Column(db.DateTime)
-    ModifiedBy = db.Column(db.Integer, db.ForeignKey('crane.t_CraneUser.CraneUser_id'),nullable=True)
+    ModifiedBy = db.Column(db.Integer, db.ForeignKey('crane_t_CraneUser.CraneUser_id'),nullable=True)
     
     def serialise(self):
         '''serialize model object into json object'''

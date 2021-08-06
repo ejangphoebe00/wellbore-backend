@@ -9,7 +9,7 @@ class UserCatgoryEnum(enum.Enum):
     Staff = 'Staff'
 
 class CraneUser(db.Model):
-    __tablename__ = 'crane.t_CraneUser'
+    __tablename__ = 'crane_t_CraneUser'
     CraneUser_id = db.Column(db.Integer,primary_key=True)
     FirstName = db.Column(db.NVARCHAR(255),nullable=False)
     MiddleName = db.Column(db.NVARCHAR(255),nullable=True)
@@ -47,11 +47,14 @@ class CraneUser(db.Model):
     DateCreated = db.Column(db.DateTime,default=datetime.utcnow)
     ModifiedOn = db.Column(db.DateTime,default=datetime.utcnow,onupdate=db.func.current_timestamp())
     ModifiedBy = db.Column(db.NVARCHAR(255),nullable=True)
-    RecordChangeStamp = db.Column(db.VARBINARY('MAX'),nullable=True)
+    RecordChangeStamp = db.Column(db.NVARCHAR(100),nullable=True)
     DefaultPassword = db.Column(db.NVARCHAR(255),nullable=True)
     DefaultChangeDate = db.Column(db.DateTime,default=datetime.utcnow, onupdate=db.func.current_timestamp())
     # StoredUserPassword = db.Column(db.NVARCHAR(255),nullable=True)
     PasswordChangeDate = db.Column(db.DateTime,default=db.func.current_timestamp(),nullable=True)
+
+    # relationships
+    login_history = db.relationship('crane_t_CraneUserLoginHistory', backref='crane_t_CraneUser', lazy=True)
     
     def __repr__(self):
         return '<CraneUser {}>'.format(self.CraneUserName)

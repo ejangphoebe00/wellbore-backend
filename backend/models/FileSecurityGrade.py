@@ -2,13 +2,13 @@ from .. import db
 from .CraneUser import CraneUser
 
 class FileSecurityGrade(db.Model):
-    __tablename__ = 'crane.rt_FileSecurityGrade'
+    __tablename__ = 'crane_rt_FileSecurityGrade'
     FileSecurityGrade_id = db.Column(db.Integer,primary_key=True)
     FileSecurityGradeName = db.Column(db.NVARCHAR(255))
     SortOrder = db.Column(db.Integer)    
     Comments = db.Column(db.NVARCHAR(500))
     ModifiedOn = db.Column(db.DateTime)
-    ModifiedBy = db.Column(db.Integer, db.ForeignKey('crane.t_CraneUser.CraneUser_id'),nullable=True)
+    ModifiedBy = db.Column(db.Integer, db.ForeignKey('crane_t_CraneUser.CraneUser_id'),nullable=True)
     
     def __repr__(self):
         return '<FileSecurityGrade {}>'.format(self.FileSecurityGradeName)
