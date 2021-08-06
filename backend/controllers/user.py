@@ -2,6 +2,7 @@ from flask import Blueprint, request, make_response, jsonify
 from ..models.CraneUser import CraneUser, UserCatgoryEnum
 from ..models.Token import RevokedTokenModel
 from ..models.CraneUserLoginHistory import CraneUserLoginHistory
+from ..models.CraneWebSecurityLevel import CraneWebSecurityLevel
 from flask_jwt_extended import (
     create_access_token,
     create_refresh_token,
@@ -267,4 +268,50 @@ def get_user_logs(CraneUser_id):
         return make_response(jsonify(logs),200)
     except:
         return make_response(str(traceback.format_exc()),500)
-       
+
+
+# user helper functions
+def create_default_user_and_security_level():
+    # create default user/admin
+    users = CraneUser.query.all()
+    if not users:
+        # create default web security level
+        new_web_security_level = CraneWebSecurityLevel(
+                    WebSecurityLevelName = "sample name",
+                    WebSecurityLevelDescription = "sample description",
+                    WebSecurityLevelAbbreviation = "abc",    
+                    Comments = None,
+                )
+        new_web_security_level.save()
+
+        # create default user
+        new_user = CraneUser(
+            FirstName = 'Admin',
+            MiddleName = 'Admin',
+            Surname = "None",
+            LUID = None,
+            CraneUserName = 'Admin',
+            LoginID = None,
+            LoginIDAlias = None,
+            UserCategory = 'Admin',
+            UserCompany_id = None,
+            UserPremsUser_id = None,
+            UserStaff_id = 1,
+            OrganisationName = "Petroleum Authority of Uganda",
+            CredentialsSent = 1,
+            UserEmailAddress = "admin@gmail.com",
+            UserSecurityLevel_id = None,
+            UserWebSecurityLevel_id = 1,#should come from websecurity model as forign key
+            UserNogtrWebSecurityLevel_id = None,
+            UserPremsWebSecurityLevel_id = None,
+            UserIntranetSecurityLevel_id = None,
+            UserNsdWebSecurityLevel_id = None,
+            Comments = None,
+            OrganisationUserName = "PAU",
+            CreatedBy_id = None,
+            DeactivateAccount = 0,
+            LoginErrorCount = 0,
+            DefaultPassword = CraneUser.hash_password("admin"),
+        )
+        new_user.save()
+    return

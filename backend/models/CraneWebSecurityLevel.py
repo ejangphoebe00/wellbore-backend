@@ -11,7 +11,7 @@ class CraneWebSecurityLevel(db.Model):
     ModifiedBy = db.Column(db.NVARCHAR(255))
 
     # relationships
-    users = db.relationship('crane_t_CraneUser', backref='crane_rt_CraneWebSecurityLevel', lazy=True)
+    # users = db.relationship('crane_t_CraneUser', backref='crane_rt_CraneWebSecurityLevel', lazy=True)
     
     def __repr__(self):
         return '<CraneWebSecurityLevel {}>'.format(self.WebSecurityLevelName)

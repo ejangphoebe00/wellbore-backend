@@ -80,4 +80,8 @@ def create_app():
             token = db.session.query(Token.RevokedTokenModel.id).filter_by(jti=jti).scalar()
             return token is not None
 
+        from .controllers.user import create_default_user_and_security_level
+        # fr
+        create_default_user_and_security_level()
+
         return app

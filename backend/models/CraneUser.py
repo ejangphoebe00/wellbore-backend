@@ -54,7 +54,7 @@ class CraneUser(db.Model):
     PasswordChangeDate = db.Column(db.DateTime,default=db.func.current_timestamp(),nullable=True)
 
     # relationships
-    login_history = db.relationship('crane_t_CraneUserLoginHistory', backref='crane_t_CraneUser', lazy=True)
+    # login_history = db.relationship('crane_t_CraneUserLoginHistory', backref='crane_t_CraneUser', lazy=True)
     
     def __repr__(self):
         return '<CraneUser {}>'.format(self.CraneUserName)

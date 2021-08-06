@@ -7,8 +7,9 @@ class Config(object):
     TESTING = False
     CSRF_ENABLED = True
     SECRET_KEY = environ.get('SECRET_KEY')
-    SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_DATABASE_URI')
-    # SQLALCHEMY_DATABASE_URI = "mssql+pyodbc://sa:Boeing747@@localhost:1433/WellBoreStoreDB?driver=ODBC+Driver+17+for+SQL+Server"
+    # SQLALCHEMY_DATABASE_URI = (environ.get('SQLALCHEMY_DATABASE_URI'))
+    # SQLALCHEMY_DATABASE_URI="mssql+pyodbc://<user>:<password>@<server>/<database_name>?driver=<database_driver>"
+    SQLALCHEMY_DATABASE_URI = "mssql+pyodbc://sa:Boeing747@@localhost:1433/WellBoreStoreDB?driver=ODBC+Driver+17+for+SQL+Server"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # jwt configuarations for the user auth api
