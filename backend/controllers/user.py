@@ -277,9 +277,9 @@ def create_default_user_and_security_level():
     if not users:
         # create default web security level
         new_web_security_level = CraneWebSecurityLevel(
-                    WebSecurityLevelName = "sample name",
-                    WebSecurityLevelDescription = "sample description",
-                    WebSecurityLevelAbbreviation = "abc",    
+                    WebSecurityLevelName = "Admin",
+                    WebSecurityLevelDescription = "Administrator",
+                    WebSecurityLevelAbbreviation = "Admin",    
                     Comments = None,
                 )
         new_web_security_level.save()
