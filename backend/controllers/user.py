@@ -299,7 +299,7 @@ def create_default_user_and_security_level():
             UserStaff_id = 1,
             OrganisationName = "Petroleum Authority of Uganda",
             CredentialsSent = 1,
-            UserEmailAddress = "admin@gmail.com",
+            UserEmailAddress = "admin@pau.go.ug",
             UserSecurityLevel_id = None,
             UserWebSecurityLevel_id = 1,#should come from websecurity model as forign key
             UserNogtrWebSecurityLevel_id = None,
