@@ -147,6 +147,16 @@ def get_all_users():
         return make_response(str(traceback.format_exc()),500)
 
 
+@auth_bp.route('/user/get_user/<int:CraneUser_id>', methods=['GET'])
+@jwt_required()
+def get_user(CraneUser_id):
+    try:
+        user = CraneUser.query.get(CraneUser_id)
+        return make_response(jsonify(user.serialise()),200)
+    except:
+        return make_response(str(traceback.format_exc()),500)
+
+
 # deactivate account
 @auth_bp.route('/user/deactivate_account/<int:CraneUser_id>', methods=['PUT'])
 @jwt_required()
