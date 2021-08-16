@@ -70,7 +70,7 @@ def login():
             user_role = "Admin"
         else:
             user_role = "Staff"
-        resp = jsonify({"user_role":user_role,'access_token':access_token,
+        resp = jsonify({"CraneUser_id":user.CraneUser_id,"user_role":user_role,'access_token':access_token,
                         'refresh_token':refresh_token,'message':'Login Successful'
                     })
         return make_response(resp,200)
