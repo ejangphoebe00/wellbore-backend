@@ -213,13 +213,16 @@ def edit_profile(CraneUser_id):
             user.ActivationChangeDate = datetime.now()        
             user.ModifiedBy = loggedin_user.CraneUser_id
             # if user can't log in due to expired password
-            if data.get("DefaultPassword"):
+            if data.get("DefaultPassword") != None and data["DefaultPassword"] != user.DeafaultPassword:
                 user.DefaultPassword = CraneUser.hash_password(data['DefaultPassword'])
                 user.DateCreated = datetime.now()
             # if admin is updating their own records
             if user.CraneUser_id == loggedin_user.CraneUser_id:
                 user.UserPassword = CraneUser.hash_password(data.get('UserPassword')) if data.get('UserPassword') else None
                 user.PasswordChangeDate = datetime.now() if data.get('UserPassword') else user.PasswordChangeDate
+            else:
+                resp = jsonify({'message': 'You are not allowed to change the user password of an account that is not yours'})
+                return make_response(resp, 400)
         else:
             # user.FirstName = data['FirstName']
             # user.MiddleName = data['MiddleName']
