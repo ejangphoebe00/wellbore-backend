@@ -181,10 +181,13 @@ def edit_profile(CraneUser_id):
         else:
             data = request.form
 
+        # user whose records are going to be updated
         user = CraneUser.query.get(CraneUser_id)
+        # logged in user details
         current_user_email = get_jwt()
         loggedin_user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
-        if CraneUser_id == user.CreatedBy_id or loggedin_user.UserCategory == UserCatgoryEnum.Admin:
+        # if the logged in user is an admin
+        if loggedin_user.UserCategory == UserCatgoryEnum.Admin :
             user.FirstName = data['FirstName']
             user.MiddleName = data['MiddleName']
             user.Surname = data['Surname']
@@ -206,17 +209,21 @@ def edit_profile(CraneUser_id):
             user.UserNsdWebSecurityLevel_id = data['UserNsdWebSecurityLevel_id']
             user.Comments = data['Comments']
             user.OrganisationUserName = data['OrganisationUserName']
-            user.DefaultPassword = CraneUser.hash_password(data['DefaultPassword'])
             user.ActivationChangeComment = data['ActivationChangeComment']
             user.ActivationChangeDate = datetime.now()        
             user.ModifiedBy = loggedin_user.CraneUser_id
-            # if user.CraneUser_id == loggedin_user.CraneUser_id:
-            user.UserPassword = CraneUser.hash_password(data.get('UserPassword')) if data.get('UserPassword') else None
-            user.PasswordChangeDate = datetime.now() if data.get('UserPassword') else user.PasswordChangeDate
+            # if user can't log in due to expired password
+            if data.get("DefaultPassword"):
+                user.DefaultPassword = CraneUser.hash_password(data['DefaultPassword'])
+                user.DateCreated = datetime.now()
+            # if admin is updating their own records
+            if user.CraneUser_id == loggedin_user.CraneUser_id:
+                user.UserPassword = CraneUser.hash_password(data.get('UserPassword')) if data.get('UserPassword') else None
+                user.PasswordChangeDate = datetime.now() if data.get('UserPassword') else user.PasswordChangeDate
         else:
-            user.FirstName = data['FirstName']
-            user.MiddleName = data['MiddleName']
-            user.Surname = data['Surname']
+            # user.FirstName = data['FirstName']
+            # user.MiddleName = data['MiddleName']
+            # user.Surname = data['Surname']
             user.UserEmailAddress = data['UserEmailAddress']
             user.UserPassword = CraneUser.hash_password(data['UserPassword'])
             user.PasswordChangeDate = datetime.now()        
