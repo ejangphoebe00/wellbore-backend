@@ -18,6 +18,11 @@ def add_core_catalog():
     data = request.get_json(force=True)
     current_user_email = get_jwt()
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
+
+    # check for redundancies
+    catalog_name = CoreCatalog.query.filter_by(CoreCatalogName=data['CoreCatalogName']).first()
+    if catalog_name:
+        return make_response(jsonify({'message':'CoreCatalogName already exists.'}),409)
     try:
         new_core_catalog = CoreCatalog(
                         WellboreCore_id = data['WellboreCore_id'], # comes from welbore core
@@ -56,6 +61,11 @@ def edit_core_catalog(CoreCatalog_id):
     data = request.get_json(force=True)
     current_user_email = get_jwt()
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
+
+    # check for redundancies
+    catalog_name = CoreCatalog.query.filter_by(CoreCatalogName=data['CoreCatalogName']).first()
+    if catalog_name:
+        return make_response(jsonify({'message':'CoreCatalogName already exists.'}),409)
     try:
         core_catalog = CoreCatalog.query.get(CoreCatalog_id)
         core_catalog.WellboreCore_id = data['WellboreCore_id'] # comes from welbore core

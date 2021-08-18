@@ -16,6 +16,11 @@ file_security_grade_bp = Blueprint('file_security_grade_bp', __name__)
 @jwt_required()
 def add_file_security_grade():
     data = request.get_json(force=True)
+
+    # check for redundancies
+    grade_name = FileSecurityGrade.query.filter_by(FileSecurityGradeName=data['FileSecurityGradeName']).first()
+    if grade_name:
+        return make_response(jsonify({'message':'FileSecurityGradeName already exists.'}),409)
     try:
         new_file_security_grade = FileSecurityGrade(
                         FileSecurityGradeName = data['FileSecurityGradeName'],
@@ -34,6 +39,11 @@ def edit_file_security_grade(FileSecurityGrade_id):
     data = request.get_json(force=True)
     current_user_email = get_jwt()
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
+
+    # check for redundancies
+    grade_name = FileSecurityGrade.query.filter_by(FileSecurityGradeName=data['FileSecurityGradeName']).first()
+    if grade_name:
+        return make_response(jsonify({'message':'FileSecurityGradeName already exists.'}),409)
     try:
         file_security_grade = FileSecurityGrade.query.get(FileSecurityGrade_id)
         file_security_grade.FileSecurityGradeName = data['FileSecurityGradeName']

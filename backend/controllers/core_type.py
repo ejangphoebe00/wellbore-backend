@@ -16,6 +16,11 @@ core_type_bp = Blueprint('core_type_bp', __name__)
 @jwt_required()
 def add_core_type():
     data = request.get_json(force=True)
+
+    # check for redundancies
+    core_type = CoreType.query.filter_by(CoreTypeName=data['CoreTypeName']).first()
+    if core_type:
+        return make_response(jsonify({'message':'CoreTypeName already exists.'}),409)
     try:
         new_core_type = CoreType(
                         CoreTypeName = data['CoreTypeName'],
@@ -34,6 +39,11 @@ def edit_core_type(CoreType_id):
     data = request.get_json(force=True)
     current_user_email = get_jwt()
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
+
+    # check for redundancies
+    core_type = CoreType.query.filter_by(CoreTypeName=data['CoreTypeName']).first()
+    if core_type:
+        return make_response(jsonify({'message':'CoreTypeName already exists.'}),409)
     try:
         core_type = CoreType.query.get(CoreType_id)
         core_type.CoreTypeName = data['CoreTypeName']

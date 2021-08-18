@@ -18,6 +18,26 @@ def add_company():
     data = request.get_json(force=True)
     current_user_email = get_jwt()
     user = CraneUser.query.filter(CraneUser.UserEmailAddress==current_user_email['sub']).first()
+    # check for redundancies
+    pauid = Company.query.filter_by(PAUID=data['PAUID']).first()
+    company_name = Company.query.filter_by(CompanyLongName=data['CompanyLongName']).first()
+    company_short_name = Company.query.filter_by(CompanyShortName=data['CompanyShortName']).first()
+    registration_number = Company.query.filter_by(RegistrationNumber=data['RegistrationNumber']).first()
+    tin = Company.query.filter_by(TINNumber=data['TINNumber']).first()
+    email = Company.query.filter_by(CompanyEmail=data['CompanyEmail']).first()
+    if pauid:
+        return make_response(jsonify({'message':'PAUID already exists.'}),409)
+    if company_name:
+        return make_response(jsonify({'message':'WellboreCoreName already exists.'}),409)
+    if company_short_name:
+        return make_response(jsonify({'message':'CompanyShortName already exists.'}),409)
+    if registration_number:
+        return make_response(jsonify({'message':'RegistrationNumber already exists.'}),409)
+    if tin:
+        return make_response(jsonify({'message':'TINNumber already exists.'}),409)
+    if email:
+        return make_response(jsonify({'message':'CompanyEmail already exists.'}),409)
+        
     try:
         new_company = Company(
                         PAUID = data['PAUID'],
@@ -86,6 +106,27 @@ def edit_company(Company_id):
     data = request.get_json(force=True)
     current_user_email = get_jwt()
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
+
+    # check for redundancies
+    pauid = Company.query.filter_by(PAUID=data['PAUID']).first()
+    company_name = Company.query.filter_by(CompanyLongName=data['CompanyLongName']).first()
+    company_short_name = Company.query.filter_by(CompanyShortName=data['CompanyShortName']).first()
+    registration_number = Company.query.filter_by(RegistrationNumber=data['RegistrationNumber']).first()
+    tin = Company.query.filter_by(TINNumber=data['TINNumber']).first()
+    email = Company.query.filter_by(CompanyEmail=data['CompanyEmail']).first()
+    if pauid:
+        return make_response(jsonify({'message':'PAUID already exists.'}),409)
+    if company_name:
+        return make_response(jsonify({'message':'WellboreCoreName already exists.'}),409)
+    if company_short_name:
+        return make_response(jsonify({'message':'CompanyShortName already exists.'}),409)
+    if registration_number:
+        return make_response(jsonify({'message':'RegistrationNumber already exists.'}),409)
+    if tin:
+        return make_response(jsonify({'message':'TINNumber already exists.'}),409)
+    if email:
+        return make_response(jsonify({'message':'CompanyEmail already exists.'}),409)
+
     try:
         company = Company.query.get(Company_id)
         company.PAUID = data['PAUID']

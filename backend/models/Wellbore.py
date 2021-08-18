@@ -1,14 +1,20 @@
 from .. import db
 from .CraneUser import CraneUser
 from .Company import Company
+import enum
+
+class DevelopmentAreaEnum(enum.Enum):
+    KFDA = "King Fisher Develpoment Area"
+    TDA = "Telinga Development Area"
 
 class Wellbore(db.Model):
     __tablename__ = 'crane_t_Wellbore'
     Wellbore_id = db.Column(db.Integer,primary_key=True)
     PAUID = db.Column(db.Integer)
-    WellboreOfficialName = db.Column(db.NVARCHAR(255),nullable=True)
+    WellboreOfficialName = db.Column(db.NVARCHAR(255),nullable=True, unique=True)
     WellboreLocalName = db.Column(db.NVARCHAR(255),nullable=False)
     WellboreAliasName = db.Column(db.NVARCHAR(255),nullable=False)
+    DevelopmentAreaName = db.Column(db.Enum(DevelopmentAreaEnum), default="King Fisher Develpoment Area",nullable=False)
     WellboreSpudDate = db.Column(db.Date)
     SpudYear = db.Column(db.String(50))
     WellboreType_id = db.Column(db.Integer)

@@ -1,20 +1,21 @@
+from enum import unique
 from .. import db
 from .CraneUser import CraneUser
 
 class Company(db.Model):
     __tablename__ = 'crane_t_Company'
     Company_id = db.Column(db.Integer,primary_key=True)
-    PAUID = db.Column(db.NVARCHAR(255),nullable=False)
-    CompanyLongName = db.Column(db.NVARCHAR(255),nullable=False)
-    CompanyShortName = db.Column(db.NVARCHAR(255),nullable=True)
+    PAUID = db.Column(db.NVARCHAR(255),nullable=False, unique=True)
+    CompanyLongName = db.Column(db.NVARCHAR(255),nullable=False, unique=True)
+    CompanyShortName = db.Column(db.NVARCHAR(255),nullable=True, unique=True)
     NSD_Number = db.Column(db.NVARCHAR(255),nullable=False)
     CompanyCategory_id = db.Column(db.Integer)
     CountryOfOrigin_id = db.Column(db.Integer)
     CountryOfRegistration_id = db.Column(db.Integer)
-    RegistrationNumber = db.Column(db.NVARCHAR(255),nullable=False)
-    TINNumber = db.Column(db.NVARCHAR(255),nullable=False)
+    RegistrationNumber = db.Column(db.NVARCHAR(255),nullable=False, unique=True)
+    TINNumber = db.Column(db.NVARCHAR(255),nullable=False, unique=True)
     CompanyTelephone = db.Column(db.NVARCHAR(255), nullable=True)
-    CompanyEmail = db.Column(db.NVARCHAR(255))
+    CompanyEmail = db.Column(db.NVARCHAR(255), unique=True)
     CompanyWebsite = db.Column(db.TEXT)
     CompanyEntityType_id = db.Column(db.Integer)
     CompanyEntitySubType_id = db.Column(db.Integer)

@@ -16,6 +16,11 @@ catalog_security_flag_bp = Blueprint('catalog_security_flag_bp', __name__)
 @jwt_required()
 def add_catalog_security_flag():
     data = request.get_json(force=True)
+
+    # check for redundancies
+    flag_name = CatalogSecurityFlag.query.filter_by(CatalogSecurityFlagName=data['CatalogSecurityFlagName']).first()
+    if flag_name:
+        return make_response(jsonify({'message':'CatalogSecurityFlagName already exists.'}),409)
     try:
         new_catalog_security_flag = CatalogSecurityFlag(
                         CatalogSecurityFlagName = data['CatalogSecurityFlagName'],
@@ -34,6 +39,11 @@ def edit_catalog_security_flag(CatalogSecurityFlag_id):
     data = request.get_json(force=True)
     current_user_email = get_jwt()
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
+
+    # check for redundancies
+    flag_name = CatalogSecurityFlag.query.filter_by(CatalogSecurityFlagName=data['CatalogSecurityFlagName']).first()
+    if flag_name:
+        return make_response(jsonify({'message':'CatalogSecurityFlagName already exists.'}),409)
     try:
         catalog_security_flag = CatalogSecurityFlag.query.get(CatalogSecurityFlag_id)
         catalog_security_flag.CatalogSecurityFlagName = data['CatalogSecurityFlagName']

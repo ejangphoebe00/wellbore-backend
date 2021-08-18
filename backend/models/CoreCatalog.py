@@ -29,7 +29,7 @@ class CoreCatalog(db.Model):
     CatalogReportFormat_id = db.Column(db.Integer, db.ForeignKey('crane_rt_FileFormat.FileFormat_id'),nullable=True)
     CatalogReportFileSize = db.Column(db.DECIMAL)
     CatalogReportSecurityGrade_id = db.Column(db.Integer, db.ForeignKey('crane_rt_FileSecurityGrade.FileSecurityGrade_id'),nullable=True)
-    CoreCatalogName = db.Column(db.NVARCHAR(100))
+    CoreCatalogName = db.Column(db.NVARCHAR(100), unique=True)
     Comments = db.Column(db.NVARCHAR(500))
     CreatedBy_id = db.Column(db.Integer, db.ForeignKey('crane_t_CraneUser.CraneUser_id'),nullable=False)
     DateCreated = db.Column(db.DateTime)

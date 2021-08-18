@@ -4,7 +4,7 @@ from .CraneUser import CraneUser
 class FileFormat(db.Model):
     __tablename__ = 'crane_rt_FileFormat'
     FileFormat_id = db.Column(db.Integer,primary_key=True)
-    FileFormatName = db.Column(db.NVARCHAR(255))
+    FileFormatName = db.Column(db.NVARCHAR(255), unique=True)
     SortOrder = db.Column(db.Integer)    
     Comments = db.Column(db.NVARCHAR(500))
     ModifiedOn = db.Column(db.DateTime)

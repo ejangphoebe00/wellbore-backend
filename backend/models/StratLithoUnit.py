@@ -5,11 +5,11 @@ class StratLithoUnit(db.Model):
     __tablename__ = 'crane_t_StratLithoUnit'
     StratLitho_id = db.Column(db.Integer,primary_key=True)
     PAUID = db.Column(db.Integer)
-    StratLithoName = db.Column(db.NVARCHAR(100))
+    StratLithoName = db.Column(db.NVARCHAR(100), unique=True)
     ReserviorUnit = db.Column(db.SMALLINT) # should be 0 or 1
     LithoStratAlias = db.Column(db.NVARCHAR(100))
     IsReservoirUnit_id = db.Column(db.Integer)
-    LithoStratAge_id = db.Column(db.Integer)
+    LithoStratAge_id = db.Column(db.Integer, unique=True)
     LithoStratDescriptionSoftcopyPath = db.Column(db.TEXT)
     LithoStratDescriptionHyperlink = db.Column(db.TEXT)
     LithoStratMapSoftCopyPath = db.Column(db.TEXT)

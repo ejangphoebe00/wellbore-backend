@@ -16,6 +16,11 @@ file_format_bp = Blueprint('file_format_bp', __name__)
 @jwt_required()
 def add_file_format():
     data = request.get_json(force=True)
+
+    # check for redundancies
+    file_format = FileFormat.query.filter_by(FileFormatName=data['FileFormatName']).first()
+    if file_format:
+        return make_response(jsonify({'message':'FileFormatName already exists.'}),409)
     try:
         new_file_format = FileFormat(
                         FileFormatName = data['FileFormatName'],
@@ -34,6 +39,11 @@ def edit_file_format(FileFormat_id):
     data = request.get_json(force=True)
     current_user_email = get_jwt()
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
+
+    # check for redundancies
+    file_format = FileFormat.query.filter_by(FileFormatName=data['FileFormatName']).first()
+    if file_format:
+        return make_response(jsonify({'message':'FileFormatName already exists.'}),409)
     try:
         file_format = FileFormat.query.get(FileFormat_id)
         file_format.FileFormatName = data['FileFormatName']

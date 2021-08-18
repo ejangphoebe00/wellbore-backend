@@ -3,9 +3,9 @@ from .. import db
 class CraneWebSecurityLevel(db.Model):
     __tablename__ = "crane_rt_CraneWebSecurityLevel"
     WebSecurityLevel_id = db.Column(db.Integer,primary_key=True)
-    WebSecurityLevelName = db.Column(db.NVARCHAR(255))
+    WebSecurityLevelName = db.Column(db.NVARCHAR(255), unique=True)
     WebSecurityLevelDescription = db.Column(db.NVARCHAR(255))
-    WebSecurityLevelAbbreviation = db.Column(db.NVARCHAR(255))    
+    WebSecurityLevelAbbreviation = db.Column(db.NVARCHAR(255), unique=True)    
     Comments = db.Column(db.NVARCHAR(500))
     ModifiedOn = db.Column(db.DateTime)
     ModifiedBy = db.Column(db.NVARCHAR(255))

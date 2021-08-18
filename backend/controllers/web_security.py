@@ -16,6 +16,14 @@ web_security_level_bp = Blueprint('web_security_level_bp', __name__)
 @jwt_required()
 def add_web_security_level():
     data = request.get_json(force=True)
+
+    # check for redundancies
+    level_name = CraneWebSecurityLevel.query.filter_by(WebSecurityLevelName=data['WebSecurityLevelName']).first()
+    level_abbreviation = CraneWebSecurityLevel.query.filter_by(WebSecurityLevelAbbreviation=data['WebSecurityLevelAbbreviation']).first()
+    if level_name:
+        return make_response(jsonify({'message':'WebSecurityLevelName already exists.'}),409)
+    if level_abbreviation:
+        return make_response(jsonify({'message':'WebSecurityLevelAbbreviation already exists.'}),409)
     try:
         new_web_security_level = CraneWebSecurityLevel(
                         WebSecurityLevelName = data['WebSecurityLevelName'],
@@ -35,6 +43,14 @@ def edit_web_security_level(WebSecurityLevel_id):
     data = request.get_json(force=True)
     current_user_email = get_jwt()
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
+
+    # check for redundancies
+    level_name = CraneWebSecurityLevel.query.filter_by(WebSecurityLevelName=data['WebSecurityLevelName']).first()
+    level_abbreviation = CraneWebSecurityLevel.query.filter_by(WebSecurityLevelAbbreviation=data['WebSecurityLevelAbbreviation']).first()
+    if level_name:
+        return make_response(jsonify({'message':'WebSecurityLevelName already exists.'}),409)
+    if level_abbreviation:
+        return make_response(jsonify({'message':'WebSecurityLevelAbbreviation already exists.'}),409)
     try:
         web_security_level = CraneWebSecurityLevel.query.get(WebSecurityLevel_id)
         web_security_level.WebSecurityLevelName = data['WebSecurityLevelName']

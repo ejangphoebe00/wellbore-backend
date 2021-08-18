@@ -18,6 +18,14 @@ def add_strat_litho_unit():
     data = request.get_json(force=True)
     current_user_email = get_jwt()
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
+
+    # check for redundancies
+    litho_name = StratLithoUnit.query.filter_by(StratLithoName=data['StratLithoName']).first()
+    litho_age_id = StratLithoUnit.query.filter_by(LithoStratAge_id=data['LithoStratAge_id']).first()
+    if litho_name:
+        return make_response(jsonify({'message':'StratLithoName already exists.'}),409)
+    if litho_age_id:
+        return make_response(jsonify({'message':'LithoStratAge_id already exists.'}),409)
     try:
         new_strat_litho_unit = StratLithoUnit(
                         PAUID = data['PAUID'],
@@ -48,6 +56,14 @@ def edit_strat_litho_unit(StratLitho_id):
     data = request.get_json(force=True)
     current_user_email = get_jwt()
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
+
+    # check for redundancies
+    litho_name = StratLithoUnit.query.filter_by(StratLithoName=data['StratLithoName']).first()
+    litho_age_id = StratLithoUnit.query.filter_by(LithoStratAge_id=data['LithoStratAge_id']).first()
+    if litho_name:
+        return make_response(jsonify({'message':'StratLithoName already exists.'}),409)
+    if litho_age_id:
+        return make_response(jsonify({'message':'LithoStratAge_id already exists.'}),409)
     try:
         strat_litho_unit = StratLithoUnit.query.get(StratLitho_id)
         strat_litho_unit.PAUID = data['PAUID']

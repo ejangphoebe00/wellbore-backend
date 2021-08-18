@@ -19,6 +19,14 @@ def add_welbore_core():
     data = request.get_json(force=True)
     current_user_email = get_jwt()
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
+
+    # check for redundancies
+    core_number = WellboreCore.query.filter_by(CoreNumber=data['CoreNumber']).first()
+    core_name = WellboreCore.query.filter_by(WellboreCoreName=data['WellboreCoreName']).first()
+    if core_number:
+        return make_response(jsonify({'message':'CoreNumber already exists.'}),409)
+    if core_name:
+        return make_response(jsonify({'message':'WellboreCoreName already exists.'}),409)
     try:
         new_welbore_core = WellboreCore(
                         Wellbore_id = data['Wellbore_id'],#comes from welbore
@@ -66,6 +74,13 @@ def edit_welbore_core(WellboreCore_id):
     data = request.get_json(force=True)
     current_user_email = get_jwt()
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
+    # check for redundancies
+    core_number = WellboreCore.query.filter_by(CoreNumber=data['CoreNumber']).first()
+    core_name = WellboreCore.query.filter_by(WellboreCoreName=data['WellboreCoreName']).first()
+    if core_number:
+        return make_response(jsonify({'message':'CoreNumber already exists.'}),409)
+    if core_name:
+        return make_response(jsonify({'message':'WellboreCoreName already exists.'}),409)
     try:
         welbore_core = WellboreCore.query.get(WellboreCore_id)
         welbore_core.Wellbore_id = data['Wellbore_id']

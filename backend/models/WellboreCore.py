@@ -10,7 +10,7 @@ class WellboreCore(db.Model):
     __tablename__ = 'crane_t_WellboreCore'
     WellboreCore_id = db.Column(db.Integer,primary_key=True)
     Wellbore_id = db.Column(db.Integer, db.ForeignKey('crane_t_Wellbore.Wellbore_id'),nullable=False)
-    CoreNumber = db.Column(db.NVARCHAR(255))
+    CoreNumber = db.Column(db.NVARCHAR(255), unique=True)
     CoringDate = db.Column(db.Date)
     WBCoringContractor_id = db.Column(db.Integer, db.ForeignKey('crane_t_Company.Company_id'),nullable=True)
     CoreTopMDRT = db.Column(db.DECIMAL)
@@ -37,7 +37,7 @@ class WellboreCore(db.Model):
     ReportReceivedDate = db.Column(db.DateTime)
     ReportDocumentDate = db.Column(db.DateTime)
     ReportDocumentName = db.Column(db.NVARCHAR(100))
-    WellboreCoreName = db.Column(db.NVARCHAR(100))
+    WellboreCoreName = db.Column(db.NVARCHAR(100), unique=True)
     Comments = db.Column(db.NVARCHAR(500))
     CreatedBy_id = db.Column(db.Integer, db.ForeignKey('crane_t_CraneUser.CraneUser_id'),nullable=False)
     DateCreated = db.Column(db.DateTime)
