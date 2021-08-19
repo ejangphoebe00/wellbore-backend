@@ -1,5 +1,5 @@
 from flask import Blueprint, request, make_response, jsonify
-from ..models.Wellbore import Wellbore
+from ..models.Wellbore import Wellbore, DevelopmentAreaEnum
 from ..models.WellboreCore import WellboreCore
 from ..models.CraneUser import CraneUser, UserCatgoryEnum
 from flask_jwt_extended import (
@@ -207,3 +207,25 @@ def get_all_wellbore_cores(Wellbore_id):
         return make_response(jsonify(wellbore_cores),200)
     except:
         return make_response(str(traceback.format_exc()),500)
+
+
+# get wellbores from TDA
+@wellbore_bp.route('/apiv1/get_tda_welbores',methods=['GET'])
+@jwt_required()
+def get_TDA_welbores():
+    try:
+        wellbore_cores = [z.serialise() for z in WellboreCore.query.filter(WellboreCore.DevelopmentAreaName == DevelopmentAreaEnum.TDA)]
+        return make_response(jsonify(wellbore_cores),200)
+    except:
+        return make_response(str(traceback.format_exc()),500)
+
+
+# get wellbores from KFDA
+@wellbore_bp.route('/apiv1/get_kfda_welbores',methods=['GET'])
+@jwt_required()
+def get_KFDA_welbores():
+    try:
+        wellbore_cores = [z.serialise() for z in WellboreCore.query.filter(WellboreCore.DevelopmentAreaName == DevelopmentAreaEnum.KFDA)]
+        return make_response(jsonify(wellbore_cores),200)
+    except:
+        return make_response(str(traceback.format_exc()),500)        
