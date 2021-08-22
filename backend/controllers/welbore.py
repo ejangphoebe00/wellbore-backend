@@ -214,8 +214,8 @@ def get_all_wellbore_cores(Wellbore_id):
 @jwt_required()
 def get_TDA_welbores():
     try:
-        wellbore_cores = [z.serialise() for z in WellboreCore.query.filter(WellboreCore.DevelopmentAreaName == DevelopmentAreaEnum.TDA)]
-        return make_response(jsonify(wellbore_cores),200)
+        wellbores = [z.serialise() for z in Wellbore.query.filter(Wellbore.DevelopmentAreaName == DevelopmentAreaEnum.TDA)]
+        return make_response(jsonify(wellbores),200)
     except:
         return make_response(str(traceback.format_exc()),500)
 
@@ -225,7 +225,7 @@ def get_TDA_welbores():
 @jwt_required()
 def get_KFDA_welbores():
     try:
-        wellbore_cores = [z.serialise() for z in WellboreCore.query.filter(WellboreCore.DevelopmentAreaName == DevelopmentAreaEnum.KFDA)]
-        return make_response(jsonify(wellbore_cores),200)
+        wellbores = [z.serialise() for z in Wellbore.query.filter(Wellbore.DevelopmentAreaName == DevelopmentAreaEnum.KFDA)]
+        return make_response(jsonify(wellbores),200)
     except:
         return make_response(str(traceback.format_exc()),500)        
