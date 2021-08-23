@@ -14,7 +14,7 @@ class Wellbore(db.Model):
     WellboreOfficialName = db.Column(db.NVARCHAR(255),nullable=True, unique=True)
     WellboreLocalName = db.Column(db.NVARCHAR(255),nullable=False)
     WellboreAliasName = db.Column(db.NVARCHAR(255),nullable=False)
-    DevelopmentAreaName = db.Column(db.Enum(DevelopmentAreaEnum), default="King Fisher Develpoment Area",nullable=False)
+    DevelopmentAreaName = db.Column(db.Enum(DevelopmentAreaEnum), server_default="King Fisher Develpoment Area",nullable=False)
     WellboreSpudDate = db.Column(db.Date)
     SpudYear = db.Column(db.String(50))
     WellboreType_id = db.Column(db.Integer)
