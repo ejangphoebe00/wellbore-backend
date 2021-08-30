@@ -42,7 +42,7 @@ def edit_core_type(CoreType_id):
 
     # check for redundancies
     core_type = CoreType.query.filter_by(CoreTypeName=data['CoreTypeName']).first()
-    if core_type:
+    if CoreType_id != core_type.CoreType_id:
         return make_response(jsonify({'message':'CoreTypeName already exists.'}),409)
     try:
         core_type = CoreType.query.get(CoreType_id)

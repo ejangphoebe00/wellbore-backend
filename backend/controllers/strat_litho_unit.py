@@ -60,9 +60,9 @@ def edit_strat_litho_unit(StratLitho_id):
     # check for redundancies
     litho_name = StratLithoUnit.query.filter_by(StratLithoName=data['StratLithoName']).first()
     litho_age_id = StratLithoUnit.query.filter_by(LithoStratAge_id=data['LithoStratAge_id']).first()
-    if litho_name:
+    if StratLitho_id != litho_name.StratLitho_id:
         return make_response(jsonify({'message':'StratLithoName already exists.'}),409)
-    if litho_age_id:
+    if StratLitho_id != litho_age_id.StratLitho_id:
         return make_response(jsonify({'message':'LithoStratAge_id already exists.'}),409)
     try:
         strat_litho_unit = StratLithoUnit.query.get(StratLitho_id)

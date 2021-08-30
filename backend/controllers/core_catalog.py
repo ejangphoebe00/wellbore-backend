@@ -64,7 +64,7 @@ def edit_core_catalog(CoreCatalog_id):
 
     # check for redundancies
     catalog_name = CoreCatalog.query.filter_by(CoreCatalogName=data['CoreCatalogName']).first()
-    if catalog_name:
+    if CoreCatalog_id != catalog_name.CoreCatalog_id:
         return make_response(jsonify({'message':'CoreCatalogName already exists.'}),409)
     try:
         core_catalog = CoreCatalog.query.get(CoreCatalog_id)

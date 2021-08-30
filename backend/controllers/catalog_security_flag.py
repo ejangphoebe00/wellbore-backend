@@ -42,7 +42,7 @@ def edit_catalog_security_flag(CatalogSecurityFlag_id):
 
     # check for redundancies
     flag_name = CatalogSecurityFlag.query.filter_by(CatalogSecurityFlagName=data['CatalogSecurityFlagName']).first()
-    if flag_name:
+    if CatalogSecurityFlag_id != flag_name.CatalogSecurityFlag_id:
         return make_response(jsonify({'message':'CatalogSecurityFlagName already exists.'}),409)
     try:
         catalog_security_flag = CatalogSecurityFlag.query.get(CatalogSecurityFlag_id)

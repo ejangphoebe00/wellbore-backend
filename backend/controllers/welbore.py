@@ -98,7 +98,7 @@ def edit_wellbore(Wellbore_id):
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
     # check for redundancies
     welbore_name = Wellbore.query.filter_by(WellboreOfficialName=data['WellboreOfficialName']).first()
-    if welbore_name:
+    if Wellbore_id != welbore_name.Wellbore_id:
         return make_response(jsonify({'message':'Wellbore name already exists.'}),409)
     try:
         wellbore = Wellbore.query.get(Wellbore_id)

@@ -77,9 +77,9 @@ def edit_welbore_core(WellboreCore_id):
     # check for redundancies
     core_number = WellboreCore.query.filter_by(CoreNumber=data['CoreNumber']).first()
     core_name = WellboreCore.query.filter_by(WellboreCoreName=data['WellboreCoreName']).first()
-    if core_number:
+    if WellboreCore_id != core_number.WellboreCore_id:
         return make_response(jsonify({'message':'CoreNumber already exists.'}),409)
-    if core_name:
+    if WellboreCore_id != core_name.WellboreCore_id:
         return make_response(jsonify({'message':'WellboreCoreName already exists.'}),409)
     try:
         welbore_core = WellboreCore.query.get(WellboreCore_id)

@@ -114,17 +114,17 @@ def edit_company(Company_id):
     registration_number = Company.query.filter_by(RegistrationNumber=data['RegistrationNumber']).first()
     tin = Company.query.filter_by(TINNumber=data['TINNumber']).first()
     email = Company.query.filter_by(CompanyEmail=data['CompanyEmail']).first()
-    if pauid:
+    if Company_id != pauid.Company_id:
         return make_response(jsonify({'message':'PAUID already exists.'}),409)
-    if company_name:
+    if Company_id != company_name.Company_id:
         return make_response(jsonify({'message':'WellboreCoreName already exists.'}),409)
-    if company_short_name:
+    if Company_id != company_short_name.Company_id:
         return make_response(jsonify({'message':'CompanyShortName already exists.'}),409)
-    if registration_number:
+    if Company_id != registration_number.Company_id:
         return make_response(jsonify({'message':'RegistrationNumber already exists.'}),409)
-    if tin:
+    if Company_id != tin.Company_id:
         return make_response(jsonify({'message':'TINNumber already exists.'}),409)
-    if email:
+    if Company_id != email.Company_id:
         return make_response(jsonify({'message':'CompanyEmail already exists.'}),409)
 
     try:

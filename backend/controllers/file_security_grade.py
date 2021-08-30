@@ -42,7 +42,7 @@ def edit_file_security_grade(FileSecurityGrade_id):
 
     # check for redundancies
     grade_name = FileSecurityGrade.query.filter_by(FileSecurityGradeName=data['FileSecurityGradeName']).first()
-    if grade_name:
+    if FileSecurityGrade_id != grade_name.FileSecurityGrade_id:
         return make_response(jsonify({'message':'FileSecurityGradeName already exists.'}),409)
     try:
         file_security_grade = FileSecurityGrade.query.get(FileSecurityGrade_id)

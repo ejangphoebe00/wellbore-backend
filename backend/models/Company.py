@@ -52,10 +52,10 @@ class Company(db.Model):
     ContactEntityFax = db.Column(db.NVARCHAR(55))
     NSD_FromDate = db.Column(db.Date)
     NSD_ToDate = db.Column(db.Date)
-    ImportedFromNSD = db.Column(db.SMALLINT, db.CheckConstraint('0 <= ImportedFromNSD <= 1')) #should be between 0 and 1
+    ImportedFromNSD = db.Column(db.SMALLINT) #should be between 0 and 1
     ImportedDate = db.Column(db.DateTime)
     ExportedDate = db.Column(db.DateTime)
-    ExportedToNogtr = db.Column(db.SMALLINT, db.CheckConstraint('0 <= ExportedToNogtr <= 1')) #should be between 0 and 1
+    ExportedToNogtr = db.Column(db.SMALLINT) #should be between 0 and 1
     CreatedBy = db.Column(db.Integer, db.ForeignKey('crane_t_CraneUser.CraneUser_id'),nullable=False)
     DateCreated = db.Column(db.DateTime)
     ModifiedOn = db.Column(db.DateTime)

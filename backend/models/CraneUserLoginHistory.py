@@ -10,7 +10,7 @@ class CraneUserLoginHistory(db.Model):
     LogCompanyAuthorisedUser_id = db.Column(db.Integer)
     LogAuthorisedUserName = db.Column(db.VARCHAR(100)) 
     LoginStatus_id = db.Column(db.Integer)   
-    UserOnlineStatus = db.Column(db.SMALLINT, db.CheckConstraint('0 <= UserOnlineStatus <= 1'))  
+    UserOnlineStatus = db.Column(db.SMALLINT)  
     LogLoginDate = db.Column(db.DateTime)  
     LogLogoutDate = db.Column(db.DateTime) 
     UserLoginLogName = db.Column(db.VARCHAR(100)) 
