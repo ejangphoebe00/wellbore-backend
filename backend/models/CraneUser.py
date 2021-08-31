@@ -18,7 +18,7 @@ class CraneUser(db.Model):
     CraneUserName = db.Column(db.NVARCHAR(255),nullable=False, unique=True)
     LoginID = db.Column(db.NVARCHAR(255),nullable=True)
     LoginIDAlias = db.Column(db.NVARCHAR(255), nullable=True)
-    UserCategory = db.Column(db.Enum(UserCatgoryEnum),server_default='Staff')
+    UserCategory = db.Column(db.Enum(UserCatgoryEnum),default='Staff')
     UserCompany_id = db.Column(db.Integer)
     # UserCategory_id = db.Column(db.Integer,nullable=True)
     UserPremsUser_id = db.Column(db.Integer)
@@ -51,7 +51,7 @@ class CraneUser(db.Model):
     DefaultPassword = db.Column(db.NVARCHAR(255),nullable=True)
     DefaultChangeDate = db.Column(db.DateTime,default=datetime.utcnow, onupdate=db.func.current_timestamp())
     # StoredUserPassword = db.Column(db.NVARCHAR(255),nullable=True)
-    PasswordChangeDate = db.Column(db.DateTime,server_default=db.func.current_timestamp(),nullable=True)
+    PasswordChangeDate = db.Column(db.DateTime,default=db.func.current_timestamp(),nullable=True)
 
     # relationships
     # login_history = db.relationship('crane_t_CraneUserLoginHistory', backref='crane_t_CraneUser', lazy=True)

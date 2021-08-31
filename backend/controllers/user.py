@@ -168,6 +168,31 @@ def deactivate_account(CraneUser_id):
         return make_response(jsonify({'message':'Account successfully Deactivated'}),200)
     except:
         return make_response(str(traceback.format_exc()),500)
+      
+
+# reactivate account
+@auth_bp.route('/user/reactivate_account/<int:CraneUser_id>', methods=['PUT'])
+@jwt_required()
+def reactivate_account(CraneUser_id):
+    try:
+        user = CraneUser.query.get(CraneUser_id)
+        user.DeactivateAccount = 0
+        user.update()
+        return make_response(jsonify({'message':'Account successfully Reactivated'}),200)
+    except:
+        return make_response(str(traceback.format_exc()),500)
+
+
+# get deactivated accounts
+@auth_bp.route('/user/deactivated_accounts', methods=['GET'])
+@jwt_required()
+def reactivate_account():
+    try:
+        accounts = CraneUser.query.filter(CraneUser.DeactivateAccount==0).all()
+        accounts = [account.serialize() for account in accounts]
+        return make_response(jsonify(accounts),200)
+    except:
+        return make_response(str(traceback.format_exc()),500)
 
 
 # Edit profile
