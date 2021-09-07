@@ -186,7 +186,7 @@ def reactivate_account(CraneUser_id):
 # get deactivated accounts
 @auth_bp.route('/user/deactivated_accounts', methods=['GET'])
 @jwt_required()
-def reactivate_account():
+def get_deactivated_accounts():
     try:
         accounts = CraneUser.query.filter(CraneUser.DeactivateAccount==0).all()
         accounts = [account.serialize() for account in accounts]
