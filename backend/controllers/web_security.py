@@ -22,7 +22,7 @@ def add_web_security_level():
     level_abbreviation = CraneWebSecurityLevel.query.filter_by(WebSecurityLevelAbbreviation=data['WebSecurityLevelAbbreviation']).first()
     if level_name:
         return make_response(jsonify({'message':'WebSecurityLevelName already exists.'}),409)
-    if level_abbreviation:
+    if level_abbreviation  and level_abbreviation.WebSecurityLevelAbbreviation != None:
         return make_response(jsonify({'message':'WebSecurityLevelAbbreviation already exists.'}),409)
     try:
         new_web_security_level = CraneWebSecurityLevel(
@@ -49,8 +49,9 @@ def edit_web_security_level(WebSecurityLevel_id):
     level_abbreviation = CraneWebSecurityLevel.query.filter_by(WebSecurityLevelAbbreviation=data['WebSecurityLevelAbbreviation']).first()
     if WebSecurityLevel_id != level_name.WebSecurityLevel_id:
         return make_response(jsonify({'message':'WebSecurityLevelName already exists.'}),409)
-    if WebSecurityLevel_id != level_abbreviation.WebSecurityLevel_id:
-        return make_response(jsonify({'message':'WebSecurityLevelAbbreviation already exists.'}),409)
+    if level_abbreviation  and level_abbreviation.WebSecurityLevelAbbreviation != None:
+        if WebSecurityLevel_id != level_abbreviation.WebSecurityLevel_id:
+            return make_response(jsonify({'message':'WebSecurityLevelAbbreviation already exists.'}),409)
     try:
         web_security_level = CraneWebSecurityLevel.query.get(WebSecurityLevel_id)
         web_security_level.WebSecurityLevelName = data['WebSecurityLevelName']

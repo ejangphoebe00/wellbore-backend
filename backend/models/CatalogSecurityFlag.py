@@ -4,7 +4,7 @@ from .CraneUser import CraneUser
 class CatalogSecurityFlag(db.Model):
     __tablename__ = 'crane_rt_CatalogSecurityFlag'
     CatalogSecurityFlag_id = db.Column(db.Integer,primary_key=True)
-    CatalogSecurityFlagName = db.Column(db.NVARCHAR(255), unique=True)
+    CatalogSecurityFlagName = db.Column(db.NVARCHAR(255), unique=True, nullable=False)
     SortOrder = db.Column(db.Integer)    
     Comments = db.Column(db.NVARCHAR(500))
     ModifiedOn = db.Column(db.DateTime, default=db.func.current_timestamp(),

@@ -94,7 +94,8 @@ def register_user():
         if existing_user:
             return make_response(jsonify({'message': 'User already exists!'}), 400)
 
-        if CraneUser.query.filter(CraneUser.UserStaff_id == data['UserStaff_id']).first():
+        staff = CraneUser.query.filter(CraneUser.UserStaff_id == data['UserStaff_id']).first()
+        if staff and staff.UserStaff_id != None:
             return make_response(jsonify({'message': 'StaffID already exists!'}), 400)
 
         if CraneUser.query.filter(CraneUser.CraneUserName==data['CraneUserName']).first():
@@ -212,7 +213,18 @@ def edit_profile(CraneUser_id):
         current_user_email = get_jwt()
         loggedin_user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
         # if the logged in user is an admin
-        if loggedin_user.UserCategory == UserCatgoryEnum.Admin :
+        if loggedin_user.UserCategory == UserCatgoryEnum.Admin:
+            # check for redundancy
+            staff = CraneUser.query.filter(CraneUser.UserStaff_id == data['UserStaff_id']).first()
+            if staff and staff.UserStaff_id != None:
+                if CraneUser_id != staff.CraneUser_id:
+                    return make_response(jsonify({'message': 'StaffID already exists!'}), 400)
+
+            staff_name = CraneUser.query.filter(CraneUser.CraneUserName==data['CraneUserName']).first()
+            if staff_name:
+                if CraneUser_id != staff_name.CraneUser_id:
+                    return make_response(jsonify({'message': 'Username already exists!'}), 400)
+
             user.FirstName = data['FirstName']
             user.MiddleName = data['MiddleName']
             user.Surname = data['Surname']
@@ -249,10 +261,16 @@ def edit_profile(CraneUser_id):
                 resp = jsonify({'message': 'You are not allowed to change the user password of an account that is not yours'})
                 return make_response(resp, 400)
         else:
+            # check for redundancy
+            staff_name = CraneUser.query.filter(CraneUser.CraneUserName==data['CraneUserName']).first()
+            if staff_name:
+                if CraneUser_id != staff_name.CraneUser_id:
+                    return make_response(jsonify({'message': 'Username already exists!'}), 400)
             # user.FirstName = data['FirstName']
             # user.MiddleName = data['MiddleName']
             # user.Surname = data['Surname']
             user.UserEmailAddress = data['UserEmailAddress']
+            user.CraneUserName = data['CraneUserName']
             user.UserPassword = CraneUser.hash_password(data['UserPassword'])
             user.PasswordChangeDate = datetime.now()        
         user.update()
