@@ -190,7 +190,7 @@ def reactivate_account(CraneUser_id):
 def get_deactivated_accounts():
     try:
         accounts = CraneUser.query.filter(CraneUser.DeactivateAccount==0).all()
-        accounts = [account.serialize() for account in accounts]
+        accounts = [account.serialise() for account in accounts]
         return make_response(jsonify(accounts),200)
     except:
         return make_response(str(traceback.format_exc()),500)
