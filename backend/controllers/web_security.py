@@ -47,9 +47,10 @@ def edit_web_security_level(WebSecurityLevel_id):
     # check for redundancies
     level_name = CraneWebSecurityLevel.query.filter_by(WebSecurityLevelName=data['WebSecurityLevelName']).first()
     level_abbreviation = CraneWebSecurityLevel.query.filter_by(WebSecurityLevelAbbreviation=data['WebSecurityLevelAbbreviation']).first()
-    if WebSecurityLevel_id != level_name.WebSecurityLevel_id:
-        return make_response(jsonify({'message':'WebSecurityLevelName already exists.'}),409)
-    if level_abbreviation  and level_abbreviation.WebSecurityLevelAbbreviation != None:
+    if level_name:
+        if WebSecurityLevel_id != level_name.WebSecurityLevel_id:
+            return make_response(jsonify({'message':'WebSecurityLevelName already exists.'}),409)
+    if level_abbreviation and level_abbreviation.WebSecurityLevelAbbreviation != None:
         if WebSecurityLevel_id != level_abbreviation.WebSecurityLevel_id:
             return make_response(jsonify({'message':'WebSecurityLevelAbbreviation already exists.'}),409)
     try:

@@ -1,3 +1,4 @@
+from typing_extensions import Literal
 from flask import Blueprint, request, make_response, jsonify
 from ..models.StratLithoUnit import StratLithoUnit
 from ..models.CraneUser import CraneUser, UserCatgoryEnum
@@ -56,8 +57,9 @@ def edit_strat_litho_unit(StratLitho_id):
 
     # check for redundancies
     litho_name = StratLithoUnit.query.filter_by(StratLithoName=data['StratLithoName']).first()
-    if StratLitho_id != litho_name.StratLitho_id:
-        return make_response(jsonify({'message':'StratLithoName already exists.'}),409)
+    if litho_name:
+        if StratLitho_id != litho_name.StratLitho_id:
+            return make_response(jsonify({'message':'StratLithoName already exists.'}),409)
     try:
         strat_litho_unit = StratLithoUnit.query.get(StratLitho_id)
         strat_litho_unit.PAUID = data['PAUID']

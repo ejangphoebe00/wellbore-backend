@@ -42,8 +42,9 @@ def edit_file_format(FileFormat_id):
 
     # check for redundancies
     file_format = FileFormat.query.filter_by(FileFormatName=data['FileFormatName']).first()
-    if FileFormat_id != file_format.FileFormat_id:
-        return make_response(jsonify({'message':'FileFormatName already exists.'}),409)
+    if file_format:
+        if FileFormat_id != file_format.FileFormat_id:
+            return make_response(jsonify({'message':'FileFormatName already exists.'}),409)
     try:
         file_format = FileFormat.query.get(FileFormat_id)
         file_format.FileFormatName = data['FileFormatName']
