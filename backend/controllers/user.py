@@ -66,8 +66,10 @@ def login():
             Comments = user.Comments
         )
         login_history.save()
-        if user.UserCategory == UserCatgoryEnum.Admin:
-            user_role = "Admin"
+        if user.UserCategory == UserCatgoryEnum.App_Admin:
+            user_role = "Application Admin"
+        elif user.UserCategory == UserCatgoryEnum.Data_Admin:
+            user_role = "Data Admin"
         else:
             user_role = "Staff"
         resp = jsonify({"CraneUser_id":user.CraneUser_id,"user_role":user_role,'access_token':access_token,
@@ -213,7 +215,7 @@ def edit_profile(CraneUser_id):
         current_user_email = get_jwt()
         loggedin_user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
         # if the logged in user is an admin
-        if loggedin_user.UserCategory == UserCatgoryEnum.Admin:
+        if loggedin_user.UserCategory == UserCatgoryEnum.Data_Admin:
             # check for redundancy
             staff = CraneUser.query.filter(CraneUser.UserStaff_id == data['UserStaff_id']).first()
             if staff and staff.UserStaff_id != None:
@@ -232,7 +234,7 @@ def edit_profile(CraneUser_id):
             user.CraneUserName = data['CraneUserName']
             user.LoginID = data['LoginID']
             user.LoginIDAlias = data['LoginIDAlias']
-            user.UserCategory = data['UserCategory']
+            # user.UserCategory = data['UserCategory']
             user.UserCompany_id = data['UserCompany_id']
             user.UserPremsUser_id = data['UserPremsUser_id']
             user.UserStaff_id = data['UserStaff_id']
@@ -357,7 +359,7 @@ def create_default_user_and_security_level():
             CraneUserName = 'Admin',
             LoginID = None,
             LoginIDAlias = None,
-            UserCategory = 'Admin',
+            UserCategory = UserCatgoryEnum.App_Admin,
             UserCompany_id = None,
             UserPremsUser_id = None,
             UserStaff_id = 1,

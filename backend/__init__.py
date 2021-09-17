@@ -42,7 +42,8 @@ def create_app():
                                 CatalogSecurityFlag,
                                 CoreType, FileFormat, FileSecurityGrade, 
                                 Company, Wellbore,
-                                StratLithoUnit, WellboreCore, CoreCatalog
+                                StratLithoUnit, WellboreCore, CoreCatalog,
+                                Cores, Cuttings, RockSamples, FluidSamples, Files
                                 )
 
         # Import controller blueprints
@@ -57,6 +58,13 @@ def create_app():
         from .controllers.catalog_security_flag import catalog_security_flag_bp
         from .controllers.core_type import core_type_bp
         from .controllers.core_catalog import core_catalog_bp
+        from .controllers.cores import cores_bp
+        from .controllers.cuttings import cuttings_bp
+        from .controllers.rock_samples import rock_samples_bp
+        from .controllers.fluid_samples import fluid_samples_bp
+
+
+
 
 
         # Register Blueprints
@@ -71,6 +79,10 @@ def create_app():
         app.register_blueprint(catalog_security_flag_bp)
         app.register_blueprint(core_type_bp)
         app.register_blueprint(core_catalog_bp)
+        app.register_blueprint(cores_bp)
+        app.register_blueprint(cuttings_bp)
+        app.register_blueprint(rock_samples_bp)
+        app.register_blueprint(fluid_samples_bp)
 
 
         # revoke tokens

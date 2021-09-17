@@ -5,8 +5,10 @@ from datetime import datetime
 from .CraneWebSecurityLevel import CraneWebSecurityLevel
 
 class UserCatgoryEnum(enum.Enum):
-    Admin = 'Admin'
+    App_Admin = 'Application Admin'
+    Data_Admin = 'Data Admin'
     Staff = 'Staff'
+# print(UserCatgoryEnum.App_Admin)
 
 class CraneUser(db.Model):
     __tablename__ = 'crane_t_CraneUser'
@@ -18,7 +20,9 @@ class CraneUser(db.Model):
     CraneUserName = db.Column(db.NVARCHAR(255),nullable=False, unique=True)
     LoginID = db.Column(db.NVARCHAR(255),nullable=True)
     LoginIDAlias = db.Column(db.NVARCHAR(255), nullable=True)
-    UserCategory = db.Column(db.Enum(UserCatgoryEnum),default='Staff')
+    UserCategory = db.Column(db.Enum(UserCatgoryEnum,
+                                     values_callable=lambda x: [str(e.value) for e in UserCatgoryEnum]),
+                                     default='Staff') # persist values instead of keys in the db
     UserCompany_id = db.Column(db.Integer)
     # UserCategory_id = db.Column(db.Integer,nullable=True)
     UserPremsUser_id = db.Column(db.Integer)
