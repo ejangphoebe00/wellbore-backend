@@ -57,7 +57,7 @@ def edit_fluid_sample(Sample_id):
         fluid_sample.Date_collected = data['Date_collected']
         fluid_sample.Date_received = data['Date_received']
         fluid_sample.Sampling_company = data['Sampling_company']
-        fluid_sample.Analysis_reports = data['Analysis_reports']
+        # fluid_sample.Analysis_reports = data['Analysis_reports']
         fluid_sample.Modified_by = user.CraneUser_id
         fluid_sample.update()
         return make_response(jsonify({'message':'Fluid sample updated successfuly.'}),200)

@@ -62,6 +62,7 @@ def create_app():
         from .controllers.cuttings import cuttings_bp
         from .controllers.rock_samples import rock_samples_bp
         from .controllers.fluid_samples import fluid_samples_bp
+        from .controllers.files import files_bp
 
 
 
@@ -83,6 +84,7 @@ def create_app():
         app.register_blueprint(cuttings_bp)
         app.register_blueprint(rock_samples_bp)
         app.register_blueprint(fluid_samples_bp)
+        app.register_blueprint(files_bp)
 
 
         # revoke tokens

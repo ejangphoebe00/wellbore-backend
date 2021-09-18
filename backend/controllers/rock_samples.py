@@ -53,7 +53,7 @@ def edit_rock_sample(id):
         rock_sample.Rock_name = data['Rock_name']
         rock_sample.Coordinate_location = data['Coordinate_location']
         rock_sample.Petrographic_description = data['Petrographic_description']
-        rock_sample.Petrographic_analysis_reports = data['Petrographic_analysis_reports']
+        # rock_sample.Petrographic_analysis_reports = data['Petrographic_analysis_reports']
         rock_sample.Modified_by = user.CraneUser_id
         rock_sample.update()
         return make_response(jsonify({'message':'Rock sample updated successfuly.'}),200)

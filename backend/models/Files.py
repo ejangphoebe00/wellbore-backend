@@ -14,13 +14,14 @@ class ReportTypeEnum(enum.Enum):
 
 # named files in order to accommodate both images and documents/reports
 class Files(db.Model):
-    __tablename__ = 'reports'
-    Report_id = db.Column(db.Integer,primary_key=True)
+    __tablename__ = 'files'
+    File_id = db.Column(db.Integer,primary_key=True)
     Cores_id = db.Column(db.Integer, db.ForeignKey(Cores.Core_sample_id))
     Fluid_samples_id = db.Column(db.Integer, db.ForeignKey(FluidSamples.Sample_id))
     Rock_samples_id = db.Column(db.Integer, db.ForeignKey(RockSamples.id))
     Report_type = db.Column(db.Enum(ReportTypeEnum))
-    file_path = db.Column(db.VARCHAR(500))
+    Report_path = db.Column(db.VARCHAR(500))
+    Photograph_path = db.Column(db.VARCHAR(500))
     CreatedBy_id = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUser_id),nullable=False)
     DateCreated = db.Column(db.DateTime, default=datetime.utcnow)
 

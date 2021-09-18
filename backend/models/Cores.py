@@ -43,3 +43,6 @@ class Cores(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+    
+    def last_inserted(self):
+        db.session.flush()

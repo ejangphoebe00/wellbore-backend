@@ -10,6 +10,7 @@ import datetime
 import traceback
 from .helper_functions import upload_file
 from collections.abc import Iterable
+from ..models.Files import Files
 
 
 cores_bp = Blueprint('cores_bp', __name__)
@@ -43,18 +44,10 @@ def add_core():
                         CreatedBy_id = user.CraneUser_id
                     )
         new_core.save()
-
-
-        # reports
-        # check if incoming data is of type file
-        # file_name = file['Core_analysis_reports']
-        # print(file_name)
-        # check if multiple files incoming
-        # if hasattr(file, 'read'):
-        #     file_name = upload_file(file)
         return make_response(jsonify({'message':'Core added successfuly.'}),201)
     except:
         return make_response(str(traceback.format_exc()),500)
+
 
 
 @cores_bp.route('/apiv1/edit_core/<int:Core_sample_id>',methods=['PUT'])
@@ -76,8 +69,8 @@ def edit_core(Core_sample_id):
         core.Percentage_recovery = data['Percentage_recovery']
         core.Top_formation = data['Top_formation']
         core.Bottom_formation = data['Bottom_formation']
-        core.Core_photograph = data['Core_photograph']
-        core.Core_analysis_reports = data['Core_analysis_reports']
+        # core.Core_photograph = data['Core_photograph']
+        # core.Core_analysis_reports = data['Core_analysis_reports']
         core.Modified_by = user.CraneUser_id
         core.update()
         return make_response(jsonify({'message':'Core updated successfuly.'}),200)
