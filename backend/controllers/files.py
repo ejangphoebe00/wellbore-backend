@@ -15,7 +15,7 @@ files_bp = Blueprint('files_bp', __name__)
 @jwt_required()
 def add_file(sample_id):
     if request.is_json:
-            data = request.get_json(force=True)
+        data = request.get_json(force=True)
     else:
         data = request.form
     file = request.files
