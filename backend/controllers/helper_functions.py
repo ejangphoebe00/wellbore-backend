@@ -21,7 +21,7 @@ If this was you, kindly ignore this message.
 
 def upload_file(file):
     # print(file.mimetype, file.content_length, file.name, file.filename, file.content_type, file.stream, file.headers)
-    if file.filename is "":
+    if file.filename == "":
         return None
     filename = secure_filename(file.filename)
     path = "backend/static/files"
