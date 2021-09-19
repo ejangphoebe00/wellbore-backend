@@ -23,7 +23,7 @@ class FluidSamples(db.Model):
     Date_collected = db.Column(db.DateTime)
     Date_received = db.Column(db.DateTime)
     Sampling_company = db.Column(db.Integer, db.ForeignKey(Company.Company_id))
-    Analysis_reports = db.Column(db.VARCHAR(100))
+    # Analysis_reports = db.Column(db.VARCHAR(100))
     CreatedBy_id = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUser_id),nullable=False)
     DateCreated = db.Column(db.DateTime, default=datetime.utcnow)
     ModifiedOn = db.Column(db.DateTime, default=datetime.utcnow, onupdate=db.func.current_timestamp())

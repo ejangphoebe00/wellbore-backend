@@ -14,7 +14,7 @@ class RockSamples(db.Model):
     Rock_name = db.Column(db.VARCHAR(100))
     Coordinate_location = db.Column(db.VARCHAR(100))
     Petrographic_description = db.Column(db.VARCHAR(500))
-    Petrographic_analysis_reports = db.Column(db.VARCHAR(100))
+    # Petrographic_analysis_reports = db.Column(db.VARCHAR(100))
     CreatedBy_id = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUser_id),nullable=False)
     DateCreated = db.Column(db.DateTime, default=datetime.utcnow)
     ModifiedOn = db.Column(db.DateTime, default=datetime.utcnow, onupdate=db.func.current_timestamp())

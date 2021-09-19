@@ -19,8 +19,8 @@ class Cores(db.Model):
     Percentage_recovery = db.Column(db.Float)
     Top_formation = db.Column(db.VARCHAR(100)) #
     Bottom_formation = db.Column(db.VARCHAR(100)) #
-    Core_photograph = db.Column(db.VARCHAR(100)) 
-    Core_analysis_reports = db.Column(db.VARCHAR(100)) # can be multiple
+    # Core_photograph = db.Column(db.VARCHAR(100)) 
+    # Core_analysis_reports = db.Column(db.VARCHAR(100)) # can be multiple
     CreatedBy_id = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUser_id),nullable=False)
     DateCreated = db.Column(db.DateTime, default=datetime.utcnow)
     ModifiedOn = db.Column(db.DateTime, default=datetime.utcnow, onupdate=db.func.current_timestamp())
