@@ -8,8 +8,6 @@ from flask_jwt_extended import (
 # reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
 import datetime
 import traceback
-from .helper_functions import upload_file
-from collections.abc import Iterable
 from ..models.Files import Files
 
 
@@ -22,12 +20,14 @@ def add_core():
             data = request.get_json(force=True)
     else:
         data = request.form
-    file = request.files
     
     current_user_email = get_jwt()
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
     
     try:
+        core = Cores.query.filter_by(Core_number=data['Core_number']).first()
+        if core:
+            return make_response(jsonify({'message':'Core_number already exists.'}),409)
         new_core = Cores(
                         Coring_contractor = data['Coring_contractor'],
                         Wellbore_id = data['Wellbore_id'],
@@ -58,6 +58,10 @@ def edit_core(Core_sample_id):
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
 
     try:
+        core = Cores.query.filter_by(Core_number=data['Core_number']).first()
+        if core:
+            if Core_sample_id != core.Core_sample_id:
+                return make_response(jsonify({'message':'Core_number already exists.'}),409)
         core = Cores.query.get(Core_sample_id)
         core.Coring_contractor = data['Coring_contractor']
         core.Wellbore_id = data['Wellbore_id']
@@ -82,8 +86,26 @@ def edit_core(Core_sample_id):
 @jwt_required()
 def get_core(Core_sample_id):
     try:
+        # get Core_photographs
+        photos = Files.query.filter(Files.Cores_id == Core_sample_id, Files.Photograph_path!=None)
+        photo_names = []
+        if photos:
+            for photo in photos:
+                photo_names.append(photo.Photograph_path)
+        
+        # get Core_analysis_reports
+        reports = Files.query.filter(Files.Cores_id == Core_sample_id, Files.Report_path!=None)
+        report_names = []
+        if reports:
+            for report in reports:
+                report_names.append(report.Report_path)
+
         core = Cores.query.get(Core_sample_id)
-        return make_response(jsonify(core.serialise()),200)
+        new_core_object  = core.serialise()
+        new_core_object['Core_analysis_reports'] = report_names
+        new_core_object['Core_photographs'] = photo_names
+
+        return make_response(jsonify(new_core_object),200)
     except:
         return make_response(str(traceback.format_exc()),500)
 
@@ -93,7 +115,28 @@ def get_core(Core_sample_id):
 def get_all_cores():
     try:
         cores = [z.serialise() for z in Cores.query.all()]
-        return make_response(jsonify(cores),200)
+        new_cores = []
+        for core in cores:
+            # get Core_photographs
+            photos = Files.query.filter(Files.Cores_id == core["Core_sample_id"], Files.Photograph_path!=None)
+            photo_names = []
+            if photos:
+                for photo in photos:
+                    photo_names.append(photo.Photograph_path)
+            
+            # get Core_analysis_reports
+            reports = Files.query.filter(Files.Cores_id == core["Core_sample_id"], Files.Report_path!=None)
+            report_names = []
+            if reports:
+                for report in reports:
+                    report_names.append(report.Report_path)
+
+            core['Core_analysis_reports'] = report_names
+            core['Core_photographs'] = photo_names
+            new_cores.append(core)
+
+        # cores = [z.serialise() for z in Cores.query.all()]
+        return make_response(jsonify(new_cores),200)
     except:
         return make_response(str(traceback.format_exc()),500)
 

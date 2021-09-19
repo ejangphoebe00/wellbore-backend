@@ -20,7 +20,8 @@ If this was you, kindly ignore this message.
     mail.send(msg)
 
 def upload_file(file):
-    if file.content_type is None:
+    # print(file.mimetype, file.content_length, file.name, file.filename, file.content_type, file.stream, file.headers)
+    if file.filename is "":
         return None
     filename = secure_filename(file.filename)
     path = "backend/static/files"

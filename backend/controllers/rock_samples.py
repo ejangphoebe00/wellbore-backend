@@ -8,6 +8,7 @@ from flask_jwt_extended import (
 # reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
 import datetime
 import traceback
+from ..models.Files import Files
 
 
 rock_samples_bp = Blueprint('rock_samples_bp', __name__)
@@ -20,6 +21,9 @@ def add_rock_sample():
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
 
     try:
+        rock_sample = RockSamples.query.filter_by(Sample_id=data['Sample_id']).first()
+        if rock_sample:
+            return make_response(jsonify({'message':'Sample_id already exists.'}),409)
         new_rock_sample = RockSamples(
                         Sample_id = data['Sample_id'],
                         Date_collected = data['Date_collected'],
@@ -45,6 +49,10 @@ def edit_rock_sample(id):
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
 
     try:
+        rock_sample = RockSamples.query.filter_by(Sample_id=data['Sample_id']).first()
+        if rock_sample:
+            if id != rock_sample.id:
+                return make_response(jsonify({'message':'Sample_id already exists.'}),409)
         rock_sample = RockSamples.query.get(id)
         rock_sample.Sample_id = data['Sample_id']
         rock_sample.Date_collected = data['Date_collected']
@@ -65,8 +73,18 @@ def edit_rock_sample(id):
 @jwt_required()
 def get_rock_sample(id):
     try:
+        # get Petrographic_analysis_reports
+        reports = Files.query.filter(Files.Rock_samples_id == id, Files.Report_path!=None)
+        report_names = []
+        if reports:
+            for report in reports:
+                report_names.append(report.Report_path)
+
         rock_sample = RockSamples.query.get(id)
-        return make_response(jsonify(rock_sample.serialise()),200)
+        new_rock_sample_object  = rock_sample.serialise()
+        new_rock_sample_object['Petrographic_analysis_reports'] = report_names
+        
+        return make_response(jsonify(new_rock_sample_object),200)
     except:
         return make_response(str(traceback.format_exc()),500)
 
@@ -76,7 +94,19 @@ def get_rock_sample(id):
 def get_all_rock_samples():
     try:
         rock_samples = [z.serialise() for z in RockSamples.query.all()]
-        return make_response(jsonify(rock_samples),200)
+        new_rock_samples = []
+        for sample in rock_samples:
+            # get Analysis_reports
+            reports = Files.query.filter(Files.Rock_samples_id == sample['id'], Files.Report_path!=None)
+            report_names = []
+            if reports:
+                for report in reports:
+                    report_names.append(report.Report_path)
+
+            sample['Petrographic_analysis_reports'] = report_names
+            new_rock_samples.append(sample)
+        
+        return make_response(jsonify(new_rock_samples),200)
     except:
         return make_response(str(traceback.format_exc()),500)
 

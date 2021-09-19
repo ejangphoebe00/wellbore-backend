@@ -11,7 +11,7 @@ class RockSamples(db.Model):
     Date_collected = db.Column(db.DateTime)
     Date_received = db.Column(db.DateTime)
     Sample_basin = db.Column(db.Float)
-    Rock_name = db.Column(db.VARCHAR(100), nullable=False, unique=True)
+    Rock_name = db.Column(db.VARCHAR(100))
     Coordinate_location = db.Column(db.VARCHAR(100))
     Petrographic_description = db.Column(db.VARCHAR(500))
     Petrographic_analysis_reports = db.Column(db.VARCHAR(100))

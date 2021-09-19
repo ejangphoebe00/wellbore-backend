@@ -8,6 +8,7 @@ from flask_jwt_extended import (
 # reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
 import datetime
 import traceback
+from ..models.Files import Files
 
 
 fluid_samples_bp = Blueprint('fluid_samples_bp', __name__)
@@ -69,8 +70,18 @@ def edit_fluid_sample(Sample_id):
 @jwt_required()
 def get_fluid_sample(Sample_id):
     try:
+        # get Analysis_reports
+        reports = Files.query.filter(Files.Fluid_samples_id == Sample_id, Files.Report_path!=None)
+        report_names = []
+        if reports:
+            for report in reports:
+                report_names.append(report.Report_path)
+
         fluid_sample = FluidSamples.query.get(Sample_id)
-        return make_response(jsonify(fluid_sample.serialise()),200)
+        new_fluid_sample_object  = fluid_sample.serialise()
+        new_fluid_sample_object['Analysis_reports'] = report_names
+        
+        return make_response(jsonify(new_fluid_sample_object),200)
     except:
         return make_response(str(traceback.format_exc()),500)
 
@@ -80,6 +91,18 @@ def get_fluid_sample(Sample_id):
 def get_all_fluid_samples():
     try:
         fluid_samples = [z.serialise() for z in FluidSamples.query.all()]
+        new_fluid_sample = []
+        for sample in fluid_samples:
+            # get Analysis_reports
+            reports = Files.query.filter(Files.Fluid_samples_id == sample['Sample_id'], Files.Report_path!=None)
+            report_names = []
+            if reports:
+                for report in reports:
+                    report_names.append(report.Report_path)
+
+            sample['Analysis_reports'] = report_names
+            new_fluid_sample.append(sample)
+
         return make_response(jsonify(fluid_samples),200)
     except:
         return make_response(str(traceback.format_exc()),500)

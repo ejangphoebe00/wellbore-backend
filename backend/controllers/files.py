@@ -68,7 +68,8 @@ def add_file(sample_id):
         elif Report_type == "Fluid_Samples":
             Fluid_samples_id = sample_id
         else:
-            Rock_samples_id = sample_id,
+            Rock_samples_id = sample_id
+
 
         # save file
         new_file = Files(

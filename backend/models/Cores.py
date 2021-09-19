@@ -1,3 +1,4 @@
+from enum import unique
 from .. import db
 from .CraneUser import CraneUser
 from .Wellbore import Wellbore
@@ -10,7 +11,7 @@ class Cores(db.Model):
     Core_sample_id = db.Column(db.Integer,primary_key=True)
     Coring_contractor = db.Column(db.Integer, db.ForeignKey(Company.Company_id))
     Wellbore_id = db.Column(db.Integer, db.ForeignKey(Wellbore.Wellbore_id))
-    Core_number = db.Column(db.VARCHAR(100))
+    Core_number = db.Column(db.VARCHAR(100), unique=True, nullable=False)
     Coring_date = db.Column(db.DateTime)
     Top_MD = db.Column(db.VARCHAR(100)) #depth
     Bottom_MD = db.Column(db.VARCHAR(100)) #depth
