@@ -5,7 +5,7 @@ from datetime import datetime
 from .CraneWebSecurityLevel import CraneWebSecurityLevel
 
 class UserCatgoryEnum(enum.Enum):
-    App_Admin = 'Application Admin'
+    App_Admin = 'App Admin'
     Data_Admin = 'Data Admin'
     Staff = 'Staff'
 # print(UserCatgoryEnum.App_Admin)

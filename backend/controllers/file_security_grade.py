@@ -8,12 +8,14 @@ from flask_jwt_extended import (
 # reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
 import datetime
 import traceback
+from ..middleware.permissions import only_data_admin
 
 
 file_security_grade_bp = Blueprint('file_security_grade_bp', __name__)
 
 @file_security_grade_bp.route('/apiv1/add_file_security_grade',methods=['POST'])
 @jwt_required()
+@only_data_admin
 def add_file_security_grade():
     data = request.get_json(force=True)
 
@@ -35,6 +37,7 @@ def add_file_security_grade():
 
 @file_security_grade_bp.route('/apiv1/edit_file_security_grade/<int:FileSecurityGrade_id>',methods=['PUT'])
 @jwt_required()
+@only_data_admin
 def edit_file_security_grade(FileSecurityGrade_id):
     data = request.get_json(force=True)
     current_user_email = get_jwt()
@@ -81,6 +84,7 @@ def get_all_file_security_grades():
 
 @file_security_grade_bp.route('/apiv1/delete_file_security_grade/<int:FileSecurityGrade_id>',methods=['DELETE'])
 @jwt_required()
+@only_data_admin
 def delete_file_security_grade(FileSecurityGrade_id):
     try:
         file_security_grade = FileSecurityGrade.query.get(FileSecurityGrade_id)

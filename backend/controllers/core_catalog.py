@@ -8,12 +8,14 @@ from flask_jwt_extended import (
 # reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
 import datetime
 import traceback
+from ..middleware.permissions import only_data_admin
 
 
 core_catalog_bp = Blueprint('core_catalog_bp', __name__)
 
 @core_catalog_bp.route('/apiv1/add_core_catalog',methods=['POST'])
 @jwt_required()
+@only_data_admin
 def add_core_catalog():
     data = request.get_json(force=True)
     current_user_email = get_jwt()
@@ -57,6 +59,7 @@ def add_core_catalog():
 
 @core_catalog_bp.route('/apiv1/edit_core_catalog/<int:CoreCatalog_id>',methods=['PUT'])
 @jwt_required()
+@only_data_admin
 def edit_core_catalog(CoreCatalog_id):
     data = request.get_json(force=True)
     current_user_email = get_jwt()
@@ -120,6 +123,7 @@ def get_all_core_catalogs():
 
 @core_catalog_bp.route('/apiv1/delete_core_catalog/<int:CoreCatalog_id>',methods=['DELETE'])
 @jwt_required()
+@only_data_admin
 def delete_core_catalog(CoreCatalog_id):
     try:
         core_catalog = CoreCatalog.query.get(CoreCatalog_id)

@@ -14,6 +14,8 @@ from flask_jwt_extended import (
 from datetime import datetime, timedelta
 from .helper_functions import send_security_alert_email
 import traceback
+from ..middleware.permissions import only_data_admin, only_application_and_data_admin, only_application_admin
+
 
 
 auth_bp = Blueprint('auth_bp', __name__)
@@ -83,6 +85,7 @@ def login():
 # User registration
 @auth_bp.route('/user/registration', methods=['POST'])
 @jwt_required()
+@only_data_admin
 def register_user():
     """Create a user."""
     current_user_email = get_jwt()
@@ -112,7 +115,7 @@ def register_user():
                         CraneUserName = data['CraneUserName'],
                         LoginID = data['LoginID'],
                         LoginIDAlias = data['LoginIDAlias'],
-                        UserCategory = data['UserCategory'],
+                        # UserCategory = data['UserCategory'],
                         UserCompany_id = data['UserCompany_id'],
                         UserPremsUser_id = data['UserPremsUser_id'],
                         UserStaff_id = data['UserStaff_id'],
@@ -142,6 +145,7 @@ def register_user():
 
 @auth_bp.route('/user/get_users', methods=['GET'])
 @jwt_required()
+@only_application_and_data_admin
 def get_all_users():
     try:
         users = [z.serialise() for z in CraneUser.query.filter(CraneUser.DeactivateAccount == 0)]
@@ -163,6 +167,7 @@ def get_user(CraneUser_id):
 # deactivate account
 @auth_bp.route('/user/deactivate_account/<int:CraneUser_id>', methods=['PUT'])
 @jwt_required()
+@only_application_admin
 def deactivate_account(CraneUser_id):
     try:
         user = CraneUser.query.get(CraneUser_id)
@@ -176,6 +181,7 @@ def deactivate_account(CraneUser_id):
 # reactivate account
 @auth_bp.route('/user/reactivate_account/<int:CraneUser_id>', methods=['PUT'])
 @jwt_required()
+@only_application_admin
 def reactivate_account(CraneUser_id):
     try:
         user = CraneUser.query.get(CraneUser_id)
@@ -189,11 +195,26 @@ def reactivate_account(CraneUser_id):
 # get deactivated accounts
 @auth_bp.route('/user/deactivated_accounts', methods=['GET'])
 @jwt_required()
+@only_application_and_data_admin
 def get_deactivated_accounts():
     try:
         accounts = CraneUser.query.filter(CraneUser.DeactivateAccount==0).all()
         accounts = [account.serialise() for account in accounts]
         return make_response(jsonify(accounts),200)
+    except:
+        return make_response(str(traceback.format_exc()),500)
+
+# update user role and permissions
+@auth_bp.route('/user/update_user_role/<int:CraneUser_id>', methods=['PUT'])
+@jwt_required()
+@only_application_admin
+def update_user_role(CraneUser_id):
+    data = request.get_json(force=True)
+    try:
+        user = CraneUser.query.get(CraneUser_id)
+        user.UserCategory = data['UserCategory']
+        user.update()
+        return make_response(jsonify({'message':'User Role successfully Updated'}),200)
     except:
         return make_response(str(traceback.format_exc()),500)
 
@@ -317,6 +338,7 @@ def refresh_token():
 
 @auth_bp.route('/user/get_users_logs', methods=['GET'])
 @jwt_required()
+@only_application_and_data_admin
 def get_users_logs():
     try:
         logs = [z.serialise() for z in CraneUserLoginHistory.query.all()]

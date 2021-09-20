@@ -9,12 +9,15 @@ from flask_jwt_extended import (
 import datetime
 import traceback
 from ..models.Files import Files
+from ..middleware.permissions import only_data_admin
+
 
 
 cores_bp = Blueprint('cores_bp', __name__)
 
 @cores_bp.route('/apiv1/add_core',methods=['POST'])
 @jwt_required()
+@only_data_admin
 def add_core():
     if request.is_json:
             data = request.get_json(force=True)
@@ -52,6 +55,7 @@ def add_core():
 
 @cores_bp.route('/apiv1/edit_core/<int:Core_sample_id>',methods=['PUT'])
 @jwt_required()
+@only_data_admin
 def edit_core(Core_sample_id):
     data = request.get_json(force=True)
     current_user_email = get_jwt()
@@ -143,6 +147,7 @@ def get_all_cores():
 
 @cores_bp.route('/apiv1/delete_core/<int:Core_sample_id>',methods=['DELETE'])
 @jwt_required()
+@only_data_admin
 def delete_core(Core_sample_id):
     try:
         core = Cores.query.get(Core_sample_id)

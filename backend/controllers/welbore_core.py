@@ -9,12 +9,14 @@ from flask_jwt_extended import (
 # reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
 import datetime
 import traceback
+from ..middleware.permissions import only_data_admin
 
 
 welbore_core_bp = Blueprint('welbore_core_bp', __name__)
 
 @welbore_core_bp.route('/apiv1/add_welbore_core',methods=['POST'])
 @jwt_required()
+@only_data_admin
 def add_welbore_core():
     data = request.get_json(force=True)
     current_user_email = get_jwt()
@@ -70,6 +72,7 @@ def add_welbore_core():
 
 @welbore_core_bp.route('/apiv1/edit_welbore_core/<int:WellboreCore_id>',methods=['PUT'])
 @jwt_required()
+@only_data_admin
 def edit_welbore_core(WellboreCore_id):
     data = request.get_json(force=True)
     current_user_email = get_jwt()
@@ -146,6 +149,7 @@ def get_all_welbore_cores():
 
 @welbore_core_bp.route('/apiv1/delete_welbore_core/<int:WellboreCore_id>',methods=['DELETE'])
 @jwt_required()
+@only_data_admin
 def delete_welbore_core(WellboreCore_id):
     try:
         welbore_core = WellboreCore.query.get(WellboreCore_id)

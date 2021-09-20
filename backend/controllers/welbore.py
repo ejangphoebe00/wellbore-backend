@@ -9,11 +9,14 @@ from flask_jwt_extended import (
 # reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
 import datetime
 import traceback
+from ..middleware.permissions import only_data_admin
+
 
 wellbore_bp = Blueprint('wellbore_bp', __name__)
 
 @wellbore_bp.route('/apiv1/add_wellbore',methods=['POST'])
 @jwt_required()
+@only_data_admin
 def add_wellbore():
     data = request.get_json(force=True)
     current_user_email = get_jwt()
@@ -92,6 +95,7 @@ def add_wellbore():
 
 @wellbore_bp.route('/apiv1/edit_wellbore/<int:Wellbore_id>',methods=['PUT'])
 @jwt_required()
+@only_data_admin
 def edit_wellbore(Wellbore_id):
     data = request.get_json(force=True)
     current_user_email = get_jwt()
@@ -190,6 +194,7 @@ def get_all_wellbore():
 
 @wellbore_bp.route('/apiv1/delete_wellbore/<int:Wellbore_id>',methods=['DELETE'])
 @jwt_required()
+@only_data_admin
 def delete_wellbore(Wellbore_id):
     try:
         wellbore = Wellbore.query.get(Wellbore_id)

@@ -9,12 +9,14 @@ from flask_jwt_extended import (
 import datetime
 import traceback
 from ..models.Files import Files
+from ..middleware.permissions import only_data_admin
 
 
 fluid_samples_bp = Blueprint('fluid_samples_bp', __name__)
 
 @fluid_samples_bp.route('/apiv1/add_fluid_sample',methods=['POST'])
 @jwt_required()
+@only_data_admin
 def add_fluid_sample():
     data = request.get_json(force=True)
     current_user_email = get_jwt()
@@ -42,6 +44,7 @@ def add_fluid_sample():
 
 @fluid_samples_bp.route('/apiv1/edit_fluid_sample/<int:Sample_id>',methods=['PUT'])
 @jwt_required()
+@only_data_admin
 def edit_fluid_sample(Sample_id):
     data = request.get_json(force=True)
     current_user_email = get_jwt()
@@ -110,6 +113,7 @@ def get_all_fluid_samples():
 
 @fluid_samples_bp.route('/apiv1/delete_fluid_sample/<int:Sample_id>',methods=['DELETE'])
 @jwt_required()
+@only_data_admin
 def delete_fluid_sample(Sample_id):
     try:
         fluid_sample = FluidSamples.query.get(Sample_id)

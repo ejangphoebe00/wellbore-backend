@@ -8,12 +8,14 @@ from flask_jwt_extended import (
 # reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
 import datetime
 import traceback
+from ..middleware.permissions import only_data_admin
 
 
 web_security_level_bp = Blueprint('web_security_level_bp', __name__)
 
 @web_security_level_bp.route('/apiv1/add_web_security_level',methods=['POST'])
 @jwt_required()
+@only_data_admin
 def add_web_security_level():
     data = request.get_json(force=True)
 
@@ -39,6 +41,7 @@ def add_web_security_level():
 
 @web_security_level_bp.route('/apiv1/edit_web_security_level/<int:WebSecurityLevel_id>',methods=['PUT'])
 @jwt_required()
+@only_data_admin
 def edit_web_security_level(WebSecurityLevel_id):
     data = request.get_json(force=True)
     current_user_email = get_jwt()
@@ -90,6 +93,7 @@ def get_all_web_security_level():
 
 @web_security_level_bp.route('/apiv1/delete_web_security_level/<int:WebSecurityLevel_id>',methods=['DELETE'])
 @jwt_required()
+@only_data_admin
 def delete_web_security_level(WebSecurityLevel_id):
     try:
         web_security_level = CraneWebSecurityLevel.query.get(WebSecurityLevel_id)

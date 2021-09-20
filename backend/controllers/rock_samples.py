@@ -9,12 +9,14 @@ from flask_jwt_extended import (
 import datetime
 import traceback
 from ..models.Files import Files
+from ..middleware.permissions import only_data_admin
 
 
 rock_samples_bp = Blueprint('rock_samples_bp', __name__)
 
 @rock_samples_bp.route('/apiv1/add_rock_sample',methods=['POST'])
 @jwt_required()
+@only_data_admin
 def add_rock_sample():
     data = request.get_json(force=True)
     current_user_email = get_jwt()
@@ -43,6 +45,7 @@ def add_rock_sample():
 
 @rock_samples_bp.route('/apiv1/edit_rock_sample/<int:id>',methods=['PUT'])
 @jwt_required()
+@only_data_admin
 def edit_rock_sample(id):
     data = request.get_json(force=True)
     current_user_email = get_jwt()
@@ -113,6 +116,7 @@ def get_all_rock_samples():
 
 @rock_samples_bp.route('/apiv1/delete_rock_sample/<int:id>',methods=['DELETE'])
 @jwt_required()
+@only_data_admin
 def delete_rock_sample(id):
     try:
         rock_sample = RockSamples.query.get(id)

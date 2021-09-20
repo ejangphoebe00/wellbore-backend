@@ -9,12 +9,14 @@ from flask_jwt_extended import (
 # reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
 import datetime
 import traceback
+from ..middleware.permissions import only_data_admin
 
 
 strat_litho_unit_bp = Blueprint('strat_litho_unit_bp', __name__)
 
 @strat_litho_unit_bp.route('/apiv1/add_strat_litho_unit',methods=['POST'])
 @jwt_required()
+@only_data_admin
 def add_strat_litho_unit():
     data = request.get_json(force=True)
     current_user_email = get_jwt()
@@ -50,6 +52,7 @@ def add_strat_litho_unit():
 
 @strat_litho_unit_bp.route('/apiv1/edit_strat_litho_unit/<int:StratLitho_id>',methods=['PUT'])
 @jwt_required()
+@only_data_admin
 def edit_strat_litho_unit(StratLitho_id):
     data = request.get_json(force=True)
     current_user_email = get_jwt()
@@ -106,6 +109,7 @@ def get_all_strat_litho_units():
 
 @strat_litho_unit_bp.route('/apiv1/delete_strat_litho_unit/<int:StratLitho_id>',methods=['DELETE'])
 @jwt_required()
+@only_data_admin
 def delete_strat_litho_unit(StratLitho_id):
     try:
         strat_litho_unit = StratLithoUnit.query.get(StratLitho_id)

@@ -8,12 +8,14 @@ from flask_jwt_extended import (
 # reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
 import datetime
 import traceback
+from ..middleware.permissions import only_data_admin
 
 
 catalog_security_flag_bp = Blueprint('catalog_security_flag_bp', __name__)
 
 @catalog_security_flag_bp.route('/apiv1/add_catalog_security_flag',methods=['POST'])
 @jwt_required()
+@only_data_admin
 def add_catalog_security_flag():
     data = request.get_json(force=True)
 
@@ -35,6 +37,7 @@ def add_catalog_security_flag():
 
 @catalog_security_flag_bp.route('/apiv1/edit_catalog_security_flag/<int:CatalogSecurityFlag_id>',methods=['PUT'])
 @jwt_required()
+@only_data_admin
 def edit_catalog_security_flag(CatalogSecurityFlag_id):
     data = request.get_json(force=True)
     current_user_email = get_jwt()
@@ -81,6 +84,7 @@ def get_all_catalog_security_flags():
 
 @catalog_security_flag_bp.route('/apiv1/delete_catalog_security_flag/<int:CatalogSecurityFlag_id>',methods=['DELETE'])
 @jwt_required()
+@only_data_admin
 def delete_catalog_security_flag(CatalogSecurityFlag_id):
     try:
         catalog_security_flag = CatalogSecurityFlag.query.get(CatalogSecurityFlag_id)

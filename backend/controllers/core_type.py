@@ -8,12 +8,14 @@ from flask_jwt_extended import (
 # reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
 import datetime
 import traceback
+from ..middleware.permissions import only_data_admin
 
 
 core_type_bp = Blueprint('core_type_bp', __name__)
 
 @core_type_bp.route('/apiv1/add_core_type',methods=['POST'])
 @jwt_required()
+@only_data_admin
 def add_core_type():
     data = request.get_json(force=True)
 
@@ -35,6 +37,7 @@ def add_core_type():
 
 @core_type_bp.route('/apiv1/edit_core_type/<int:CoreType_id>',methods=['PUT'])
 @jwt_required()
+@only_data_admin
 def edit_core_type(CoreType_id):
     data = request.get_json(force=True)
     current_user_email = get_jwt()
@@ -81,6 +84,7 @@ def get_all_core_types():
 
 @core_type_bp.route('/apiv1/delete_core_type/<int:CoreType_id>',methods=['DELETE'])
 @jwt_required()
+@only_data_admin
 def delete_core_type(CoreType_id):
     try:
         core_type = CoreType.query.get(CoreType_id)

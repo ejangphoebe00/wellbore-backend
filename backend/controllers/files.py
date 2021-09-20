@@ -7,12 +7,14 @@ from flask_jwt_extended import (
 import traceback
 from .helper_functions import upload_file
 from ..models.Files import Files
+from ..middleware.permissions import only_data_admin
 
 
 files_bp = Blueprint('files_bp', __name__)
 
 @files_bp.route('/apiv1/add_file/<int:sample_id>',methods=['POST'])
 @jwt_required()
+@only_data_admin
 def add_file(sample_id):
     if request.is_json:
         data = request.get_json(force=True)
@@ -90,6 +92,7 @@ def add_file(sample_id):
 
 @files_bp.route('/apiv1/delete_file/<int:File_id>',methods=['DELETE'])
 @jwt_required()
+@only_data_admin
 def delete_core(File_id):
     try:
         file = Files.query.get(File_id)

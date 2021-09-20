@@ -8,12 +8,14 @@ from flask_jwt_extended import (
 # reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
 import datetime
 import traceback
+from ..middleware.permissions import only_data_admin
 
 
 company_bp = Blueprint('company_bp', __name__)
 
 @company_bp.route('/apiv1/add_company',methods=['POST'])
 @jwt_required()
+@only_data_admin
 def add_company():
     data = request.get_json(force=True)
     current_user_email = get_jwt()
@@ -102,6 +104,7 @@ def add_company():
 
 @company_bp.route('/apiv1/edit_company/<int:Company_id>',methods=['PUT'])
 @jwt_required()
+@only_data_admin
 def edit_company(Company_id):
     data = request.get_json(force=True)
     current_user_email = get_jwt()
@@ -218,6 +221,7 @@ def get_all_companies():
 
 @company_bp.route('/apiv1/delete_company/<int:Company_id>',methods=['DELETE'])
 @jwt_required()
+@only_data_admin
 def delete_company(Company_id):
     try:
         company = Company.query.get(Company_id)

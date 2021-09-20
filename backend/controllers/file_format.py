@@ -8,12 +8,14 @@ from flask_jwt_extended import (
 # reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
 import datetime
 import traceback
+from ..middleware.permissions import only_data_admin
 
 
 file_format_bp = Blueprint('file_format_bp', __name__)
 
 @file_format_bp.route('/apiv1/add_file_format',methods=['POST'])
 @jwt_required()
+@only_data_admin
 def add_file_format():
     data = request.get_json(force=True)
 
@@ -35,6 +37,7 @@ def add_file_format():
 
 @file_format_bp.route('/apiv1/edit_file_format/<int:FileFormat_id>',methods=['PUT'])
 @jwt_required()
+@only_data_admin
 def edit_file_format(FileFormat_id):
     data = request.get_json(force=True)
     current_user_email = get_jwt()
@@ -81,6 +84,7 @@ def get_all_file_formats():
 
 @file_format_bp.route('/apiv1/delete_file_format/<int:FileFormat_id>',methods=['DELETE'])
 @jwt_required()
+@only_data_admin
 def delete_file_format(FileFormat_id):
     try:
         file_format = FileFormat.query.get(FileFormat_id)
