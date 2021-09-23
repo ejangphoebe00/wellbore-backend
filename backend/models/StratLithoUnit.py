@@ -9,7 +9,7 @@ class StratLithoUnit(db.Model):
     ReserviorUnit = db.Column(db.SMALLINT) # should be 0 or 1
     LithoStratAlias = db.Column(db.NVARCHAR(100))
     IsReservoirUnit_id = db.Column(db.Integer)
-    LithoStratAge_id = db.Column(db.Integer)
+    LithoStratAge_id = db.Column(db.VARCHAR(100))
     LithoStratDescriptionSoftcopyPath = db.Column(db.TEXT)
     LithoStratDescriptionHyperlink = db.Column(db.TEXT)
     LithoStratMapSoftCopyPath = db.Column(db.TEXT)
