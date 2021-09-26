@@ -9,7 +9,12 @@ class Config(object):
     SECRET_KEY = environ.get('SECRET_KEY')
     # SQLALCHEMY_DATABASE_URI = (environ.get('SQLALCHEMY_DATABASE_URI'))
     # SQLALCHEMY_DATABASE_URI="mssql+pyodbc://<user>:<password>@<server>/<database_name>?driver=<database_driver>"
-    SQLALCHEMY_DATABASE_URI = "mssql+pyodbc://sa:Boeing747@@localhost:1433/WellBoreStoreDB?driver=ODBC+Driver+17+for+SQL+Server"
+    USER = environ.get('DB_USER')
+    PASSWORD = environ.get('DB_PASSWORD')
+    DB_NAME = environ.get('DB_NAME')
+    HOST = environ.get('DB_HOST')
+    
+    SQLALCHEMY_DATABASE_URI=f"mssql+pyodbc://{USER}:{PASSWORD}@{HOST}/{DB_NAME}?driver=ODBC+Driver+17+for+SQL+Server"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # jwt configuarations for the user auth api
