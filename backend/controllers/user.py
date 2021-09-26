@@ -85,7 +85,7 @@ def login():
 # User registration
 @auth_bp.route('/user/registration', methods=['POST'])
 @jwt_required()
-@only_data_admin
+@only_application_and_data_admin
 def register_user():
     """Create a user."""
     current_user_email = get_jwt()
