@@ -1,6 +1,9 @@
 from os import environ
 import pyodbc
 from datetime import timedelta
+from dotenv import load_dotenv
+load_dotenv()
+
 
 class Config(object):
     """ app configuration class """
