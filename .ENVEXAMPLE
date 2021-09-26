@@ -1,7 +1,12 @@
 FLASK_APP=app.py
 #APP_SETTINGS=config.ProductionConfig
 
-SQLALCHEMY_DATABASE_URI="mssql+pyodbc://<user>:<password>@<server>/<database_name>?driver=<database_driver>"
+DB_USER = "xxxx"
+DB_PASSWORD = "xxxx" 
+DB_NAME = "xxxx" 
+DB_HOST = "xxxx"
+
+
 SECRET_KEY=qwertysecret
 MAIL_USERNAME = 'email@gmail.com'
 MAIL_PASSWORD = 'password'
