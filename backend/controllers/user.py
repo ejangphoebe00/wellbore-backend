@@ -278,8 +278,9 @@ def edit_profile(CraneUser_id):
                 user.DateCreated = datetime.now()
             # if admin is updating their own records
             if user.CraneUser_id == loggedin_user.CraneUser_id:
-                user.UserPassword = CraneUser.hash_password(data.get('UserPassword')) if data.get('UserPassword') else None
-                user.PasswordChangeDate = datetime.now() if data.get('UserPassword') else user.PasswordChangeDate
+                if user.UserPassword != data.get('UserPassword'):
+                    user.UserPassword = CraneUser.hash_password(data.get('UserPassword')) if data.get('UserPassword') else None
+                    user.PasswordChangeDate = datetime.now() if data.get('UserPassword') else user.PasswordChangeDate
             else:
                 resp = jsonify({'message': 'You are not allowed to change the user password of an account that is not yours'})
                 return make_response(resp, 400)
@@ -294,8 +295,9 @@ def edit_profile(CraneUser_id):
             # user.Surname = data['Surname']
             user.UserEmailAddress = data['UserEmailAddress']
             user.CraneUserName = data['CraneUserName']
-            user.UserPassword = CraneUser.hash_password(data['UserPassword'])
-            user.PasswordChangeDate = datetime.now()        
+            if user.UserPassword != data['UserPassword']:
+                user.UserPassword = CraneUser.hash_password(data['UserPassword'])
+                user.PasswordChangeDate = datetime.now()        
         user.update()
 
         resp = jsonify({'message': 'Details updated successfully'})
