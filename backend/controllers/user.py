@@ -198,7 +198,7 @@ def reactivate_account(CraneUser_id):
 @only_application_and_data_admin
 def get_deactivated_accounts():
     try:
-        accounts = CraneUser.query.filter(CraneUser.DeactivateAccount==0).all()
+        accounts = CraneUser.query.filter(CraneUser.DeactivateAccount==1).all()
         accounts = [account.serialise() for account in accounts]
         return make_response(jsonify(accounts),200)
     except:
