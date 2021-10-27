@@ -4,7 +4,7 @@ from .CraneUser import CraneUser
 class CraneUserLoginHistory(db.Model):
     __tablename__ = 'crane_t_CraneUserLoginHistory'
     UserLoginHistory_id = db.Column(db.Integer,primary_key=True)
-    HistLogUser_id = db.Column(db.Integer, db.ForeignKey('crane_t_CraneUser.CraneUser_id'),nullable=False) 
+    HistLogUser_id = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUser_id),nullable=False) 
     LogStaff_id = db.Column(db.Integer)
     CraneCompany_id = db.Column(db.Integer)   
     LogCompanyAuthorisedUser_id = db.Column(db.Integer)

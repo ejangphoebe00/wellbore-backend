@@ -17,10 +17,10 @@ class StratLithoUnit(db.Model):
     MapPortalLithoStratMapLink = db.Column(db.TEXT)
     LithoStratFactsiteUrl = db.Column(db.TEXT)
     Comments = db.Column(db.NVARCHAR(500))
-    CreatedBy_id = db.Column(db.Integer, db.ForeignKey('crane_t_CraneUser.CraneUser_id'),nullable=False)
+    CreatedBy_id = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUser_id),nullable=False)
     DateCreated = db.Column(db.DateTime)
     ModifiedOn = db.Column(db.DateTime)
-    ModifiedBy = db.Column(db.Integer, db.ForeignKey('crane_t_CraneUser.CraneUser_id'),nullable=True)
+    ModifiedBy = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUser_id),nullable=True)
     
 
     def serialise(self):

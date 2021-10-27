@@ -9,7 +9,7 @@ class CatalogSecurityFlag(db.Model):
     Comments = db.Column(db.NVARCHAR(500))
     ModifiedOn = db.Column(db.DateTime, default=db.func.current_timestamp(),
         onupdate=db.func.current_timestamp())
-    ModifiedBy = db.Column(db.Integer, db.ForeignKey('crane_t_CraneUser.CraneUser_id'),nullable=True)
+    ModifiedBy = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUser_id),nullable=True)
 
 
     def serialise(self):
