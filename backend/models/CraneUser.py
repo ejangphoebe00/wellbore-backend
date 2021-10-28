@@ -11,7 +11,7 @@ class UserCatgoryEnum(enum.Enum):
 # print(UserCatgoryEnum.App_Admin)
 
 class CraneUser(db.Model):
-    __tablename__ = 'crane_t_CraneUser'
+    __tablename__ = 'geosims_t_CraneUser'
     CraneUser_id = db.Column(db.Integer,primary_key=True)
     FirstName = db.Column(db.NVARCHAR(255),nullable=False)
     MiddleName = db.Column(db.NVARCHAR(255),nullable=True)
@@ -58,7 +58,7 @@ class CraneUser(db.Model):
     PasswordChangeDate = db.Column(db.DateTime,default=db.func.current_timestamp(),nullable=True)
 
     # relationships
-    # login_history = db.relationship('crane_t_CraneUserLoginHistory', backref='crane_t_CraneUser', lazy=True)
+    # login_history = db.relationship('geosims_t_CraneUserLoginHistory', backref='geosims_t_CraneUser', lazy=True)
     
     def __repr__(self):
         return '<CraneUser {}>'.format(self.CraneUserName)
