@@ -7,7 +7,7 @@ from .Company import Company
 from .StratLithoUnit import StratLithoUnit
 
 class WellboreCore(db.Model):
-    __tablename__ = 'crane_t_WellboreCore'
+    __tablename__ = 'geosims_t_WellboreCore'
     WellboreCore_id = db.Column(db.Integer,primary_key=True)
     Wellbore_id = db.Column(db.Integer, db.ForeignKey(Wellbore.Wellbore_id),nullable=False)
     CoreNumber = db.Column(db.NVARCHAR(255), unique=True)

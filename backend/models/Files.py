@@ -14,7 +14,7 @@ class ReportTypeEnum(enum.Enum):
 
 # named files in order to accommodate both images and documents/reports
 class Files(db.Model):
-    __tablename__ = 'files'
+    __tablename__ = 'geosims_rt_Files'
     File_id = db.Column(db.Integer,primary_key=True)
     Cores_id = db.Column(db.Integer, db.ForeignKey(Cores.Core_sample_id))
     Fluid_samples_id = db.Column(db.Integer, db.ForeignKey(FluidSamples.Sample_id))

@@ -12,7 +12,7 @@ class FluidCategoryEnum(enum.Enum):
     Water = 'Water'
 
 class FluidSamples(db.Model):
-    __tablename__ = 'fluid_samples'
+    __tablename__ = 'geosims_t_FluidSamples'
     Sample_id = db.Column(db.Integer,primary_key=True)
     Wellbore_id = db.Column(db.Integer, db.ForeignKey(Wellbore.Wellbore_id))
     Sampling_activity = db.Column(db.VARCHAR(100))

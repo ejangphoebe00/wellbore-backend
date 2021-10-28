@@ -2,7 +2,7 @@ from .. import db
 from .CraneUser import CraneUser
 
 class StratLithoUnit(db.Model):
-    __tablename__ = 'crane_t_StratLithoUnit'
+    __tablename__ = 'geosims_t_StratLithoUnit'
     StratLitho_id = db.Column(db.Integer,primary_key=True)
     PAUID = db.Column(db.Integer)
     StratLithoName = db.Column(db.NVARCHAR(100), unique=True, nullable=False)

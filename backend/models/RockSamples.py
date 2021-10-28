@@ -5,7 +5,7 @@ from datetime import datetime
 
 
 class RockSamples(db.Model):
-    __tablename__ = 'rock_samples'
+    __tablename__ = 'geosims_t_RockSamples'
     id = db.Column(db.Integer,primary_key=True)
     Sample_id = db.Column(db.VARCHAR(100), nullable=False, unique=True)
     Date_collected = db.Column(db.DateTime)

@@ -2,7 +2,7 @@ from .. import db
 from .CraneUser import CraneUser
 
 class CoreType(db.Model):
-    __tablename__ = 'crane_rt_CoreType'
+    __tablename__ = 'geosims_rt_CoreType'
     CoreType_id = db.Column(db.Integer,primary_key=True)
     CoreTypeName = db.Column(db.NVARCHAR(255), unique=True, nullable=False)
     SortOrder = db.Column(db.Integer)    

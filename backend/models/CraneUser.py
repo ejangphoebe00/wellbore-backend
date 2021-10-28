@@ -46,7 +46,7 @@ class CraneUser(db.Model):
     CredentialsSent = db.Column(db.SMALLINT, nullable=True)
     UserOnlineStatus = db.Column(db.SMALLINT, nullable=True)
     Comments = db.Column(db.NVARCHAR(500),nullable=True)
-    OrganisationUserName = db.Column(db.NVARCHAR(255),nullable=True)
+    OrganisationUserName = db.Column(db.NVARCHAR(255),nullable=True, default='Petroleum Authority of Uganda')
     CreatedBy_id = db.Column(db.Integer)
     DateCreated = db.Column(db.DateTime,default=datetime.utcnow)
     ModifiedOn = db.Column(db.DateTime,default=datetime.utcnow,onupdate=db.func.current_timestamp())

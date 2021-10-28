@@ -2,7 +2,7 @@ from .. import db
 from .CraneUser import CraneUser
 
 class FileSecurityGrade(db.Model):
-    __tablename__ = 'crane_rt_FileSecurityGrade'
+    __tablename__ = 'geosims_rt_FileSecurityGrade'
     FileSecurityGrade_id = db.Column(db.Integer,primary_key=True)
     FileSecurityGradeName = db.Column(db.NVARCHAR(255), unique=True, nullable=False)
     SortOrder = db.Column(db.Integer)    

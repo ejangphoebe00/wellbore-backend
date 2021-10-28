@@ -8,7 +8,7 @@ class DevelopmentAreaEnum(enum.Enum):
     TDA = "Telinga Development Area"
 
 class Wellbore(db.Model):
-    __tablename__ = 'crane_t_Wellbore'
+    __tablename__ = 'geosims_t_Wellbore'
     Wellbore_id = db.Column(db.Integer,primary_key=True)
     PAUID = db.Column(db.Integer)
     WellboreOfficialName = db.Column(db.NVARCHAR(255),nullable=True, unique=True)

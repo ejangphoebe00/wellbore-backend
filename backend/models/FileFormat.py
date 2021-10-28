@@ -2,7 +2,7 @@ from .. import db
 from .CraneUser import CraneUser
 
 class FileFormat(db.Model):
-    __tablename__ = 'crane_rt_FileFormat'
+    __tablename__ = 'geosims_rt_FileFormat'
     FileFormat_id = db.Column(db.Integer,primary_key=True)
     FileFormatName = db.Column(db.NVARCHAR(255), unique=True, nullable=False)
     SortOrder = db.Column(db.Integer)    

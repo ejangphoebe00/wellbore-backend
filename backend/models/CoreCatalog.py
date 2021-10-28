@@ -8,7 +8,7 @@ from .CoreType import CoreType
 from .CatalogSecurityFlag import CatalogSecurityFlag
 
 class CoreCatalog(db.Model):
-    __tablename__ = 'crane_t_CoreCatalog'
+    __tablename__ = 'geosims_t_CoreCatalog'
     CoreCatalog_id = db.Column(db.Integer,primary_key=True)
     WellboreCore_id = db.Column(db.Integer, db.ForeignKey(WellboreCore.WellboreCore_id),nullable=False)
     CoreType = db.Column(db.Integer, db.ForeignKey(CoreType.CoreType_id),nullable=False)

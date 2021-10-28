@@ -12,7 +12,7 @@ class CuttingsCategoryEnum(enum.Enum):
     Dry_Unwashed = 'Dry Unwashed'
 
 class Cuttings(db.Model):
-    __tablename__ = 'cuttings'
+    __tablename__ = 'geosims_t_Cuttings'
     Sample_id = db.Column(db.Integer,primary_key=True)
     Wellbore_id = db.Column(db.Integer, db.ForeignKey(Wellbore.Wellbore_id))
     Sample_box_number = db.Column(db.VARCHAR(100))

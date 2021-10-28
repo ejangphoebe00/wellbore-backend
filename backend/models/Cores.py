@@ -7,7 +7,7 @@ from datetime import datetime
 
 
 class Cores(db.Model):
-    __tablename__ = 'cores'
+    __tablename__ = 'geosims_t_Cores'
     Core_sample_id = db.Column(db.Integer,primary_key=True)
     Coring_contractor = db.Column(db.Integer, db.ForeignKey(Company.Company_id))
     Wellbore_id = db.Column(db.Integer, db.ForeignKey(Wellbore.Wellbore_id))

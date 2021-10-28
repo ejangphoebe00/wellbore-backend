@@ -3,7 +3,7 @@ from .. import db
 from .CraneUser import CraneUser
 
 class Company(db.Model):
-    __tablename__ = 'crane_t_Company'
+    __tablename__ = 'geosims_t_Company'
     Company_id = db.Column(db.Integer,primary_key=True)
     PAUID = db.Column(db.NVARCHAR(255),nullable=False, unique=True)
     CompanyLongName = db.Column(db.NVARCHAR(255),nullable=False, unique=True)

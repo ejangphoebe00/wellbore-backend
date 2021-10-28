@@ -2,7 +2,7 @@ from .. import db
 from .CraneUser import CraneUser
 
 class CraneUserLoginHistory(db.Model):
-    __tablename__ = 'crane_t_CraneUserLoginHistory'
+    __tablename__ = 'geosims_t_CraneUserLoginHistory'
     UserLoginHistory_id = db.Column(db.Integer,primary_key=True)
     HistLogUser_id = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUser_id),nullable=False) 
     LogStaff_id = db.Column(db.Integer)
