@@ -1,7 +1,7 @@
 from .. import db
 from .CraneUser import CraneUser
 from .RockSamples import RockSamples
-from .Cores import Cores
+from .Core import Cores
 from .FluidSamples import FluidSamples
 
 import enum
@@ -16,7 +16,7 @@ class ReportTypeEnum(enum.Enum):
 class Files(db.Model):
     __tablename__ = 'geosims_rt_Files'
     File_id = db.Column(db.Integer,primary_key=True)
-    Cores_id = db.Column(db.Integer, db.ForeignKey(Cores.Core_sample_id))
+    Cores_id = db.Column(db.Integer, db.ForeignKey(Cores.WellboreCore_id))
     Fluid_samples_id = db.Column(db.Integer, db.ForeignKey(FluidSamples.Sample_id))
     Rock_samples_id = db.Column(db.Integer, db.ForeignKey(RockSamples.id))
     Report_type = db.Column(db.Enum(ReportTypeEnum))

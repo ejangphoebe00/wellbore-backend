@@ -1,5 +1,5 @@
 from flask import Blueprint, request, make_response, jsonify
-from ..models.RockSamples import RockSamples
+from ..models.RockSamples import RockSamples, BasinsEnum
 from ..models.CraneUser import CraneUser, UserCatgoryEnum
 from flask_jwt_extended import (
     jwt_required,
@@ -26,6 +26,8 @@ def add_rock_sample():
         rock_sample = RockSamples.query.filter_by(Sample_id=data['Sample_id']).first()
         if rock_sample:
             return make_response(jsonify({'message':'Sample_id already exists.'}),409)
+        if data['Sample_basin'] not in [element.value for element in BasinsEnum]:
+            return make_response(jsonify({'message':f"{data['Sample_basin']} doesn't exist."}),400)
         new_rock_sample = RockSamples(
                         Sample_id = data['Sample_id'],
                         Date_collected = data['Date_collected'],
@@ -56,6 +58,8 @@ def edit_rock_sample(id):
         if rock_sample:
             if id != rock_sample.id:
                 return make_response(jsonify({'message':'Sample_id already exists.'}),409)
+        if data['Sample_basin'] not in [element.value for element in BasinsEnum]:
+            return make_response(jsonify({'message':f"{data['Sample_basin']} doesn't exist."}),400)
         rock_sample = RockSamples.query.get(id)
         rock_sample.Sample_id = data['Sample_id']
         rock_sample.Date_collected = data['Date_collected']

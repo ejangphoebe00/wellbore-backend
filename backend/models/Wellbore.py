@@ -6,6 +6,7 @@ import enum
 class DevelopmentAreaEnum(enum.Enum):
     KFDA = "King Fisher Development Area"
     TDA = "Telinga Development Area"
+    Others = "Others"
 
 class Wellbore(db.Model):
     __tablename__ = 'geosims_t_Wellbore'

@@ -41,11 +41,9 @@ def create_app():
     with app.app_context():
         # import models
         from .models import (Token,CraneWebSecurityLevel, CraneUser, CraneUserLoginHistory,
-                                CatalogSecurityFlag,
-                                CoreType, FileFormat, FileSecurityGrade, 
                                 Company, Wellbore,
-                                StratLithoUnit, WellboreCore, CoreCatalog,
-                                Cores, Cuttings, RockSamples, FluidSamples, Files
+                                StratLithoUnit, CoreCatalog,
+                                Core, Cuttings, RockSamples, FluidSamples, Files
                                 )
 
         # Import controller blueprints
@@ -53,14 +51,14 @@ def create_app():
         from .controllers.user import auth_bp
         from .controllers.company import company_bp
         from .controllers.welbore import wellbore_bp
-        from .controllers.welbore_core import welbore_core_bp
-        from .controllers.file_format import file_format_bp
-        from .controllers.file_security_grade import file_security_grade_bp
+        # from .controllers.welbore_core import welbore_core_bp
+        # from .controllers.file_format import file_format_bp
+        # from .controllers.file_security_grade import file_security_grade_bp
         from .controllers.strat_litho_unit import strat_litho_unit_bp
-        from .controllers.catalog_security_flag import catalog_security_flag_bp
-        from .controllers.core_type import core_type_bp
+        # from .controllers.catalog_security_flag import catalog_security_flag_bp
+        # from .controllers.core_type import core_type_bp
         from .controllers.core_catalog import core_catalog_bp
-        from .controllers.cores import cores_bp
+        from .controllers.cores import core_bp
         from .controllers.cuttings import cuttings_bp
         from .controllers.rock_samples import rock_samples_bp
         from .controllers.fluid_samples import fluid_samples_bp
@@ -76,14 +74,14 @@ def create_app():
         app.register_blueprint(auth_bp)
         app.register_blueprint(company_bp)
         app.register_blueprint(wellbore_bp)
-        app.register_blueprint(welbore_core_bp)
-        app.register_blueprint(file_security_grade_bp)
-        app.register_blueprint(file_format_bp)
+        # app.register_blueprint(welbore_core_bp)
+        # app.register_blueprint(file_security_grade_bp)
+        # app.register_blueprint(file_format_bp)
         app.register_blueprint(strat_litho_unit_bp)
-        app.register_blueprint(catalog_security_flag_bp)
-        app.register_blueprint(core_type_bp)
+        # app.register_blueprint(catalog_security_flag_bp)
+        # app.register_blueprint(core_type_bp)
         app.register_blueprint(core_catalog_bp)
-        app.register_blueprint(cores_bp)
+        app.register_blueprint(core_bp)
         app.register_blueprint(cuttings_bp)
         app.register_blueprint(rock_samples_bp)
         app.register_blueprint(fluid_samples_bp)

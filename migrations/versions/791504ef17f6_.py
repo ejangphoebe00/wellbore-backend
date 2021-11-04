@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 24d1fdac558a
+Revision ID: 791504ef17f6
 Revises: 
-Create Date: 2021-10-28 14:54:02.758415
+Create Date: 2021-11-04 14:26:18.015331
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '24d1fdac558a'
+revision = '791504ef17f6'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -80,50 +80,6 @@ def upgrade():
     sa.UniqueConstraint('CraneUserName'),
     sa.UniqueConstraint('UserEmailAddress'),
     sa.UniqueConstraint('UserStaff_id')
-    )
-    op.create_table('geosims_rt_CatalogSecurityFlag',
-    sa.Column('CatalogSecurityFlag_id', sa.Integer(), nullable=False),
-    sa.Column('CatalogSecurityFlagName', sa.NVARCHAR(length=255), nullable=False),
-    sa.Column('SortOrder', sa.Integer(), nullable=True),
-    sa.Column('Comments', sa.NVARCHAR(length=500), nullable=True),
-    sa.Column('ModifiedOn', sa.DateTime(), nullable=True),
-    sa.Column('ModifiedBy', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['ModifiedBy'], ['geosims_t_CraneUser.CraneUser_id'], ),
-    sa.PrimaryKeyConstraint('CatalogSecurityFlag_id'),
-    sa.UniqueConstraint('CatalogSecurityFlagName')
-    )
-    op.create_table('geosims_rt_CoreType',
-    sa.Column('CoreType_id', sa.Integer(), nullable=False),
-    sa.Column('CoreTypeName', sa.NVARCHAR(length=255), nullable=False),
-    sa.Column('SortOrder', sa.Integer(), nullable=True),
-    sa.Column('Comments', sa.NVARCHAR(length=500), nullable=True),
-    sa.Column('ModifiedOn', sa.DateTime(), nullable=True),
-    sa.Column('ModifiedBy', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['ModifiedBy'], ['geosims_t_CraneUser.CraneUser_id'], ),
-    sa.PrimaryKeyConstraint('CoreType_id'),
-    sa.UniqueConstraint('CoreTypeName')
-    )
-    op.create_table('geosims_rt_FileFormat',
-    sa.Column('FileFormat_id', sa.Integer(), nullable=False),
-    sa.Column('FileFormatName', sa.NVARCHAR(length=255), nullable=False),
-    sa.Column('SortOrder', sa.Integer(), nullable=True),
-    sa.Column('Comments', sa.NVARCHAR(length=500), nullable=True),
-    sa.Column('ModifiedOn', sa.DateTime(), nullable=True),
-    sa.Column('ModifiedBy', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['ModifiedBy'], ['geosims_t_CraneUser.CraneUser_id'], ),
-    sa.PrimaryKeyConstraint('FileFormat_id'),
-    sa.UniqueConstraint('FileFormatName')
-    )
-    op.create_table('geosims_rt_FileSecurityGrade',
-    sa.Column('FileSecurityGrade_id', sa.Integer(), nullable=False),
-    sa.Column('FileSecurityGradeName', sa.NVARCHAR(length=255), nullable=False),
-    sa.Column('SortOrder', sa.Integer(), nullable=True),
-    sa.Column('Comments', sa.NVARCHAR(length=500), nullable=True),
-    sa.Column('ModifiedOn', sa.DateTime(), nullable=True),
-    sa.Column('ModifiedBy', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['ModifiedBy'], ['geosims_t_CraneUser.CraneUser_id'], ),
-    sa.PrimaryKeyConstraint('FileSecurityGrade_id'),
-    sa.UniqueConstraint('FileSecurityGradeName')
     )
     op.create_table('geosims_t_Company',
     sa.Column('Company_id', sa.Integer(), nullable=False),
@@ -215,7 +171,7 @@ def upgrade():
     sa.Column('Sample_id', sa.VARCHAR(length=100), nullable=False),
     sa.Column('Date_collected', sa.DateTime(), nullable=True),
     sa.Column('Date_received', sa.DateTime(), nullable=True),
-    sa.Column('Sample_basin', sa.Float(), nullable=True),
+    sa.Column('Sample_basin', sa.Enum('The Albertine Graben', 'Hoima Basin', 'Lake Kyoga Basin', 'Lake Wamala Basin', 'Kadam-Moroto Basin', name='basinsenum'), nullable=True),
     sa.Column('Rock_name', sa.VARCHAR(length=100), nullable=True),
     sa.Column('Coordinate_location', sa.VARCHAR(length=100), nullable=True),
     sa.Column('Petrographic_description', sa.VARCHAR(length=500), nullable=True),
@@ -258,7 +214,7 @@ def upgrade():
     sa.Column('WellboreOfficialName', sa.NVARCHAR(length=255), nullable=True),
     sa.Column('WellboreLocalName', sa.NVARCHAR(length=255), nullable=False),
     sa.Column('WellboreAliasName', sa.NVARCHAR(length=255), nullable=False),
-    sa.Column('DevelopmentAreaName', sa.Enum('KFDA', 'TDA', name='developmentareaenum'), nullable=False),
+    sa.Column('DevelopmentAreaName', sa.Enum('KFDA', 'TDA', 'Others', name='developmentareaenum'), nullable=False),
     sa.Column('WellboreSpudDate', sa.Date(), nullable=True),
     sa.Column('SpudYear', sa.String(length=50), nullable=True),
     sa.Column('WellboreType_id', sa.Integer(), nullable=True),
@@ -325,27 +281,47 @@ def upgrade():
     sa.UniqueConstraint('WellboreOfficialName')
     )
     op.create_table('geosims_t_Cores',
-    sa.Column('Core_sample_id', sa.Integer(), nullable=False),
-    sa.Column('Coring_contractor', sa.Integer(), nullable=True),
-    sa.Column('Wellbore_id', sa.Integer(), nullable=True),
-    sa.Column('Core_number', sa.VARCHAR(length=100), nullable=False),
-    sa.Column('Coring_date', sa.DateTime(), nullable=True),
-    sa.Column('Top_MD', sa.VARCHAR(length=100), nullable=True),
-    sa.Column('Bottom_MD', sa.VARCHAR(length=100), nullable=True),
-    sa.Column('Cut_length', sa.Integer(), nullable=True),
-    sa.Column('Percentage_recovery', sa.Float(), nullable=True),
-    sa.Column('Top_formation', sa.VARCHAR(length=100), nullable=True),
-    sa.Column('Bottom_formation', sa.VARCHAR(length=100), nullable=True),
+    sa.Column('WellboreCore_id', sa.Integer(), nullable=False),
+    sa.Column('Wellbore_id', sa.Integer(), nullable=False),
+    sa.Column('CoreNumber', sa.NVARCHAR(length=255), nullable=True),
+    sa.Column('CoreTypeName', sa.Enum('Slab', '1/2 Slab', '1/3 Slab', '2/3 Slab', 'Biscuit Slab', 'Full Diameter', 'SideWall Core', name='coretypeenum'), nullable=False),
+    sa.Column('CoringDate', sa.Date(), nullable=True),
+    sa.Column('WBCoringContractor_id', sa.Integer(), nullable=True),
+    sa.Column('CoreTopMD', sa.DECIMAL(), nullable=True),
+    sa.Column('CoreBtmMD', sa.DECIMAL(), nullable=True),
+    sa.Column('CoreTopTVD', sa.DECIMAL(), nullable=True),
+    sa.Column('CoreBtmTVD', sa.DECIMAL(), nullable=True),
+    sa.Column('CutLength', sa.String(length=100), nullable=True),
+    sa.Column('CutLengthTVD', sa.String(length=100), nullable=True),
+    sa.Column('RecoveredLength', sa.DECIMAL(), nullable=True),
+    sa.Column('PercentageCoreRecovery', sa.Float(), nullable=True),
+    sa.Column('CoreTopStratLitho_id', sa.Integer(), nullable=True),
+    sa.Column('CoreBottomStratLitho_id', sa.Integer(), nullable=True),
+    sa.Column('CorePictureSoftcopyPath', sa.TEXT(), nullable=True),
+    sa.Column('CorePictureHyperlink', sa.TEXT(), nullable=True),
+    sa.Column('PictureUploadDate', sa.DateTime(), nullable=True),
+    sa.Column('CoreReportSoftcopyPath', sa.TEXT(), nullable=True),
+    sa.Column('CoreReportHyperlink', sa.TEXT(), nullable=True),
+    sa.Column('ReportUploadDate', sa.DateTime(), nullable=True),
+    sa.Column('ReportFileSize', sa.DECIMAL(), nullable=True),
+    sa.Column('ReportOpenDueDate', sa.DateTime(), nullable=True),
+    sa.Column('ReportDocumentTitle', sa.NVARCHAR(length=100), nullable=True),
+    sa.Column('ReportReceivedDate', sa.DateTime(), nullable=True),
+    sa.Column('ReportDocumentDate', sa.DateTime(), nullable=True),
+    sa.Column('ReportDocumentName', sa.NVARCHAR(length=100), nullable=True),
+    sa.Column('Comments', sa.NVARCHAR(length=500), nullable=True),
     sa.Column('CreatedBy_id', sa.Integer(), nullable=False),
     sa.Column('DateCreated', sa.DateTime(), nullable=True),
     sa.Column('ModifiedOn', sa.DateTime(), nullable=True),
     sa.Column('ModifiedBy', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['Coring_contractor'], ['geosims_t_Company.Company_id'], ),
+    sa.ForeignKeyConstraint(['CoreBottomStratLitho_id'], ['geosims_t_StratLithoUnit.StratLitho_id'], ),
+    sa.ForeignKeyConstraint(['CoreTopStratLitho_id'], ['geosims_t_StratLithoUnit.StratLitho_id'], ),
     sa.ForeignKeyConstraint(['CreatedBy_id'], ['geosims_t_CraneUser.CraneUser_id'], ),
     sa.ForeignKeyConstraint(['ModifiedBy'], ['geosims_t_CraneUser.CraneUser_id'], ),
+    sa.ForeignKeyConstraint(['WBCoringContractor_id'], ['geosims_t_Company.Company_id'], ),
     sa.ForeignKeyConstraint(['Wellbore_id'], ['geosims_t_Wellbore.Wellbore_id'], ),
-    sa.PrimaryKeyConstraint('Core_sample_id'),
-    sa.UniqueConstraint('Core_number')
+    sa.PrimaryKeyConstraint('WellboreCore_id'),
+    sa.UniqueConstraint('CoreNumber')
     )
     op.create_table('geosims_t_Cuttings',
     sa.Column('Sample_id', sa.Integer(), nullable=False),
@@ -388,54 +364,6 @@ def upgrade():
     sa.ForeignKeyConstraint(['Wellbore_id'], ['geosims_t_Wellbore.Wellbore_id'], ),
     sa.PrimaryKeyConstraint('Sample_id')
     )
-    op.create_table('geosims_t_WellboreCore',
-    sa.Column('WellboreCore_id', sa.Integer(), nullable=False),
-    sa.Column('Wellbore_id', sa.Integer(), nullable=False),
-    sa.Column('CoreNumber', sa.NVARCHAR(length=255), nullable=True),
-    sa.Column('CoringDate', sa.Date(), nullable=True),
-    sa.Column('WBCoringContractor_id', sa.Integer(), nullable=True),
-    sa.Column('CoreTopMDRT', sa.DECIMAL(), nullable=True),
-    sa.Column('CoreBtmMDRT', sa.DECIMAL(), nullable=True),
-    sa.Column('CoreTopTVD', sa.DECIMAL(), nullable=True),
-    sa.Column('CoreBtmTVD', sa.DECIMAL(), nullable=True),
-    sa.Column('CutLength', sa.String(length=100), nullable=True),
-    sa.Column('CutLengthTVD', sa.String(length=100), nullable=True),
-    sa.Column('RecoveredLength', sa.DECIMAL(), nullable=True),
-    sa.Column('CoreRecovery', sa.String(length=100), nullable=True),
-    sa.Column('CoreTopStratLitho_id', sa.Integer(), nullable=True),
-    sa.Column('CoreBottomStratLitho_id', sa.Integer(), nullable=True),
-    sa.Column('CorePictureSoftcopyPath', sa.TEXT(), nullable=True),
-    sa.Column('CorePictureHyperlink', sa.TEXT(), nullable=True),
-    sa.Column('PictureUploadDate', sa.DateTime(), nullable=True),
-    sa.Column('CoreReportSoftcopyPath', sa.TEXT(), nullable=True),
-    sa.Column('CoreReportHyperlink', sa.TEXT(), nullable=True),
-    sa.Column('ReportUploadDate', sa.DateTime(), nullable=True),
-    sa.Column('ReportFormat_id', sa.Integer(), nullable=True),
-    sa.Column('ReportFileSize', sa.DECIMAL(), nullable=True),
-    sa.Column('CoreReportSecurityGrade_id', sa.Integer(), nullable=True),
-    sa.Column('ReportOpenDueDate', sa.DateTime(), nullable=True),
-    sa.Column('ReportDocumentTitle', sa.NVARCHAR(length=100), nullable=True),
-    sa.Column('ReportReceivedDate', sa.DateTime(), nullable=True),
-    sa.Column('ReportDocumentDate', sa.DateTime(), nullable=True),
-    sa.Column('ReportDocumentName', sa.NVARCHAR(length=100), nullable=True),
-    sa.Column('WellboreCoreName', sa.NVARCHAR(length=100), nullable=True),
-    sa.Column('Comments', sa.NVARCHAR(length=500), nullable=True),
-    sa.Column('CreatedBy_id', sa.Integer(), nullable=False),
-    sa.Column('DateCreated', sa.DateTime(), nullable=True),
-    sa.Column('ModifiedOn', sa.DateTime(), nullable=True),
-    sa.Column('ModifiedBy', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['CoreBottomStratLitho_id'], ['geosims_t_StratLithoUnit.StratLitho_id'], ),
-    sa.ForeignKeyConstraint(['CoreReportSecurityGrade_id'], ['geosims_rt_FileSecurityGrade.FileSecurityGrade_id'], ),
-    sa.ForeignKeyConstraint(['CoreTopStratLitho_id'], ['geosims_t_StratLithoUnit.StratLitho_id'], ),
-    sa.ForeignKeyConstraint(['CreatedBy_id'], ['geosims_t_CraneUser.CraneUser_id'], ),
-    sa.ForeignKeyConstraint(['ModifiedBy'], ['geosims_t_CraneUser.CraneUser_id'], ),
-    sa.ForeignKeyConstraint(['ReportFormat_id'], ['geosims_rt_FileFormat.FileFormat_id'], ),
-    sa.ForeignKeyConstraint(['WBCoringContractor_id'], ['geosims_t_Company.Company_id'], ),
-    sa.ForeignKeyConstraint(['Wellbore_id'], ['geosims_t_Wellbore.Wellbore_id'], ),
-    sa.PrimaryKeyConstraint('WellboreCore_id'),
-    sa.UniqueConstraint('CoreNumber'),
-    sa.UniqueConstraint('WellboreCoreName')
-    )
     op.create_table('geosims_rt_Files',
     sa.Column('File_id', sa.Integer(), nullable=False),
     sa.Column('Cores_id', sa.Integer(), nullable=True),
@@ -446,7 +374,7 @@ def upgrade():
     sa.Column('Photograph_path', sa.VARCHAR(length=500), nullable=True),
     sa.Column('CreatedBy_id', sa.Integer(), nullable=False),
     sa.Column('DateCreated', sa.DateTime(), nullable=True),
-    sa.ForeignKeyConstraint(['Cores_id'], ['geosims_t_Cores.Core_sample_id'], ),
+    sa.ForeignKeyConstraint(['Cores_id'], ['geosims_t_Cores.WellboreCore_id'], ),
     sa.ForeignKeyConstraint(['CreatedBy_id'], ['geosims_t_CraneUser.CraneUser_id'], ),
     sa.ForeignKeyConstraint(['Fluid_samples_id'], ['geosims_t_FluidSamples.Sample_id'], ),
     sa.ForeignKeyConstraint(['Rock_samples_id'], ['geosims_t_RockSamples.id'], ),
@@ -455,11 +383,9 @@ def upgrade():
     op.create_table('geosims_t_CoreCatalog',
     sa.Column('CoreCatalog_id', sa.Integer(), nullable=False),
     sa.Column('WellboreCore_id', sa.Integer(), nullable=False),
-    sa.Column('CoreType', sa.Integer(), nullable=False),
     sa.Column('StoreIdentifier', sa.NVARCHAR(length=100), nullable=True),
     sa.Column('CatalogCoreFromDepth', sa.DECIMAL(), nullable=True),
     sa.Column('CatalogCoreToDepth', sa.DECIMAL(), nullable=True),
-    sa.Column('CoreCatalogSecurityFlag_id', sa.Integer(), nullable=True),
     sa.Column('WasAnalysed_id', sa.Integer(), nullable=True),
     sa.Column('TopStratLitho_id', sa.Integer(), nullable=True),
     sa.Column('BottomStratLitho_id', sa.Integer(), nullable=True),
@@ -470,9 +396,7 @@ def upgrade():
     sa.Column('CatalogueReportSoftcopyPath', sa.TEXT(), nullable=True),
     sa.Column('CatalogueReportHyperlink', sa.TEXT(), nullable=True),
     sa.Column('CatReportUploadDate', sa.DateTime(), nullable=True),
-    sa.Column('CatalogReportFormat_id', sa.Integer(), nullable=True),
     sa.Column('CatalogReportFileSize', sa.DECIMAL(), nullable=True),
-    sa.Column('CatalogReportSecurityGrade_id', sa.Integer(), nullable=True),
     sa.Column('CoreCatalogName', sa.NVARCHAR(length=100), nullable=False),
     sa.Column('Comments', sa.NVARCHAR(length=500), nullable=True),
     sa.Column('CreatedBy_id', sa.Integer(), nullable=False),
@@ -480,14 +404,10 @@ def upgrade():
     sa.Column('ModifiedOn', sa.DateTime(), nullable=True),
     sa.Column('ModifiedBy', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['BottomStratLitho_id'], ['geosims_t_StratLithoUnit.StratLitho_id'], ),
-    sa.ForeignKeyConstraint(['CatalogReportFormat_id'], ['geosims_rt_FileFormat.FileFormat_id'], ),
-    sa.ForeignKeyConstraint(['CatalogReportSecurityGrade_id'], ['geosims_rt_FileSecurityGrade.FileSecurityGrade_id'], ),
-    sa.ForeignKeyConstraint(['CoreCatalogSecurityFlag_id'], ['geosims_rt_CatalogSecurityFlag.CatalogSecurityFlag_id'], ),
-    sa.ForeignKeyConstraint(['CoreType'], ['geosims_rt_CoreType.CoreType_id'], ),
     sa.ForeignKeyConstraint(['CreatedBy_id'], ['geosims_t_CraneUser.CraneUser_id'], ),
     sa.ForeignKeyConstraint(['ModifiedBy'], ['geosims_t_CraneUser.CraneUser_id'], ),
     sa.ForeignKeyConstraint(['TopStratLitho_id'], ['geosims_t_StratLithoUnit.StratLitho_id'], ),
-    sa.ForeignKeyConstraint(['WellboreCore_id'], ['geosims_t_WellboreCore.WellboreCore_id'], ),
+    sa.ForeignKeyConstraint(['WellboreCore_id'], ['geosims_t_Cores.WellboreCore_id'], ),
     sa.PrimaryKeyConstraint('CoreCatalog_id'),
     sa.UniqueConstraint('CoreCatalogName')
     )
@@ -498,7 +418,6 @@ def downgrade():
     # ### commands auto generated by Alembic - please adjust! ###
     op.drop_table('geosims_t_CoreCatalog')
     op.drop_table('geosims_rt_Files')
-    op.drop_table('geosims_t_WellboreCore')
     op.drop_table('geosims_t_FluidSamples')
     op.drop_table('geosims_t_Cuttings')
     op.drop_table('geosims_t_Cores')
@@ -507,10 +426,6 @@ def downgrade():
     op.drop_table('geosims_t_RockSamples')
     op.drop_table('geosims_t_CraneUserLoginHistory')
     op.drop_table('geosims_t_Company')
-    op.drop_table('geosims_rt_FileSecurityGrade')
-    op.drop_table('geosims_rt_FileFormat')
-    op.drop_table('geosims_rt_CoreType')
-    op.drop_table('geosims_rt_CatalogSecurityFlag')
     op.drop_table('geosims_t_CraneUser')
     op.drop_table('revoked_tokens')
     op.drop_table('geosims_rt_CraneWebSecurityLevel')

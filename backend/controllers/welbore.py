@@ -1,6 +1,6 @@
 from flask import Blueprint, request, make_response, jsonify
 from ..models.Wellbore import Wellbore, DevelopmentAreaEnum
-from ..models.WellboreCore import WellboreCore
+from ..models.Core import Cores
 from ..models.CraneUser import CraneUser, UserCatgoryEnum
 from flask_jwt_extended import (
     jwt_required,
@@ -209,7 +209,7 @@ def delete_wellbore(Wellbore_id):
 @jwt_required()
 def get_all_wellbore_cores(Wellbore_id):
     try:
-        wellbore_cores = [z.serialise() for z in WellboreCore.query.filter(WellboreCore.Wellbore_id == Wellbore_id)]
+        wellbore_cores = [z.serialise() for z in Cores.query.filter(Cores.Wellbore_id == Wellbore_id)]
         return make_response(jsonify(wellbore_cores),200)
     except:
         return make_response(str(traceback.format_exc()),500)

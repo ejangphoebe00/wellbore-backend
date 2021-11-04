@@ -28,11 +28,11 @@ def add_core_catalog():
     try:
         new_core_catalog = CoreCatalog(
                         WellboreCore_id = data['WellboreCore_id'], # comes from welbore core
-                        CoreType = data['CoreType'], # comes from core type
+                        # CoreType = data['CoreType'], # comes from core type
                         StoreIdentifier = data['StoreIdentifier'],
                         CatalogCoreFromDepth = data['CatalogCoreFromDepth'],
                         CatalogCoreToDepth = data['CatalogCoreToDepth'],
-                        CoreCatalogSecurityFlag_id = data['CoreCatalogSecurityFlag_id'], # comes from catalog security flag
+                        # CoreCatalogSecurityFlag_id = data['CoreCatalogSecurityFlag_id'], # comes from catalog security flag
                         WasAnalysed_id = data['WasAnalysed_id'],
                         TopStratLitho_id = data['TopStratLitho_id'], # comes from strat litho
                         BottomStratLitho_id = data['BottomStratLitho_id'], # comes from strat litho
@@ -43,9 +43,9 @@ def add_core_catalog():
                         CatalogueReportSoftcopyPath = data['CatalogueReportSoftcopyPath'],
                         CatalogueReportHyperlink = data['CatalogueReportHyperlink'],
                         CatReportUploadDate = data['CatReportUploadDate'],
-                        CatalogReportFormat_id = data['CatalogReportFormat_id'], # comes from file format
+                        # CatalogReportFormat_id = data['CatalogReportFormat_id'], # comes from file format
                         CatalogReportFileSize = data['CatalogReportFileSize'],
-                        CatalogReportSecurityGrade_id = data['CatalogReportSecurityGrade_id'], # comes from file security grade
+                        # CatalogReportSecurityGrade_id = data['CatalogReportSecurityGrade_id'], # comes from file security grade
                         CoreCatalogName = data['CoreCatalogName'],
                         Comments = data['Comments'],
                         CreatedBy_id = user.CraneUser_id,
@@ -73,11 +73,11 @@ def edit_core_catalog(CoreCatalog_id):
     try:
         core_catalog = CoreCatalog.query.get(CoreCatalog_id)
         core_catalog.WellboreCore_id = data['WellboreCore_id'] # comes from welbore core
-        core_catalog.CoreType = data['CoreType'] # comes from core type
+        # core_catalog.CoreType = data['CoreType'] # comes from core type
         core_catalog.StoreIdentifier = data['StoreIdentifier']
         core_catalog.CatalogCoreFromDepth = data['CatalogCoreFromDepth']
         core_catalog.CatalogCoreToDepth = data['CatalogCoreToDepth']
-        core_catalog.CoreCatalogSecurityFlag_id = data['CoreCatalogSecurityFlag_id'] # comes from catalog security flag
+        # core_catalog.CoreCatalogSecurityFlag_id = data['CoreCatalogSecurityFlag_id'] # comes from catalog security flag
         core_catalog.WasAnalysed_id = data['WasAnalysed_id']
         core_catalog.TopStratLitho_id = data['TopStratLitho_id'] # comes from strat litho
         core_catalog.BottomStratLitho_id = data['BottomStratLitho_id'] # comes from strat litho
@@ -88,9 +88,9 @@ def edit_core_catalog(CoreCatalog_id):
         core_catalog.CatalogueReportSoftcopyPath = data['CatalogueReportSoftcopyPath']
         core_catalog.CatalogueReportHyperlink = data['CatalogueReportHyperlink']
         core_catalog.CatReportUploadDate = data['CatReportUploadDate']
-        core_catalog.CatalogReportFormat_id = data['CatalogReportFormat_id'] # comes from file format
+        # core_catalog.CatalogReportFormat_id = data['CatalogReportFormat_id'] # comes from file format
         core_catalog.CatalogReportFileSize = data['CatalogReportFileSize']
-        core_catalog.CatalogReportSecurityGrade_id = data['CatalogReportSecurityGrade_id'] # comes from file security grade
+        # core_catalog.CatalogReportSecurityGrade_id = data['CatalogReportSecurityGrade_id'] # comes from file security grade
         core_catalog.CoreCatalogName = data['CoreCatalogName']
         core_catalog.ModifiedOn = datetime.datetime.now()
         core_catalog.ModifiedBy = user.CraneUser_id

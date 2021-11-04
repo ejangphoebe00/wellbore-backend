@@ -1,7 +1,14 @@
-from enum import unique
+import enum
 from .. import db
 from .CraneUser import CraneUser
 from datetime import datetime
+
+class BasinsEnum(enum.Enum):
+    Albertine = "The Albertine Graben"
+    Hoima = "Hoima Basin"
+    Kyoga = "Lake Kyoga Basin"
+    Wamala = "Lake Wamala Basin"
+    Kadam = "Kadam-Moroto Basin"
 
 
 class RockSamples(db.Model):
@@ -10,7 +17,8 @@ class RockSamples(db.Model):
     Sample_id = db.Column(db.VARCHAR(100), nullable=False, unique=True)
     Date_collected = db.Column(db.DateTime)
     Date_received = db.Column(db.DateTime)
-    Sample_basin = db.Column(db.Float)
+    Sample_basin = db.Column(db.Enum(BasinsEnum,
+             values_callable=lambda enum: [str(e.value) for e in enum]))
     Rock_name = db.Column(db.VARCHAR(100))
     Coordinate_location = db.Column(db.VARCHAR(100))
     Petrographic_description = db.Column(db.VARCHAR(500))

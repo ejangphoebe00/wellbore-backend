@@ -1,21 +1,21 @@
 from .. import db
 from .CraneUser import CraneUser
-from .WellboreCore import WellboreCore
-from .FileSecurityGrade import FileSecurityGrade
-from .FileFormat import FileFormat
+from .Core import Cores
+# from .FileSecurityGrade import FileSecurityGrade
+# from .FileFormat import FileFormat
 from .StratLithoUnit import StratLithoUnit
-from .CoreType import CoreType
-from .CatalogSecurityFlag import CatalogSecurityFlag
+# from .CoreType import CoreType
+# from .CatalogSecurityFlag import CatalogSecurityFlag
 
 class CoreCatalog(db.Model):
     __tablename__ = 'geosims_t_CoreCatalog'
     CoreCatalog_id = db.Column(db.Integer,primary_key=True)
-    WellboreCore_id = db.Column(db.Integer, db.ForeignKey(WellboreCore.WellboreCore_id),nullable=False)
-    CoreType = db.Column(db.Integer, db.ForeignKey(CoreType.CoreType_id),nullable=False)
+    WellboreCore_id = db.Column(db.Integer, db.ForeignKey(Cores.WellboreCore_id),nullable=False)
+    # CoreType = db.Column(db.Integer, db.ForeignKey(CoreType.CoreType_id),nullable=False)
     StoreIdentifier = db.Column(db.NVARCHAR(100))
     CatalogCoreFromDepth = db.Column(db.DECIMAL)
     CatalogCoreToDepth = db.Column(db.DECIMAL)
-    CoreCatalogSecurityFlag_id = db.Column(db.Integer, db.ForeignKey(CatalogSecurityFlag.CatalogSecurityFlag_id),nullable=True)
+    # CoreCatalogSecurityFlag_id = db.Column(db.Integer, db.ForeignKey(CatalogSecurityFlag.CatalogSecurityFlag_id),nullable=True)
     WasAnalysed_id = db.Column(db.Integer)
     TopStratLitho_id = db.Column(db.Integer, db.ForeignKey(StratLithoUnit.StratLitho_id),nullable=True)
     BottomStratLitho_id = db.Column(db.Integer, db.ForeignKey(StratLithoUnit.StratLitho_id),nullable=True)
@@ -26,9 +26,9 @@ class CoreCatalog(db.Model):
     CatalogueReportSoftcopyPath = db.Column(db.TEXT)
     CatalogueReportHyperlink = db.Column(db.TEXT)
     CatReportUploadDate = db.Column(db.DateTime)
-    CatalogReportFormat_id = db.Column(db.Integer, db.ForeignKey(FileFormat.FileFormat_id),nullable=True)
+    # CatalogReportFormat_id = db.Column(db.Integer, db.ForeignKey(FileFormat.FileFormat_id),nullable=True)
     CatalogReportFileSize = db.Column(db.DECIMAL)
-    CatalogReportSecurityGrade_id = db.Column(db.Integer, db.ForeignKey(FileSecurityGrade.FileSecurityGrade_id),nullable=True)
+    # CatalogReportSecurityGrade_id = db.Column(db.Integer, db.ForeignKey(FileSecurityGrade.FileSecurityGrade_id),nullable=True)
     CoreCatalogName = db.Column(db.NVARCHAR(100), unique=True, nullable=False)
     Comments = db.Column(db.NVARCHAR(500))
     CreatedBy_id = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUser_id),nullable=False)
