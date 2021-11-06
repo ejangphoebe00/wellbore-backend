@@ -32,7 +32,8 @@ def add_core():
     #     return make_response(jsonify({'message':'WellboreCoreName already exists.'}),409)
     try:
         new_core = Cores(
-                        Wellbore_id = data['Wellbore_id'],#comes from welbore
+                        WellborePAUID = data['WellborePAUID'],#comes from welbore
+                        WelboreCoreName = data['WelboreCoreName'],
                         CoreTypeName = data['CoreTypeName'],
                         CoreNumber = data['CoreNumber'],
                         CoringDate = data['CoringDate'],
@@ -90,7 +91,8 @@ def edit_core(WellboreCore_id):
     #         return make_response(jsonify({'message':'WellboreCoreName already exists.'}),409)
     try:
         core = Cores.query.get(WellboreCore_id)
-        core.Wellbore_id = data['Wellbore_id']
+        core.WellborePAUID = data['WellborePAUID'],#comes from welbore
+        core.WelboreCoreName = data['WelboreCoreName'],
         core.CoreNumber = data['CoreNumber']
         core.CoreTypeName = data['CoreTypeName']
         core.CoringDate = data['CoringDate']

@@ -20,7 +20,8 @@ class CoreTypeEnum(enum.Enum):
 class Cores(db.Model):
     __tablename__ = 'geosims_t_Cores'
     WellboreCore_id = db.Column(db.Integer,primary_key=True)
-    Wellbore_id = db.Column(db.Integer, db.ForeignKey(Wellbore.Wellbore_id),nullable=False)
+    WellborePAUID = db.Column(db.Integer, db.ForeignKey(Wellbore.PAUID),nullable=False)
+    WelboreCoreName = db.Column(db.NVARCHAR(255), db.ForeignKey(Wellbore.WellboreOfficialName),nullable=False)
     CoreNumber = db.Column(db.NVARCHAR(255), unique=True)
     CoreTypeName = db.Column(db.Enum(CoreTypeEnum,
             values_callable=lambda enum: [str(e.value) for e in enum]), nullable=False)     
@@ -50,7 +51,6 @@ class Cores(db.Model):
     ReportReceivedDate = db.Column(db.DateTime)
     ReportDocumentDate = db.Column(db.DateTime)
     ReportDocumentName = db.Column(db.NVARCHAR(100))
-    # Wellbore_id = db.Column(db.Integer, db.ForeignKey(Wellbore.Wellbore_id),nullable=False) #foreign key from welbbore
     Comments = db.Column(db.NVARCHAR(500))
     CreatedBy_id = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUser_id),nullable=False)
     DateCreated = db.Column(db.DateTime)

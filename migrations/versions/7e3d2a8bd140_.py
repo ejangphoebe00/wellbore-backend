@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 791504ef17f6
+Revision ID: 7e3d2a8bd140
 Revises: 
-Create Date: 2021-11-04 14:26:18.015331
+Create Date: 2021-11-06 15:07:57.907111
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '791504ef17f6'
+revision = '7e3d2a8bd140'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -278,11 +278,13 @@ def upgrade():
     sa.ForeignKeyConstraint(['PetrophysicalContractor_id'], ['geosims_t_Company.Company_id'], ),
     sa.ForeignKeyConstraint(['Prospect_id'], ['geosims_t_Company.Company_id'], ),
     sa.PrimaryKeyConstraint('Wellbore_id'),
+    sa.UniqueConstraint('PAUID'),
     sa.UniqueConstraint('WellboreOfficialName')
     )
     op.create_table('geosims_t_Cores',
     sa.Column('WellboreCore_id', sa.Integer(), nullable=False),
-    sa.Column('Wellbore_id', sa.Integer(), nullable=False),
+    sa.Column('WellborePAUID', sa.Integer(), nullable=False),
+    sa.Column('WelboreCoreName', sa.NVARCHAR(length=255), nullable=False),
     sa.Column('CoreNumber', sa.NVARCHAR(length=255), nullable=True),
     sa.Column('CoreTypeName', sa.Enum('Slab', '1/2 Slab', '1/3 Slab', '2/3 Slab', 'Biscuit Slab', 'Full Diameter', 'SideWall Core', name='coretypeenum'), nullable=False),
     sa.Column('CoringDate', sa.Date(), nullable=True),
@@ -319,7 +321,8 @@ def upgrade():
     sa.ForeignKeyConstraint(['CreatedBy_id'], ['geosims_t_CraneUser.CraneUser_id'], ),
     sa.ForeignKeyConstraint(['ModifiedBy'], ['geosims_t_CraneUser.CraneUser_id'], ),
     sa.ForeignKeyConstraint(['WBCoringContractor_id'], ['geosims_t_Company.Company_id'], ),
-    sa.ForeignKeyConstraint(['Wellbore_id'], ['geosims_t_Wellbore.Wellbore_id'], ),
+    sa.ForeignKeyConstraint(['WelboreCoreName'], ['geosims_t_Wellbore.WellboreOfficialName'], ),
+    sa.ForeignKeyConstraint(['WellborePAUID'], ['geosims_t_Wellbore.PAUID'], ),
     sa.PrimaryKeyConstraint('WellboreCore_id'),
     sa.UniqueConstraint('CoreNumber')
     )

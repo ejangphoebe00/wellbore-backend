@@ -26,6 +26,10 @@ def add_wellbore():
     welbore_name = Wellbore.query.filter_by(WellboreOfficialName=data['WellboreOfficialName']).first()
     if welbore_name and welbore_name.WellboreOfficialName != None:
         return make_response(jsonify({'message':'Wellbore name already exists.'}),409)
+
+    welbore_PAUID = Wellbore.query.filter_by(PAUID=data['PAUID']).first()
+    if welbore_PAUID and welbore_PAUID.PAUID != None:
+        return make_response(jsonify({'message':'PAUID already exists.'}),409)
     try:
         new_wellbore = Wellbore(
                         PAUID = data['PAUID'],
@@ -105,6 +109,12 @@ def edit_wellbore(Wellbore_id):
     if welbore_name and welbore_name.WellboreOfficialName != None:
         if Wellbore_id != welbore_name.Wellbore_id:
             return make_response(jsonify({'message':'Wellbore name already exists.'}),409)
+
+    welbore_PAUID = Wellbore.query.filter_by(PAUID=data['PAUID']).first()
+    if welbore_PAUID and welbore_PAUID.PAUID != None:
+        if Wellbore_id != welbore_PAUID.Wellbore_id:
+            return make_response(jsonify({'message':'PAUID already exists.'}),409)
+
     try:
         wellbore = Wellbore.query.get(Wellbore_id)
         wellbore.PAUID = data['PAUID']

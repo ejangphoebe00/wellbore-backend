@@ -11,7 +11,7 @@ class DevelopmentAreaEnum(enum.Enum):
 class Wellbore(db.Model):
     __tablename__ = 'geosims_t_Wellbore'
     Wellbore_id = db.Column(db.Integer,primary_key=True)
-    PAUID = db.Column(db.Integer)
+    PAUID = db.Column(db.Integer, unique=True)
     WellboreOfficialName = db.Column(db.NVARCHAR(255),nullable=True, unique=True)
     WellboreLocalName = db.Column(db.NVARCHAR(255),nullable=False)
     WellboreAliasName = db.Column(db.NVARCHAR(255),nullable=False)
