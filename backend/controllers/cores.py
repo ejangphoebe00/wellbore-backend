@@ -54,9 +54,9 @@ def add_core():
                         CoreReportSoftcopyPath = data['CoreReportSoftcopyPath'],
                         CoreReportHyperlink = data['CoreReportHyperlink'],
                         ReportUploadDate = data['ReportUploadDate'],
-                        # ReportFormat_id = data['ReportFormat_id'],#should come from file format
+                        ReportFileFormat = data['ReportFormat'],
                         ReportFileSize = data['ReportFileSize'],
-                        # CoreReportSecurityGrade_id = data['CoreReportSecurityGrade_id'],#comes from file security grade
+                        ReportSecurityGrade = data['ReportSecurityGrade'],
                         ReportOpenDueDate = data['ReportOpenDueDate'],
                         ReportDocumentTitle = data['ReportDocumentTitle'],
                         ReportReceivedDate = data['ReportReceivedDate'],
@@ -113,9 +113,9 @@ def edit_core(WellboreCore_id):
         core.CoreReportSoftcopyPath = data['CoreReportSoftcopyPath']
         core.CoreReportHyperlink = data['CoreReportHyperlink']
         core.ReportUploadDate = data['ReportUploadDate']
-        # core.ReportFormat_id = data['ReportFormat_id']
+        core.ReportFileFormat = data['ReportFormat']
         core.ReportFileSize = data['ReportFileSize']
-        # core.CoreReportSecurityGrade_id = data['CoreReportSecurityGrade_id']
+        core.ReportSecurityGrade = data['ReportSecurityGrade']
         core.ReportOpenDueDate = data['ReportOpenDueDate']
         core.ReportDocumentTitle = data['ReportDocumentTitle']
         core.ReportReceivedDate = data['ReportReceivedDate']

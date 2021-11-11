@@ -47,8 +47,7 @@ def add_company():
                         CompanyShortName = data['CompanyShortName'],
                         NSD_Number = data['NSD_Number'],
                         CompanyCategory_id = data['CompanyCategory_id'],
-                        CountryOfOrigin_id = data['CountryOfOrigin_id'],
-                        CountryOfRegistration_id = data['CountryOfRegistration_id'],
+                        Country = data['Country'],
                         RegistrationNumber = data['RegistrationNumber'],
                         TINNumber = data['TINNumber'],
                         CompanyTelephone = data['CompanyTelephone'],
@@ -143,8 +142,7 @@ def edit_company(Company_id):
         company.CompanyShortName = data['CompanyShortName']
         company.NSD_Number = data['NSD_Number']
         company.CompanyCategory_id = data['CompanyCategory_id']
-        company.CountryOfOrigin_id = data['CountryOfOrigin_id']
-        company.CountryOfRegistration_id = data['CountryOfRegistration_id']
+        company.Country = data['Country']
         company.RegistrationNumber = data['RegistrationNumber']
         company.TINNumber = data['TINNumber']
         company.CompanyTelephone = data['CompanyTelephone']

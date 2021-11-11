@@ -16,6 +16,15 @@ class CoreTypeEnum(enum.Enum):
     Full_Diameter = "Full Diameter"
     SideWall_Core = "SideWall Core"
 
+class ReportFormatEnum(enum.Enum):
+    PDF = "PDF"
+    EXCEL = "EXCEL"
+
+class SecurityGradeEnum(enum.Enum):
+    Restricted = "Restricted"
+    Confidential = "Confidential"
+    Open = "Open"
+
 # rename this to cores
 class Cores(db.Model):
     __tablename__ = 'geosims_t_Cores'
@@ -43,8 +52,10 @@ class Cores(db.Model):
     CoreReportSoftcopyPath = db.Column(db.TEXT)
     CoreReportHyperlink = db.Column(db.TEXT)
     ReportUploadDate = db.Column(db.DateTime)
+    ReportFileFormat = db.Column(db.Enum(ReportFormatEnum))
     # ReportFormat_id = db.Column(db.Integer, db.ForeignKey(FileFormat.FileFormat_id),nullable=True)
     ReportFileSize = db.Column(db.DECIMAL)
+    ReportSecurityGrade = db.Column(db.Enum(SecurityGradeEnum))
     # CoreReportSecurityGrade_id = db.Column(db.Integer, db.ForeignKey(FileSecurityGrade.FileSecurityGrade_id),nullable=True)
     ReportOpenDueDate = db.Column(db.DateTime)
     ReportDocumentTitle = db.Column(db.NVARCHAR(100))
