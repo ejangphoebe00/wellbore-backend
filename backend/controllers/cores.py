@@ -54,7 +54,7 @@ def add_core():
                         CoreReportSoftcopyPath = data['CoreReportSoftcopyPath'],
                         CoreReportHyperlink = data['CoreReportHyperlink'],
                         ReportUploadDate = data['ReportUploadDate'],
-                        ReportFileFormat = data['ReportFormat'],
+                        ReportFileFormat = data['ReportFileFormat'],
                         ReportFileSize = data['ReportFileSize'],
                         ReportSecurityGrade = data['ReportSecurityGrade'],
                         ReportOpenDueDate = data['ReportOpenDueDate'],
@@ -91,8 +91,8 @@ def edit_core(WellboreCore_id):
     #         return make_response(jsonify({'message':'WellboreCoreName already exists.'}),409)
     try:
         core = Cores.query.get(WellboreCore_id)
-        core.WellborePAUID = data['WellborePAUID'],#comes from welbore
-        core.WelboreCoreName = data['WelboreCoreName'],
+        core.WellborePAUID = data['WellborePAUID'] #comes from welbore
+        core.WelboreCoreName = data['WelboreCoreName']
         core.CoreNumber = data['CoreNumber']
         core.CoreTypeName = data['CoreTypeName']
         core.CoringDate = data['CoringDate']
@@ -113,7 +113,7 @@ def edit_core(WellboreCore_id):
         core.CoreReportSoftcopyPath = data['CoreReportSoftcopyPath']
         core.CoreReportHyperlink = data['CoreReportHyperlink']
         core.ReportUploadDate = data['ReportUploadDate']
-        core.ReportFileFormat = data['ReportFormat']
+        core.ReportFileFormat = data['ReportFileFormat']
         core.ReportFileSize = data['ReportFileSize']
         core.ReportSecurityGrade = data['ReportSecurityGrade']
         core.ReportOpenDueDate = data['ReportOpenDueDate']
@@ -123,7 +123,7 @@ def edit_core(WellboreCore_id):
         core.ReportDocumentName = data['ReportDocumentName']
         # core.WellboreCoreName = data['WellboreCoreName']
         core.Comments = data['Comments']
-        core.ModifiedOn = datetime.datetime.today()
+        core.ModifiedOn = datetime.datetime.now()
         core.ModifiedBy = user.CraneUser_id
         core.update()
         return make_response(jsonify({'message':'Welbore Core updated successfuly.'}),200)
