@@ -1,4 +1,4 @@
-FLASK_APP=app.py
+export FLASK_APP=app.py
 #APP_SETTINGS=config.ProductionConfig
 
 DB_USER = "xxxx"

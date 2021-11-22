@@ -12,6 +12,7 @@ load_dotenv()
 # instantiating db object
 db = SQLAlchemy()
 mail = Mail()
+migrate = Migrate(compare_type=True)
 
 
 def create_app():
@@ -32,7 +33,7 @@ def create_app():
     jwt = JWTManager(app)
     mail.init_app(app)
     # database migrations
-    migrate = Migrate(app, db)
+    migrate.init_app(app, db)
     db.init_app(app)
     # cache = Cache(app)
     # cache.init_app(app)
