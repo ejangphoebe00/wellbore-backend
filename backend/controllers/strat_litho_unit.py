@@ -1,4 +1,3 @@
-from typing_extensions import Literal
 from flask import Blueprint, request, make_response, jsonify
 from ..models.StratLithoUnit import StratLithoUnit
 from ..models.CraneUser import CraneUser, UserCatgoryEnum
