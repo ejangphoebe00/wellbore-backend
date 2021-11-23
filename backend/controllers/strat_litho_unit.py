@@ -29,10 +29,10 @@ def add_strat_litho_unit():
         new_strat_litho_unit = StratLithoUnit(
                         PAUID = data['PAUID'],
                         StratLithoName = data['StratLithoName'],
-                        ReserviorUnit = data['ReserviorUnit'],  # should be 0 or 1
+                        # ReserviorUnit = data['ReserviorUnit'],  # should be 0 or 1
                         LithoStratAlias = data['LithoStratAlias'],
                         IsReservoirUnit_id = data['IsReservoirUnit_id'],
-                        LithoStratAge_id = data['LithoStratAge_id'],
+                        LithoStratAge = data['LithoStratAge'],
                         LithoStratDescriptionSoftcopyPath = data['LithoStratDescriptionSoftcopyPath'],
                         LithoStratDescriptionHyperlink = data['LithoStratDescriptionHyperlink'],
                         LithoStratMapSoftCopyPath = data['LithoStratMapSoftCopyPath'],
@@ -66,10 +66,10 @@ def edit_strat_litho_unit(StratLitho_id):
         strat_litho_unit = StratLithoUnit.query.get(StratLitho_id)
         strat_litho_unit.PAUID = data['PAUID']
         strat_litho_unit.StratLithoName = data['StratLithoName']
-        strat_litho_unit.ReserviorUnit = data['ReserviorUnit']
+        # strat_litho_unit.ReserviorUnit = data['ReserviorUnit']
         strat_litho_unit.LithoStratAlias = data['LithoStratAlias']
         strat_litho_unit.IsReservoirUnit_id = data['IsReservoirUnit_id']
-        strat_litho_unit.LithoStratAge_id = data['LithoStratAge_id']
+        strat_litho_unit.LithoStratAge = data['LithoStratAge']
         strat_litho_unit.LithoStratDescriptionSoftcopyPath = data['LithoStratDescriptionSoftcopyPath']
         strat_litho_unit.LithoStratDescriptionHyperlink = data['LithoStratDescriptionHyperlink']
         strat_litho_unit.LithoStratMapSoftCopyPath = data['LithoStratMapSoftCopyPath']

@@ -8,30 +8,57 @@ class DevelopmentAreaEnum(enum.Enum):
     TDA = "Telinga Development Area"
     Others = "Others"
 
+class PurposeEnum(enum.Enum):
+    Wildcat = "Wildcat"
+    Appraisal = 'Appraisal'
+    Production = 'Production'
+    Injection = 'Injection'
+    Observation = 'Observation'
+
+class WellboreTypeEnum(enum.Enum):
+    Exploration = 'Exploration'
+    Development = 'Development'
+
+class StatusEnum(enum.Enum):
+    Plugged_and_abandoned = 'Plugged and abandoned'
+    Planned = 'Planned'
+    Suspended = 'Suspended'
+    Withdrawn = 'Withdrawn'
+    In_operation = 'In operation'
+    In_progress = 'In progress'
+
+class FluidSampleBasin(enum.Enum):
+    Edward = "Edward-George"
+    Semiliki = "Semiliki"
+    Pakwach = "Pakwach"
+
+
 class Wellbore(db.Model):
     __tablename__ = 'geosims_t_Wellbore'
     Wellbore_id = db.Column(db.Integer,primary_key=True)
     PAUID = db.Column(db.Integer, unique=True)
+    InitialWellborePurpose = db.Column(db.Enum(PurposeEnum))
+    Wellbore_type = db.Column(db.Enum(WellboreTypeEnum))
     WellboreOfficialName = db.Column(db.NVARCHAR(255),nullable=True, unique=True)
     WellboreLocalName = db.Column(db.NVARCHAR(255),nullable=False)
     WellboreAliasName = db.Column(db.NVARCHAR(255),nullable=False)
     DevelopmentAreaName = db.Column(db.Enum(DevelopmentAreaEnum), default="King Fisher Development Area",nullable=False)
+    OtherDevelopmentArea = db.Column(db.NVARCHAR(100))
+    Basin = db.Column(db.Enum(FluidSampleBasin,
+             values_callable=lambda enum: [str(e.value) for e in enum]))
     WellboreSpudDate = db.Column(db.Date)
     SpudYear = db.Column(db.String(50))
     WellboreType_id = db.Column(db.Integer)
-    InitialWellborePurpose_id = db.Column(db.Integer)
     WellborePurpose_id = db.Column(db.Integer)
     PurposeChangeDate = db.Column(db.DateTime)
-    Well_id = db.Column(db.Integer)
+    # Well_id = db.Column(db.Integer)
     Prospect_id = db.Column(db.Integer, db.ForeignKey(Company.Company_id),nullable=True)
-    Discovery_id = db.Column(db.Integer)
+    Discovery = db.Column(db.NVARCHAR(255))
     WellboreContent_id = db.Column(db.Integer)
-    WellboreStatus_id = db.Column(db.Integer)
-    WellboreResponsibleLicence_id = db.Column(db.Integer)
+    # WellboreResponsibleLicence_id = db.Column(db.Integer)
     LicenseOperatorCompany_id = db.Column(db.Integer, db.ForeignKey(Company.Company_id),nullable=True)
     DrillingContractorCompany_id = db.Column(db.Integer, db.ForeignKey(Company.Company_id),nullable=True)
     WellBoreRigName = db.Column(db.NVARCHAR(255))
-    Basin_id = db.Column(db.Integer)
     FormerExplAreaName = db.Column(db.NVARCHAR(255))
     SeismicLine = db.Column(db.NVARCHAR(255))
     RotaryTableElavation = db.Column(db.Float)
@@ -41,7 +68,7 @@ class Wellbore(db.Model):
     TD_Date = db.Column(db.Date)
     # WellboreCore_id = db.Column(db.Integer)
     CoreContractor_id = db.Column(db.Integer, db.ForeignKey(Company.Company_id),nullable=True)
-    RCI_Taken_id = db.Column(db.Integer)
+    # RCI_Taken_id = db.Column(db.Integer)
     MDT_Done_id = db.Column(db.Integer)
     FET_Done_id = db.Column(db.Integer)
     WFTContractor = db.Column(db.Integer)
@@ -67,6 +94,8 @@ class Wellbore(db.Model):
     WellboreMapHyperlink = db.Column(db.TEXT)
     MapPortalWellboreMapLink = db.Column(db.TEXT)
     WellboreFactsiteUrl = db.Column(db.TEXT)
+    WellboreStatus = db.Column(db.Enum(StatusEnum,
+             values_callable=lambda enum: [str(e.value) for e in enum]))
     CreatedBy_id = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUser_id),nullable=False)
     DateCreated = db.Column(db.DateTime)
     ModifiedOn = db.Column(db.DateTime)

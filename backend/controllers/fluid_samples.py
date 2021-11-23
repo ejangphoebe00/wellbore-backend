@@ -28,6 +28,7 @@ def add_fluid_sample():
                         Sampling_activity = data['Sampling_activity'],
                         Fluid_category = data['Fluid_category'],
                         Sample_type = data['Sample_type'],
+                        Sample_basin = data['Sample_basin'],
                         Sample_volume = data['Sample_volume'],
                         Depth_obtained = data['Depth_obtained'],
                         Date_collected = data['Date_collected'],
@@ -56,6 +57,7 @@ def edit_fluid_sample(Sample_id):
         fluid_sample.Sampling_activity = data['Sampling_activity']
         fluid_sample.Fluid_category = data['Fluid_category']
         fluid_sample.Sample_type = data['Sample_type']
+        fluid_sample.Sample_basin = data['Sample_basin']
         fluid_sample.Sample_volume = data['Sample_volume']
         fluid_sample.Depth_obtained = data['Depth_obtained']
         fluid_sample.Date_collected = data['Date_collected']

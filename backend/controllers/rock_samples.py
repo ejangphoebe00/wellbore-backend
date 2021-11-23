@@ -23,17 +23,17 @@ def add_rock_sample():
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
 
     try:
-        rock_sample = RockSamples.query.filter_by(Sample_id=data['Sample_id']).first()
-        if rock_sample:
-            return make_response(jsonify({'message':'Sample_id already exists.'}),409)
+        # rock_sample = RockSamples.query.filter_by(Sample_id=data['Sample_id']).first()
+        # if rock_sample:
+        #     return make_response(jsonify({'message':'Sample_id already exists.'}),409)
         if data['Sample_basin'] not in [element.value for element in BasinsEnum]:
             return make_response(jsonify({'message':f"{data['Sample_basin']} doesn't exist."}),400)
         new_rock_sample = RockSamples(
-                        Sample_id = data['Sample_id'],
+                        Store_id = data['Store_id'],
                         Date_collected = data['Date_collected'],
                         Date_received = data['Date_received'],
                         Sample_basin = data['Sample_basin'],
-                        Rock_name = data['Rock_name'],
+                        Sample_name = data['Sample_name'],
                         Coordinate_location = data['Coordinate_location'],
                         Petrographic_description = data['Petrographic_description'],
                         # Petrographic_analysis_reports = data['Petrographic_analysis_reports'],
@@ -54,18 +54,18 @@ def edit_rock_sample(id):
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
 
     try:
-        rock_sample = RockSamples.query.filter_by(Sample_id=data['Sample_id']).first()
-        if rock_sample:
-            if id != rock_sample.id:
-                return make_response(jsonify({'message':'Sample_id already exists.'}),409)
+        # rock_sample = RockSamples.query.filter_by(Sample_id=data['Sample_id']).first()
+        # if rock_sample:
+        #     if id != rock_sample.id:
+        #         return make_response(jsonify({'message':'Sample_id already exists.'}),409)
         if data['Sample_basin'] not in [element.value for element in BasinsEnum]:
             return make_response(jsonify({'message':f"{data['Sample_basin']} doesn't exist."}),400)
         rock_sample = RockSamples.query.get(id)
-        rock_sample.Sample_id = data['Sample_id']
+        rock_sample.Store_id = data['Store_id']
         rock_sample.Date_collected = data['Date_collected']
         rock_sample.Date_received = data['Date_received']
         rock_sample.Sample_basin = data['Sample_basin']
-        rock_sample.Rock_name = data['Rock_name']
+        rock_sample.Sample_name = data['Sample_name']
         rock_sample.Coordinate_location = data['Coordinate_location']
         rock_sample.Petrographic_description = data['Petrographic_description']
         # rock_sample.Petrographic_analysis_reports = data['Petrographic_analysis_reports']

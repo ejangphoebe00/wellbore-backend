@@ -1,15 +1,28 @@
+from enum import Enum
 from .. import db
 from .CraneUser import CraneUser
+
+class LithoAgeEnum(Enum):
+    Early_Pliocene = "Early Pliocene"
+    Early_Miocene = "Early Miocene" 
+    Early_Pleistocene = "Early Pleistocene"
+    Holocene = "Holocene" 
+    Late_Miocene = "Late Miocene"
+    Late_Pleistocene = "Late Pleistocene"
+    Middle_Miocene = "Middle Miocene"
+    Precambrian = "Precambrian"
+
 
 class StratLithoUnit(db.Model):
     __tablename__ = 'geosims_t_StratLithoUnit'
     StratLitho_id = db.Column(db.Integer,primary_key=True)
     PAUID = db.Column(db.Integer)
     StratLithoName = db.Column(db.NVARCHAR(100), unique=True, nullable=False)
-    ReserviorUnit = db.Column(db.SMALLINT) # should be 0 or 1
+    # ReserviorUnit = db.Column(db.SMALLINT) # should be 0 or 1
     LithoStratAlias = db.Column(db.NVARCHAR(100))
     IsReservoirUnit_id = db.Column(db.Integer)
-    LithoStratAge_id = db.Column(db.VARCHAR(100))
+    LithoStratAge = db.Column(db.Enum(LithoAgeEnum,
+             values_callable=lambda enum: [str(e.value) for e in enum]))
     LithoStratDescriptionSoftcopyPath = db.Column(db.TEXT)
     LithoStratDescriptionHyperlink = db.Column(db.TEXT)
     LithoStratMapSoftCopyPath = db.Column(db.TEXT)

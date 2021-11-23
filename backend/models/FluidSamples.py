@@ -11,6 +11,11 @@ class FluidCategoryEnum(enum.Enum):
     Gas = 'Gas'
     Water = 'Water'
 
+class FluidSampleBasin(enum.Enum):
+    Edward = "Edward-George"
+    Semiliki = "Semiliki"
+    Pakwach = "Pakwach"
+
 class FluidSamples(db.Model):
     __tablename__ = 'geosims_t_FluidSamples'
     Sample_id = db.Column(db.Integer,primary_key=True)
@@ -19,6 +24,8 @@ class FluidSamples(db.Model):
     Fluid_category = db.Column(db.Enum(FluidCategoryEnum), nullable=False)
     Sample_type = db.Column(db.VARCHAR(100))
     Sample_volume = db.Column(db.VARCHAR(100))
+    Sample_basin = db.Column(db.Enum(FluidSampleBasin,
+             values_callable=lambda enum: [str(e.value) for e in enum]))
     Depth_obtained = db.Column(db.Float) #
     Date_collected = db.Column(db.DateTime)
     Date_received = db.Column(db.DateTime)
