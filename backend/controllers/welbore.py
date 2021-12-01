@@ -39,7 +39,7 @@ def add_wellbore():
                         WellboreLocalName = data['WellboreLocalName'],
                         WellboreAliasName = data['WellboreAliasName'],
                         WellboreSpudDate = data['WellboreSpudDate'],
-                        SpudYear = data['SpudYear'],
+                        # SpudYear = data['SpudYear'],
                         WellboreType_id = data['WellboreType_id'],
                         WellborePurpose_id = data['WellborePurpose_id'],
                         PurposeChangeDate = data['PurposeChangeDate'],
@@ -126,7 +126,7 @@ def edit_wellbore(Wellbore_id):
         wellbore.OtherDevelopmentArea = data['OtherDevelopmentArea']
         wellbore.WellboreAliasName = data['WellboreAliasName']
         wellbore.WellboreSpudDate = data['WellboreSpudDate']
-        wellbore.SpudYear = data['SpudYear']
+        # wellbore.SpudYear = data['SpudYear']
         wellbore.WellboreType_id = data['WellboreType_id']
         wellbore.WellborePurpose_id = data['WellborePurpose_id']
         wellbore.PurposeChangeDate = data['PurposeChangeDate']

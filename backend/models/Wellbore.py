@@ -47,7 +47,7 @@ class Wellbore(db.Model):
     Basin = db.Column(db.Enum(FluidSampleBasin,
              values_callable=lambda enum: [str(e.value) for e in enum]))
     WellboreSpudDate = db.Column(db.Date)
-    SpudYear = db.Column(db.String(50))
+    # SpudYear = db.Column(db.String(50))
     WellboreType_id = db.Column(db.Integer)
     WellborePurpose_id = db.Column(db.Integer)
     PurposeChangeDate = db.Column(db.DateTime)

@@ -1,4 +1,4 @@
-from flask import Blueprint, request, make_response, jsonify
+from flask import Blueprint, request, make_response, jsonify, send_from_directory
 from ..models.CraneUser import CraneUser, UserCatgoryEnum
 from ..models.Token import RevokedTokenModel
 from ..models.CraneUserLoginHistory import CraneUserLoginHistory
@@ -12,7 +12,7 @@ from flask_jwt_extended import (
     )
 # reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
 from datetime import datetime, timedelta
-from .helper_functions import send_security_alert_email
+from .helper_functions import send_security_alert_email, upload_file
 import traceback
 from ..middleware.permissions import only_data_admin, only_application_and_data_admin, only_application_admin
 
@@ -356,6 +356,34 @@ def get_user_logs(CraneUser_id):
     try:
         logs = [z.serialise() for z in CraneUserLoginHistory.query.filter(CraneUserLoginHistory.HistLogUser_id == CraneUser_id)]
         return make_response(jsonify(logs),200)
+    except:
+        return make_response(str(traceback.format_exc()),500)
+
+
+@auth_bp.route('/user/upload_profile_picture/<int:CraneUser_id>', methods=['POST'])
+@jwt_required()
+def upload_profile_picture(CraneUser_id):
+    try:
+        data = request.files
+        user = CraneUser.query.get(CraneUser_id)
+        profile_image = upload_file(data['ProfilePicture'])
+        user.ProfilePicture = profile_image
+        user.update()
+        return make_response(jsonify({'message': "Profile picture successfully uploaded"}),200)
+    except:
+        return make_response(str(traceback.format_exc()),500)
+
+
+@auth_bp.route('/user/get_profile_image/<int:CraneUser_id>', methods=['GET'])
+@jwt_required()
+def get_profile_image(CraneUser_id):
+    try:
+        user = CraneUser.query.get(CraneUser_id)
+        # upload_path = "/static/files"
+        # filename = str(user.ProfilePicture).split('/')[-1]
+        # print(filename)
+        # return send_from_directory(upload_path, filename)
+        return make_response(jsonify({'ProfilePicture': user.ProfilePicture}),200)
     except:
         return make_response(str(traceback.format_exc()),500)
 
