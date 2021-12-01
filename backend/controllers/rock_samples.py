@@ -27,7 +27,7 @@ def add_rock_sample():
         # if rock_sample:
         #     return make_response(jsonify({'message':'Sample_id already exists.'}),409)
         if data['Sample_basin'] not in [element.value for element in BasinsEnum]:
-            return make_response(jsonify({'message':f"{data['Sample_basin']} doesn't exist."}),400)
+            return make_response(jsonify({'message':f"{data['Sample_basin']} basin doesn't exist."}),400)
         new_rock_sample = RockSamples(
                         Store_id = data['Store_id'],
                         Date_collected = data['Date_collected'],
@@ -59,7 +59,7 @@ def edit_rock_sample(id):
         #     if id != rock_sample.id:
         #         return make_response(jsonify({'message':'Sample_id already exists.'}),409)
         if data['Sample_basin'] not in [element.value for element in BasinsEnum]:
-            return make_response(jsonify({'message':f"{data['Sample_basin']} doesn't exist."}),400)
+            return make_response(jsonify({'message':f"{data['Sample_basin']} basin doesn't exist."}),400)
         rock_sample = RockSamples.query.get(id)
         rock_sample.Store_id = data['Store_id']
         rock_sample.Date_collected = data['Date_collected']

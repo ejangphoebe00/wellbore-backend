@@ -29,3 +29,10 @@ def upload_file(file):
     # print(os.path.join(path,filename))
     file_path = path+"/"+filename
     return file_path
+
+def remove_file(path):
+    if os.path.exists(path):
+        os.remove(path)
+        return "File successfully removed"
+    else:
+        return "Specified file doesn't exist"

@@ -5,7 +5,7 @@ from flask_jwt_extended import (
     get_jwt
     )
 import traceback
-from .helper_functions import upload_file
+from .helper_functions import upload_file, remove_file
 from ..models.Files import Files
 from ..middleware.permissions import only_data_admin
 
@@ -93,10 +93,15 @@ def add_file(sample_id):
 @files_bp.route('/apiv1/delete_file/<int:File_id>',methods=['DELETE'])
 @jwt_required()
 @only_data_admin
-def delete_core(File_id):
+def delete_file(File_id):
     try:
         file = Files.query.get(File_id)
         file.delete()
-        return make_response(jsonify({'message':'File successfully deleted.'}),200)
+        if file.Report_path is not None:
+            outcome = remove_file(file.Report_path)
+        if file.Photograph_path is not None:
+            outcome = remove_file(file.Photograph_path)
+
+        return make_response(jsonify({'message':outcome}),200)
     except:
         return make_response(str(traceback.format_exc()),500)

@@ -4,6 +4,9 @@ from .CraneUser import CraneUser
 from datetime import datetime
 
 class BasinsEnum(enum.Enum):
+    Edward = "Edward-George"
+    Semiliki = "Semiliki"
+    Pakwach = "Pakwach"
     Albertine = "The Albertine Graben"
     Hoima = "Hoima Basin"
     Kyoga = "Lake Kyoga Basin"

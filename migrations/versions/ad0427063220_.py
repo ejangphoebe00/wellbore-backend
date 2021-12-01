@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 7e3d2a8bd140
+Revision ID: ad0427063220
 Revises: 
-Create Date: 2021-11-06 15:07:57.907111
+Create Date: 2021-11-24 11:31:28.593309
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '7e3d2a8bd140'
+revision = 'ad0427063220'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -88,8 +88,7 @@ def upgrade():
     sa.Column('CompanyShortName', sa.NVARCHAR(length=255), nullable=True),
     sa.Column('NSD_Number', sa.NVARCHAR(length=255), nullable=False),
     sa.Column('CompanyCategory_id', sa.Integer(), nullable=True),
-    sa.Column('CountryOfOrigin_id', sa.Integer(), nullable=True),
-    sa.Column('CountryOfRegistration_id', sa.Integer(), nullable=True),
+    sa.Column('Country', sa.String(), nullable=True),
     sa.Column('RegistrationNumber', sa.NVARCHAR(length=255), nullable=False),
     sa.Column('TINNumber', sa.NVARCHAR(length=255), nullable=False),
     sa.Column('CompanyTelephone', sa.NVARCHAR(length=255), nullable=True),
@@ -168,11 +167,11 @@ def upgrade():
     )
     op.create_table('geosims_t_RockSamples',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('Sample_id', sa.VARCHAR(length=100), nullable=False),
+    sa.Column('Store_id', sa.VARCHAR(length=100), nullable=False),
     sa.Column('Date_collected', sa.DateTime(), nullable=True),
     sa.Column('Date_received', sa.DateTime(), nullable=True),
     sa.Column('Sample_basin', sa.Enum('The Albertine Graben', 'Hoima Basin', 'Lake Kyoga Basin', 'Lake Wamala Basin', 'Kadam-Moroto Basin', name='basinsenum'), nullable=True),
-    sa.Column('Rock_name', sa.VARCHAR(length=100), nullable=True),
+    sa.Column('Sample_name', sa.VARCHAR(length=100), nullable=True),
     sa.Column('Coordinate_location', sa.VARCHAR(length=100), nullable=True),
     sa.Column('Petrographic_description', sa.VARCHAR(length=500), nullable=True),
     sa.Column('CreatedBy_id', sa.Integer(), nullable=False),
@@ -181,17 +180,15 @@ def upgrade():
     sa.Column('ModifiedBy', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['CreatedBy_id'], ['geosims_t_CraneUser.CraneUser_id'], ),
     sa.ForeignKeyConstraint(['ModifiedBy'], ['geosims_t_CraneUser.CraneUser_id'], ),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('Sample_id')
+    sa.PrimaryKeyConstraint('id')
     )
     op.create_table('geosims_t_StratLithoUnit',
     sa.Column('StratLitho_id', sa.Integer(), nullable=False),
     sa.Column('PAUID', sa.Integer(), nullable=True),
     sa.Column('StratLithoName', sa.NVARCHAR(length=100), nullable=False),
-    sa.Column('ReserviorUnit', sa.SMALLINT(), nullable=True),
     sa.Column('LithoStratAlias', sa.NVARCHAR(length=100), nullable=True),
     sa.Column('IsReservoirUnit_id', sa.Integer(), nullable=True),
-    sa.Column('LithoStratAge_id', sa.VARCHAR(length=100), nullable=True),
+    sa.Column('LithoStratAge', sa.Enum('Early Pliocene', 'Early Miocene', 'Early Pleistocene', 'Holocene', 'Late Miocene', 'Late Pleistocene', 'Middle Miocene', 'Precambrian', name='lithoageenum'), nullable=True),
     sa.Column('LithoStratDescriptionSoftcopyPath', sa.TEXT(), nullable=True),
     sa.Column('LithoStratDescriptionHyperlink', sa.TEXT(), nullable=True),
     sa.Column('LithoStratMapSoftCopyPath', sa.TEXT(), nullable=True),
@@ -211,26 +208,25 @@ def upgrade():
     op.create_table('geosims_t_Wellbore',
     sa.Column('Wellbore_id', sa.Integer(), nullable=False),
     sa.Column('PAUID', sa.Integer(), nullable=True),
+    sa.Column('InitialWellborePurpose', sa.Enum('Wildcat', 'Appraisal', 'Production', 'Injection', 'Observation', name='purposeenum'), nullable=True),
+    sa.Column('Wellbore_type', sa.Enum('Exploration', 'Development', name='wellboretypeenum'), nullable=True),
     sa.Column('WellboreOfficialName', sa.NVARCHAR(length=255), nullable=True),
     sa.Column('WellboreLocalName', sa.NVARCHAR(length=255), nullable=False),
     sa.Column('WellboreAliasName', sa.NVARCHAR(length=255), nullable=False),
     sa.Column('DevelopmentAreaName', sa.Enum('KFDA', 'TDA', 'Others', name='developmentareaenum'), nullable=False),
+    sa.Column('OtherDevelopmentArea', sa.NVARCHAR(length=100), nullable=True),
+    sa.Column('Basin', sa.Enum('Edward-George', 'Semiliki', 'Pakwach', name='fluidsamplebasin'), nullable=True),
     sa.Column('WellboreSpudDate', sa.Date(), nullable=True),
     sa.Column('SpudYear', sa.String(length=50), nullable=True),
     sa.Column('WellboreType_id', sa.Integer(), nullable=True),
-    sa.Column('InitialWellborePurpose_id', sa.Integer(), nullable=True),
     sa.Column('WellborePurpose_id', sa.Integer(), nullable=True),
     sa.Column('PurposeChangeDate', sa.DateTime(), nullable=True),
-    sa.Column('Well_id', sa.Integer(), nullable=True),
     sa.Column('Prospect_id', sa.Integer(), nullable=True),
-    sa.Column('Discovery_id', sa.Integer(), nullable=True),
+    sa.Column('Discovery', sa.NVARCHAR(length=255), nullable=True),
     sa.Column('WellboreContent_id', sa.Integer(), nullable=True),
-    sa.Column('WellboreStatus_id', sa.Integer(), nullable=True),
-    sa.Column('WellboreResponsibleLicence_id', sa.Integer(), nullable=True),
     sa.Column('LicenseOperatorCompany_id', sa.Integer(), nullable=True),
     sa.Column('DrillingContractorCompany_id', sa.Integer(), nullable=True),
     sa.Column('WellBoreRigName', sa.NVARCHAR(length=255), nullable=True),
-    sa.Column('Basin_id', sa.Integer(), nullable=True),
     sa.Column('FormerExplAreaName', sa.NVARCHAR(length=255), nullable=True),
     sa.Column('SeismicLine', sa.NVARCHAR(length=255), nullable=True),
     sa.Column('RotaryTableElavation', sa.Float(), nullable=True),
@@ -239,7 +235,6 @@ def upgrade():
     sa.Column('TD_TVD', sa.Float(), nullable=True),
     sa.Column('TD_Date', sa.Date(), nullable=True),
     sa.Column('CoreContractor_id', sa.Integer(), nullable=True),
-    sa.Column('RCI_Taken_id', sa.Integer(), nullable=True),
     sa.Column('MDT_Done_id', sa.Integer(), nullable=True),
     sa.Column('FET_Done_id', sa.Integer(), nullable=True),
     sa.Column('WFTContractor', sa.Integer(), nullable=True),
@@ -265,6 +260,7 @@ def upgrade():
     sa.Column('WellboreMapHyperlink', sa.TEXT(), nullable=True),
     sa.Column('MapPortalWellboreMapLink', sa.TEXT(), nullable=True),
     sa.Column('WellboreFactsiteUrl', sa.TEXT(), nullable=True),
+    sa.Column('WellboreStatus', sa.Enum('Plugged and abandoned', 'Planned', 'Suspended', 'Withdrawn', 'In operation', 'In progress', name='statusenum'), nullable=True),
     sa.Column('CreatedBy_id', sa.Integer(), nullable=False),
     sa.Column('DateCreated', sa.DateTime(), nullable=True),
     sa.Column('ModifiedOn', sa.DateTime(), nullable=True),
@@ -305,7 +301,9 @@ def upgrade():
     sa.Column('CoreReportSoftcopyPath', sa.TEXT(), nullable=True),
     sa.Column('CoreReportHyperlink', sa.TEXT(), nullable=True),
     sa.Column('ReportUploadDate', sa.DateTime(), nullable=True),
+    sa.Column('ReportFileFormat', sa.Enum('PDF', 'EXCEL', name='reportformatenum'), nullable=True),
     sa.Column('ReportFileSize', sa.DECIMAL(), nullable=True),
+    sa.Column('ReportSecurityGrade', sa.Enum('Restricted', 'Confidential', 'Open', name='securitygradeenum'), nullable=True),
     sa.Column('ReportOpenDueDate', sa.DateTime(), nullable=True),
     sa.Column('ReportDocumentTitle', sa.NVARCHAR(length=100), nullable=True),
     sa.Column('ReportReceivedDate', sa.DateTime(), nullable=True),
@@ -353,6 +351,7 @@ def upgrade():
     sa.Column('Fluid_category', sa.Enum('Oil', 'Gas', 'Water', name='fluidcategoryenum'), nullable=False),
     sa.Column('Sample_type', sa.VARCHAR(length=100), nullable=True),
     sa.Column('Sample_volume', sa.VARCHAR(length=100), nullable=True),
+    sa.Column('Sample_basin', sa.Enum('Edward-George', 'Semiliki', 'Pakwach', name='fluidsamplebasin'), nullable=True),
     sa.Column('Depth_obtained', sa.Float(), nullable=True),
     sa.Column('Date_collected', sa.DateTime(), nullable=True),
     sa.Column('Date_received', sa.DateTime(), nullable=True),
