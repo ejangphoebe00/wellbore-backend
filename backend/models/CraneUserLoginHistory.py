@@ -3,13 +3,13 @@ from .CraneUser import CraneUser
 
 class CraneUserLoginHistory(db.Model):
     __tablename__ = 'geosims_t_CraneUserLoginHistory'
-    UserLoginHistory_id = db.Column(db.Integer,primary_key=True)
-    HistLogUser_id = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUser_id),nullable=False) 
-    LogStaff_id = db.Column(db.Integer)
-    CraneCompany_id = db.Column(db.Integer)   
-    LogCompanyAuthorisedUser_id = db.Column(db.Integer)
+    UserLoginHistoryId = db.Column(db.Integer,primary_key=True)
+    HistLogUserId = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUserId),nullable=False) 
+    LogStaffId = db.Column(db.Integer)
+    CraneCompanyId = db.Column(db.Integer)   
+    LogCompanyAuthorisedUserId = db.Column(db.Integer)
     LogAuthorisedUserName = db.Column(db.VARCHAR(100)) 
-    LoginStatus_id = db.Column(db.Integer)   
+    LoginStatusId = db.Column(db.Integer)   
     UserOnlineStatus = db.Column(db.SMALLINT)  
     LogLoginDate = db.Column(db.DateTime)  
     LogLogoutDate = db.Column(db.DateTime) 

@@ -52,7 +52,7 @@ def get_staff():
 @jwt_required()
 def get_oil_samples():
     try:
-        oils = FluidSamples.query.filter(FluidSamples.Fluid_category == FluidCategoryEnum.Oil)
+        oils = FluidSamples.query.filter(FluidSamples.FluidCategory == FluidCategoryEnum.Oil)
         oils = [sample.serialise() for sample in oils]
         return make_response(jsonify(oils),200)
     except:
@@ -64,7 +64,7 @@ def get_oil_samples():
 @jwt_required()
 def get_gas_samples():
     try:
-        gas = FluidSamples.query.filter(FluidSamples.Fluid_category == FluidCategoryEnum.Gas)
+        gas = FluidSamples.query.filter(FluidSamples.FluidCategory == FluidCategoryEnum.Gas)
         gas = [sample.serialise() for sample in gas]
         return make_response(jsonify(gas),200)
     except:
@@ -76,7 +76,7 @@ def get_gas_samples():
 @jwt_required()
 def get_water_samples():
     try:
-        water = FluidSamples.query.filter(FluidSamples.Fluid_category == FluidCategoryEnum.Water)
+        water = FluidSamples.query.filter(FluidSamples.FluidCategory == FluidCategoryEnum.Water)
         water = [sample.serialise() for sample in water]
         return make_response(jsonify(water),200)
     except:
@@ -88,7 +88,7 @@ def get_water_samples():
 @jwt_required()
 def get_washed_dried():
     try:
-        cuttings = Cuttings.query.filter(Cuttings.Cutting_category == CuttingsCategoryEnum.Washed_Dried)
+        cuttings = Cuttings.query.filter(Cuttings.CuttingCategory == CuttingsCategoryEnum.Washed_Dried)
         cuttings = [sample.serialise() for sample in cuttings]
         return make_response(jsonify(cuttings),200)
     except:
@@ -100,7 +100,7 @@ def get_washed_dried():
 @jwt_required()
 def get_washed_wet():
     try:
-        cuttings = Cuttings.query.filter(Cuttings.Cutting_category == CuttingsCategoryEnum.Washed_Wet)
+        cuttings = Cuttings.query.filter(Cuttings.CuttingCategory == CuttingsCategoryEnum.Washed_Wet)
         cuttings = [sample.serialise() for sample in cuttings]
         return make_response(jsonify(cuttings),200)
     except:
@@ -112,7 +112,7 @@ def get_washed_wet():
 @jwt_required()
 def get_wet_unwashed():
     try:
-        cuttings = Cuttings.query.filter(Cuttings.Cutting_category == CuttingsCategoryEnum.Wet_Unwashed)
+        cuttings = Cuttings.query.filter(Cuttings.CuttingCategory == CuttingsCategoryEnum.Wet_Unwashed)
         cuttings = [sample.serialise() for sample in cuttings]
         return make_response(jsonify(cuttings),200)
     except:
@@ -124,7 +124,7 @@ def get_wet_unwashed():
 @jwt_required()
 def get_dry_unwashed():
     try:
-        cuttings = Cuttings.query.filter(Cuttings.Cutting_category == CuttingsCategoryEnum.Dry_Unwashed)
+        cuttings = Cuttings.query.filter(Cuttings.CuttingCategory == CuttingsCategoryEnum.Dry_Unwashed)
         cuttings = [sample.serialise() for sample in cuttings]
         return make_response(jsonify(cuttings),200)
     except:

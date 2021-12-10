@@ -15,14 +15,14 @@ class ReportTypeEnum(enum.Enum):
 # named files in order to accommodate both images and documents/reports
 class Files(db.Model):
     __tablename__ = 'geosims_rt_Files'
-    File_id = db.Column(db.Integer,primary_key=True)
-    Cores_id = db.Column(db.Integer, db.ForeignKey(Cores.WellboreCore_id))
-    Fluid_samples_id = db.Column(db.Integer, db.ForeignKey(FluidSamples.Sample_id))
-    Rock_samples_id = db.Column(db.Integer, db.ForeignKey(RockSamples.id))
-    Report_type = db.Column(db.Enum(ReportTypeEnum))
-    Report_path = db.Column(db.VARCHAR(500))
-    Photograph_path = db.Column(db.VARCHAR(500))
-    CreatedBy_id = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUser_id),nullable=False)
+    FileId = db.Column(db.Integer,primary_key=True)
+    CoresId = db.Column(db.Integer, db.ForeignKey(Cores.WellboreCoreId))
+    FluidSamplesId = db.Column(db.Integer, db.ForeignKey(FluidSamples.SampleId))
+    RockSamplesId = db.Column(db.Integer, db.ForeignKey(RockSamples.id))
+    ReportType = db.Column(db.Enum(ReportTypeEnum))
+    ReportPath = db.Column(db.VARCHAR(500))
+    PhotographPath = db.Column(db.VARCHAR(500))
+    CreatedById = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUserId),nullable=False)
     DateCreated = db.Column(db.DateTime, default=datetime.utcnow)
 
 

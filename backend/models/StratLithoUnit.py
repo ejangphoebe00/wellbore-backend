@@ -15,12 +15,12 @@ class LithoAgeEnum(Enum):
 
 class StratLithoUnit(db.Model):
     __tablename__ = 'geosims_t_StratLithoUnit'
-    StratLitho_id = db.Column(db.Integer,primary_key=True)
+    StratLithoId = db.Column(db.Integer,primary_key=True)
     PAUID = db.Column(db.Integer)
     StratLithoName = db.Column(db.NVARCHAR(100), unique=True, nullable=False)
     # ReserviorUnit = db.Column(db.SMALLINT) # should be 0 or 1
     LithoStratAlias = db.Column(db.NVARCHAR(100))
-    IsReservoirUnit_id = db.Column(db.Integer)
+    IsReservoirUnitId = db.Column(db.Integer)
     LithoStratAge = db.Column(db.Enum(LithoAgeEnum,
              values_callable=lambda enum: [str(e.value) for e in enum]))
     LithoStratDescriptionSoftcopyPath = db.Column(db.TEXT)
@@ -30,10 +30,10 @@ class StratLithoUnit(db.Model):
     MapPortalLithoStratMapLink = db.Column(db.TEXT)
     LithoStratFactsiteUrl = db.Column(db.TEXT)
     Comments = db.Column(db.NVARCHAR(500))
-    CreatedBy_id = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUser_id),nullable=False)
+    CreatedById = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUserId),nullable=False)
     DateCreated = db.Column(db.DateTime)
     ModifiedOn = db.Column(db.DateTime)
-    ModifiedBy = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUser_id),nullable=True)
+    ModifiedBy = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUserId),nullable=True)
     
 
     def serialise(self):

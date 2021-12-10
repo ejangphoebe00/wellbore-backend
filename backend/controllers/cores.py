@@ -37,7 +37,7 @@ def add_core():
                         CoreTypeName = data['CoreTypeName'],
                         CoreNumber = data['CoreNumber'],
                         CoringDate = data['CoringDate'],
-                        WBCoringContractor_id = data['WBCoringContractor_id'], # should come from company
+                        WBCoringContractorId = data['WBCoringContractorId'], # should come from company
                         CoreTopMD = data['CoreTopMD'],
                         CoreBtmMD = data['CoreBtmMD'],
                         CoreTopTVD = data['CoreTopTVD'],
@@ -46,8 +46,8 @@ def add_core():
                         CutLengthTVD = data['CutLengthTVD'],
                         RecoveredLength = data['RecoveredLength'],
                         PercentageCoreRecovery = Cores.calculate_percentage_core_recovery(data['CutLength'],data['RecoveredLength']),
-                        CoreTopStratLitho_id = data['CoreTopStratLitho_id'], # should come from stratlitho
-                        CoreBottomStratLitho_id = data['CoreBottomStratLitho_id'], # should come from stratlitho
+                        CoreTopStratLithoId = data['CoreTopStratLithoId'], # should come from stratlitho
+                        CoreBottomStratLithoId = data['CoreBottomStratLithoId'], # should come from stratlitho
                         CorePictureSoftcopyPath = data['CorePictureSoftcopyPath'],
                         CorePictureHyperlink = data['CorePictureHyperlink'],
                         PictureUploadDate = data['PictureUploadDate'],
@@ -64,7 +64,7 @@ def add_core():
                         ReportDocumentName = data['ReportDocumentName'],
                         # WellboreCoreName = data['WellboreCoreName'],
                         Comments = data['Comments'],
-                        CreatedBy_id = user.CraneUser_id,
+                        CreatedById = user.CraneUserId,
                         DateCreated = datetime.datetime.now()
                     )
         new_core.save()
@@ -73,10 +73,10 @@ def add_core():
         return make_response(str(traceback.format_exc()),500)
 
 
-@core_bp.route('/apiv1/edit_core/<int:WellboreCore_id>',methods=['PUT'])
+@core_bp.route('/apiv1/edit_core/<int:WellboreCoreId>',methods=['PUT'])
 @jwt_required()
 @only_data_admin
-def edit_core(WellboreCore_id):
+def edit_core(WellboreCoreId):
     data = request.get_json(force=True)
     current_user_email = get_jwt()
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
@@ -84,19 +84,19 @@ def edit_core(WellboreCore_id):
     core_number = Cores.query.filter_by(CoreNumber=data['CoreNumber']).first()
     # core_name = Cores.query.filter_by(WellboreCoreName=data['WellboreCoreName']).first()
     if core_number and core_number.CoreNumber != None:
-        if WellboreCore_id != core_number.WellboreCore_id:
+        if WellboreCoreId != core_number.WellboreCoreId:
             return make_response(jsonify({'message':'CoreNumber already exists.'}),409)
     # if core_name and core_name.WellboreCoreName != None:
-    #     if WellboreCore_id != core_name.WellboreCore_id:
+    #     if WellboreCoreId != core_name.WellboreCoreId:
     #         return make_response(jsonify({'message':'WellboreCoreName already exists.'}),409)
     try:
-        core = Cores.query.get(WellboreCore_id)
+        core = Cores.query.get(WellboreCoreId)
         core.WellborePAUID = data['WellborePAUID'] #comes from welbore
         core.WelboreCoreName = data['WelboreCoreName']
         core.CoreNumber = data['CoreNumber']
         core.CoreTypeName = data['CoreTypeName']
         core.CoringDate = data['CoringDate']
-        core.WBCoringContractor_id = data['WBCoringContractor_id']
+        core.WBCoringContractorId = data['WBCoringContractorId']
         core.CoreTopMD = data['CoreTopMD']
         core.CoreBtmMD = data['CoreBtmMD']
         core.CoreTopTVD = data['CoreTopTVD']
@@ -105,8 +105,8 @@ def edit_core(WellboreCore_id):
         core.CutLengthTVD = data['CutLengthTVD']
         core.RecoveredLength = data['RecoveredLength']
         core.PercentageCoreRecovery = Cores.calculate_percentage_core_recovery(data['CutLength'],data['RecoveredLength'])
-        core.CoreTopStratLitho_id = data['CoreTopStratLitho_id']
-        core.CoreBottomStratLitho_id = data['CoreBottomStratLitho_id']
+        core.CoreTopStratLithoId = data['CoreTopStratLithoId']
+        core.CoreBottomStratLithoId = data['CoreBottomStratLithoId']
         core.CorePictureSoftcopyPath = data['CorePictureSoftcopyPath']
         core.CorePictureHyperlink = data['CorePictureHyperlink']
         core.PictureUploadDate = data['PictureUploadDate']
@@ -124,7 +124,7 @@ def edit_core(WellboreCore_id):
         # core.WellboreCoreName = data['WellboreCoreName']
         core.Comments = data['Comments']
         core.ModifiedOn = datetime.datetime.now()
-        core.ModifiedBy = user.CraneUser_id
+        core.ModifiedBy = user.CraneUserId
         core.update()
         return make_response(jsonify({'message':'Welbore Core updated successfuly.'}),200)
     except:
@@ -132,28 +132,28 @@ def edit_core(WellboreCore_id):
 
 
 # get single core object
-@core_bp.route('/apiv1/get_core/<int:WellboreCore_id>',methods=['GET'])
+@core_bp.route('/apiv1/get_core/<int:WellboreCoreId>',methods=['GET'])
 @jwt_required()
-def get_core(WellboreCore_id):
+def get_core(WellboreCoreId):
     try:
         # get Core_photographs
-        photos = Files.query.filter(Files.Cores_id == WellboreCore_id, Files.Photograph_path!=None)
+        photos = Files.query.filter(Files.CoresId == WellboreCoreId, Files.PhotographPath!=None)
         photo_names = []
         if photos:
             for photo in photos:
-                photo_names.append(photo.Photograph_path)
+                photo_names.append(photo.PhotographPath)
         
         # get Core_analysis_reports
-        reports = Files.query.filter(Files.Cores_id == WellboreCore_id, Files.Report_path!=None)
+        reports = Files.query.filter(Files.CoresId == WellboreCoreId, Files.ReportPath!=None)
         report_names = []
         if reports:
             for report in reports:
-                report_names.append(report.Report_path)
+                report_names.append(report.ReportPath)
 
-        core = Cores.query.get(WellboreCore_id)
+        core = Cores.query.get(WellboreCoreId)
         new_core_object  = core.serialise()
-        new_core_object['Core_analysis_reports'] = report_names
-        new_core_object['Core_photographs'] = photo_names
+        new_core_object['CoreAnalysisReports'] = report_names
+        new_core_object['CorePhotographs'] = photo_names
 
         return make_response(jsonify(new_core_object),200)
     except:
@@ -168,21 +168,21 @@ def get_all_cores():
         new_cores = []
         for core in cores:
             # get Core_photographs
-            photos = Files.query.filter(Files.Cores_id == core["WellboreCore_id"], Files.Photograph_path!=None)
+            photos = Files.query.filter(Files.CoresId == core["WellboreCoreId"], Files.PhotographPath!=None)
             photo_names = []
             if photos:
                 for photo in photos:
-                    photo_names.append(photo.Photograph_path)
+                    photo_names.append(photo.PhotographPath)
             
             # get Core_analysis_reports
-            reports = Files.query.filter(Files.Cores_id == core["WellboreCore_id"], Files.Report_path!=None)
+            reports = Files.query.filter(Files.CoresId == core["WellboreCoreId"], Files.ReportPath!=None)
             report_names = []
             if reports:
                 for report in reports:
-                    report_names.append(report.Report_path)
+                    report_names.append(report.ReportPath)
 
-            core['Core_analysis_reports'] = report_names
-            core['Core_photographs'] = photo_names
+            core['CoreAnalysisReports'] = report_names
+            core['CorePhotographs'] = photo_names
             new_cores.append(core)
 
         # cores = [z.serialise() for z in Cores.query.all()]
@@ -191,12 +191,12 @@ def get_all_cores():
         return make_response(str(traceback.format_exc()),500)
 
 
-@core_bp.route('/apiv1/delete_core/<int:WellboreCore_id>',methods=['DELETE'])
+@core_bp.route('/apiv1/delete_core/<int:WellboreCoreId>',methods=['DELETE'])
 @jwt_required()
 @only_data_admin
-def delete_core(WellboreCore_id):
+def delete_core(WellboreCoreId):
     try:
-        core = Cores.query.get(WellboreCore_id)
+        core = Cores.query.get(WellboreCoreId)
         core.delete()
         return make_response(jsonify({'message':'Welbore Core successfully deleted.'}),200)
     except:

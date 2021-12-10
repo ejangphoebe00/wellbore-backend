@@ -31,7 +31,7 @@ def add_strat_litho_unit():
                         StratLithoName = data['StratLithoName'],
                         # ReserviorUnit = data['ReserviorUnit'],  # should be 0 or 1
                         LithoStratAlias = data['LithoStratAlias'],
-                        IsReservoirUnit_id = data['IsReservoirUnit_id'],
+                        IsReservoirUnitId = data['IsReservoirUnitId'],
                         LithoStratAge = data['LithoStratAge'],
                         LithoStratDescriptionSoftcopyPath = data['LithoStratDescriptionSoftcopyPath'],
                         LithoStratDescriptionHyperlink = data['LithoStratDescriptionHyperlink'],
@@ -40,7 +40,7 @@ def add_strat_litho_unit():
                         MapPortalLithoStratMapLink = data['MapPortalLithoStratMapLink'],
                         LithoStratFactsiteUrl = data['LithoStratFactsiteUrl'],
                         Comments = data['Comments'],
-                        CreatedBy_id = user.CraneUser_id,
+                        CreatedById = user.CraneUserId,
                         DateCreated = datetime.datetime.now(),
                     )
         new_strat_litho_unit.save()
@@ -49,10 +49,10 @@ def add_strat_litho_unit():
         return make_response(str(traceback.format_exc()),500)
 
 
-@strat_litho_unit_bp.route('/apiv1/edit_strat_litho_unit/<int:StratLitho_id>',methods=['PUT'])
+@strat_litho_unit_bp.route('/apiv1/edit_strat_litho_unit/<int:StratLithoId>',methods=['PUT'])
 @jwt_required()
 @only_data_admin
-def edit_strat_litho_unit(StratLitho_id):
+def edit_strat_litho_unit(StratLithoId):
     data = request.get_json(force=True)
     current_user_email = get_jwt()
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
@@ -60,15 +60,15 @@ def edit_strat_litho_unit(StratLitho_id):
     # check for redundancies
     litho_name = StratLithoUnit.query.filter_by(StratLithoName=data['StratLithoName']).first()
     if litho_name:
-        if StratLitho_id != litho_name.StratLitho_id:
+        if StratLithoId != litho_name.StratLithoId:
             return make_response(jsonify({'message':'StratLithoName already exists.'}),409)
     try:
-        strat_litho_unit = StratLithoUnit.query.get(StratLitho_id)
+        strat_litho_unit = StratLithoUnit.query.get(StratLithoId)
         strat_litho_unit.PAUID = data['PAUID']
         strat_litho_unit.StratLithoName = data['StratLithoName']
         # strat_litho_unit.ReserviorUnit = data['ReserviorUnit']
         strat_litho_unit.LithoStratAlias = data['LithoStratAlias']
-        strat_litho_unit.IsReservoirUnit_id = data['IsReservoirUnit_id']
+        strat_litho_unit.IsReservoirUnitId = data['IsReservoirUnitId']
         strat_litho_unit.LithoStratAge = data['LithoStratAge']
         strat_litho_unit.LithoStratDescriptionSoftcopyPath = data['LithoStratDescriptionSoftcopyPath']
         strat_litho_unit.LithoStratDescriptionHyperlink = data['LithoStratDescriptionHyperlink']
@@ -78,7 +78,7 @@ def edit_strat_litho_unit(StratLitho_id):
         strat_litho_unit.LithoStratFactsiteUrl = data['LithoStratFactsiteUrl']
         strat_litho_unit.Comments = data['Comments']
         strat_litho_unit.ModifiedOn = datetime.datetime.now()
-        strat_litho_unit.ModifiedBy = user.CraneUser_id
+        strat_litho_unit.ModifiedBy = user.CraneUserId
         strat_litho_unit.update()
         return make_response(jsonify({'message':'Strat Litho Unit updated successfuly.'}),200)
     except:
@@ -86,11 +86,11 @@ def edit_strat_litho_unit(StratLitho_id):
 
 
 # get single strat_litho_unit object
-@strat_litho_unit_bp.route('/apiv1/get_strat_litho_unit/<int:StratLitho_id>',methods=['GET'])
+@strat_litho_unit_bp.route('/apiv1/get_strat_litho_unit/<int:StratLithoId>',methods=['GET'])
 @jwt_required()
-def get_strat_litho_unit(StratLitho_id):
+def get_strat_litho_unit(StratLithoId):
     try:
-        strat_litho_unit = StratLithoUnit.query.get(StratLitho_id)
+        strat_litho_unit = StratLithoUnit.query.get(StratLithoId)
         return make_response(jsonify(strat_litho_unit.serialise()),200)
     except:
         return make_response(str(traceback.format_exc()),500)
@@ -106,12 +106,12 @@ def get_all_strat_litho_units():
         return make_response(str(traceback.format_exc()),500)
 
 
-@strat_litho_unit_bp.route('/apiv1/delete_strat_litho_unit/<int:StratLitho_id>',methods=['DELETE'])
+@strat_litho_unit_bp.route('/apiv1/delete_strat_litho_unit/<int:StratLithoId>',methods=['DELETE'])
 @jwt_required()
 @only_data_admin
-def delete_strat_litho_unit(StratLitho_id):
+def delete_strat_litho_unit(StratLithoId):
     try:
-        strat_litho_unit = StratLithoUnit.query.get(StratLitho_id)
+        strat_litho_unit = StratLithoUnit.query.get(StratLithoId)
         strat_litho_unit.delete()
         return make_response(jsonify({'message':'Strat Litho Unit successfully deleted.'}),200)
     except:

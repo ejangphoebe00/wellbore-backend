@@ -23,21 +23,21 @@ def add_rock_sample():
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
 
     try:
-        # rock_sample = RockSamples.query.filter_by(Sample_id=data['Sample_id']).first()
+        # rock_sample = RockSamples.query.filter_by(SampleId=data['SampleId']).first()
         # if rock_sample:
-        #     return make_response(jsonify({'message':'Sample_id already exists.'}),409)
-        if data['Sample_basin'] not in [element.value for element in BasinsEnum]:
-            return make_response(jsonify({'message':f"{data['Sample_basin']} basin doesn't exist."}),400)
+        #     return make_response(jsonify({'message':'SampleId already exists.'}),409)
+        if data['SampleBasin'] not in [element.value for element in BasinsEnum]:
+            return make_response(jsonify({'message':f"{data['SampleBasin']} basin doesn't exist."}),400)
         new_rock_sample = RockSamples(
-                        Store_id = data['Store_id'],
-                        Date_collected = data['Date_collected'],
-                        Date_received = data['Date_received'],
-                        Sample_basin = data['Sample_basin'],
-                        Sample_name = data['Sample_name'],
-                        Coordinate_location = data['Coordinate_location'],
-                        Petrographic_description = data['Petrographic_description'],
+                        StoreId = data['StoreId'],
+                        DateCollected = data['DateCollected'],
+                        DateReceived = data['DateReceived'],
+                        SampleBasin = data['SampleBasin'],
+                        SampleName = data['SampleName'],
+                        CoordinateLocation = data['CoordinateLocation'],
+                        PetrographicDescription = data['PetrographicDescription'],
                         # Petrographic_analysis_reports = data['Petrographic_analysis_reports'],
-                        CreatedBy_id = user.CraneUser_id
+                        CreatedById = user.CraneUserId
                     )
         new_rock_sample.save()
         return make_response(jsonify({'message':'Rock Sample added successfuly.'}),201)
@@ -54,22 +54,22 @@ def edit_rock_sample(id):
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
 
     try:
-        # rock_sample = RockSamples.query.filter_by(Sample_id=data['Sample_id']).first()
+        # rock_sample = RockSamples.query.filter_by(SampleId=data['SampleId']).first()
         # if rock_sample:
         #     if id != rock_sample.id:
-        #         return make_response(jsonify({'message':'Sample_id already exists.'}),409)
-        if data['Sample_basin'] not in [element.value for element in BasinsEnum]:
-            return make_response(jsonify({'message':f"{data['Sample_basin']} basin doesn't exist."}),400)
+        #         return make_response(jsonify({'message':'SampleId already exists.'}),409)
+        if data['SampleBasin'] not in [element.value for element in BasinsEnum]:
+            return make_response(jsonify({'message':f"{data['SampleBasin']} basin doesn't exist."}),400)
         rock_sample = RockSamples.query.get(id)
-        rock_sample.Store_id = data['Store_id']
-        rock_sample.Date_collected = data['Date_collected']
-        rock_sample.Date_received = data['Date_received']
-        rock_sample.Sample_basin = data['Sample_basin']
-        rock_sample.Sample_name = data['Sample_name']
-        rock_sample.Coordinate_location = data['Coordinate_location']
-        rock_sample.Petrographic_description = data['Petrographic_description']
+        rock_sample.StoreId = data['StoreId']
+        rock_sample.DateCollected = data['DateCollected']
+        rock_sample.DateReceived = data['DateReceived']
+        rock_sample.SampleBasin = data['SampleBasin']
+        rock_sample.SampleName = data['SampleName']
+        rock_sample.CoordinateLocation = data['CoordinateLocation']
+        rock_sample.PetrographicDescription = data['PetrographicDescription']
         # rock_sample.Petrographic_analysis_reports = data['Petrographic_analysis_reports']
-        rock_sample.Modified_by = user.CraneUser_id
+        rock_sample.ModifiedBy = user.CraneUserId
         rock_sample.update()
         return make_response(jsonify({'message':'Rock sample updated successfuly.'}),200)
     except:
@@ -81,15 +81,15 @@ def edit_rock_sample(id):
 def get_rock_sample(id):
     try:
         # get Petrographic_analysis_reports
-        reports = Files.query.filter(Files.Rock_samples_id == id, Files.Report_path!=None)
+        reports = Files.query.filter(Files.RockSamplesId == id, Files.ReportPath!=None)
         report_names = []
         if reports:
             for report in reports:
-                report_names.append(report.Report_path)
+                report_names.append(report.ReportPath)
 
         rock_sample = RockSamples.query.get(id)
         new_rock_sample_object  = rock_sample.serialise()
-        new_rock_sample_object['Petrographic_analysis_reports'] = report_names
+        new_rock_sample_object['PetrographicAnalysisReports'] = report_names
         
         return make_response(jsonify(new_rock_sample_object),200)
     except:
@@ -104,13 +104,13 @@ def get_all_rock_samples():
         new_rock_samples = []
         for sample in rock_samples:
             # get Analysis_reports
-            reports = Files.query.filter(Files.Rock_samples_id == sample['id'], Files.Report_path!=None)
+            reports = Files.query.filter(Files.RockSamplesId == sample['id'], Files.ReportPath!=None)
             report_names = []
             if reports:
                 for report in reports:
-                    report_names.append(report.Report_path)
+                    report_names.append(report.ReportPath)
 
-            sample['Petrographic_analysis_reports'] = report_names
+            sample['PetrographicAnalysisReports'] = report_names
             new_rock_samples.append(sample)
         
         return make_response(jsonify(new_rock_samples),200)

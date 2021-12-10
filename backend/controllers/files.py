@@ -12,10 +12,10 @@ from ..middleware.permissions import only_data_admin
 
 files_bp = Blueprint('files_bp', __name__)
 
-@files_bp.route('/apiv1/add_file/<int:sample_id>',methods=['POST'])
+@files_bp.route('/apiv1/add_file/<int:sampleId>',methods=['POST'])
 @jwt_required()
 @only_data_admin
-def add_file(sample_id):
+def add_file(sampleId):
     if request.is_json:
         data = request.get_json(force=True)
     else:
@@ -25,63 +25,63 @@ def add_file(sample_id):
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
     try:
         # get last inserted core
-        # core = Cores.query.order_by(Cores.Core_sample_id.desc()).first()
+        # core = Cores.query.order_by(Cores.Core_sampleId.desc()).first()
 
         # check if file in incoming data
         report_name = None
         image = None
-        Cores_id = None
-        Fluid_samples_id = None
-        Rock_samples_id = None
+        CoresId = None
+        Fluid_samplesId = None
+        Rock_samplesId = None
         Report_type = "Cores"
         if file:
             # cores
-            if "Core_analysis_reports" in file:
-                report_name = upload_file(file['Core_analysis_reports'])
-            if "Core_photograph" in file:
-                image = upload_file(file['Core_photograph'])
+            if "CoreAnalysisReports" in file:
+                report_name = upload_file(file['CoreAnalysisReports'])
+            if "CorePhotograph" in file:
+                image = upload_file(file['CorePhotograph'])
             # fluid sample
-            if "Analysis_reports" in file:
-                report_name = upload_file(file['Analysis_reports'])
+            if "AnalysisReports" in file:
+                report_name = upload_file(file['AnalysisReports'])
                 Report_type = "Fluid_Samples"
             # rock sample
-            if "Petrographic_analysis_reports" in file:
-                report_name = upload_file(file['Petrographic_analysis_reports'])
+            if "PetrographicAnalysisReports" in file:
+                report_name = upload_file(file['PetrographicAnalysisReports'])
                 Report_type = "Rock_Samples"
 
         if data:
             # cores
-            if "Core_analysis_reports" in data:
-                report_name = data['Core_analysis_reports']
-            if "Core_photograph" in data:
-                image = data['Core_photograph']
+            if "CoreAnalysisReports" in data:
+                report_name = data['CoreAnalysisReports']
+            if "CorePhotograph" in data:
+                image = data['CorePhotograph']
             # fluid sample
-            if "Analysis_reports" in data:
-                report_name = data['Analysis_reports']
+            if "AnalysisReports" in data:
+                report_name = data['AnalysisReports']
                 Report_type = "Fluid_Samples"
             # rock sample
-            if "Petrographic_analysis_reports" in data:
-                report_name = data['Petrographic_analysis_reports']
+            if "PetrographicAnalysisReports" in data:
+                report_name = data['PetrographicAnalysisReports']
                 Report_type = "Rock_Samples"
 
         # update foreign keys
         if Report_type == "Cores":
-            Cores_id = sample_id
+            CoresId = sampleId
         elif Report_type == "Fluid_Samples":
-            Fluid_samples_id = sample_id
+            Fluid_samplesId = sampleId
         else:
-            Rock_samples_id = sample_id
+            Rock_samplesId = sampleId
 
 
         # save file
         new_file = Files(
-            Cores_id = Cores_id,
-            Fluid_samples_id = Fluid_samples_id,
-            Rock_samples_id = Rock_samples_id,
-            Report_type = Report_type,
-            Report_path = report_name,
-            Photograph_path = image,
-            CreatedBy_id = user.CraneUser_id
+            CoresId = CoresId,
+            FluidSamplesId = Fluid_samplesId,
+            RockSamplesId = Rock_samplesId,
+            ReportType = Report_type,
+            ReportPath = report_name,
+            PhotographPath = image,
+            CreatedById = user.CraneUserId
         )
         new_file.save()
 
@@ -90,17 +90,17 @@ def add_file(sample_id):
         return make_response(str(traceback.format_exc()),500)
 
 
-@files_bp.route('/apiv1/delete_file/<int:File_id>',methods=['DELETE'])
+@files_bp.route('/apiv1/delete_file/<int:FileId>',methods=['DELETE'])
 @jwt_required()
 @only_data_admin
-def delete_file(File_id):
+def delete_file(FileId):
     try:
-        file = Files.query.get(File_id)
+        file = Files.query.get(FileId)
         file.delete()
-        if file.Report_path is not None:
-            outcome = remove_file(file.Report_path)
-        if file.Photograph_path is not None:
-            outcome = remove_file(file.Photograph_path)
+        if file.ReportPath is not None:
+            outcome = remove_file(file.ReportPath)
+        if file.PhotographPath is not None:
+            outcome = remove_file(file.PhotographPath)
 
         return make_response(jsonify({'message':outcome}),200)
     except:

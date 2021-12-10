@@ -28,14 +28,14 @@ class SecurityGradeEnum(enum.Enum):
 # rename this to cores
 class Cores(db.Model):
     __tablename__ = 'geosims_t_Cores'
-    WellboreCore_id = db.Column(db.Integer,primary_key=True)
+    WellboreCoreId = db.Column(db.Integer,primary_key=True)
     WellborePAUID = db.Column(db.Integer, db.ForeignKey(Wellbore.PAUID),nullable=False)
     WelboreCoreName = db.Column(db.NVARCHAR(255), db.ForeignKey(Wellbore.WellboreOfficialName),nullable=False)
     CoreNumber = db.Column(db.NVARCHAR(255), unique=True)
     CoreTypeName = db.Column(db.Enum(CoreTypeEnum,
             values_callable=lambda enum: [str(e.value) for e in enum]), nullable=False)     
     CoringDate = db.Column(db.Date)
-    WBCoringContractor_id = db.Column(db.Integer, db.ForeignKey(Company.Company_id),nullable=True)
+    WBCoringContractorId = db.Column(db.Integer, db.ForeignKey(Company.CompanyId),nullable=True)
     CoreTopMD = db.Column(db.DECIMAL)
     CoreBtmMD = db.Column(db.DECIMAL)
     CoreTopTVD = db.Column(db.DECIMAL)
@@ -44,8 +44,8 @@ class Cores(db.Model):
     CutLengthTVD = db.Column(db.String(100))
     RecoveredLength = db.Column(db.DECIMAL)
     PercentageCoreRecovery = db.Column(db.Float) #(cutlength/(cutlength+recoveredlength))*100
-    CoreTopStratLitho_id = db.Column(db.Integer, db.ForeignKey(StratLithoUnit.StratLitho_id),nullable=True)
-    CoreBottomStratLitho_id = db.Column(db.Integer, db.ForeignKey(StratLithoUnit.StratLitho_id),nullable=True)
+    CoreTopStratLithoId = db.Column(db.Integer, db.ForeignKey(StratLithoUnit.StratLithoId),nullable=True)
+    CoreBottomStratLithoId = db.Column(db.Integer, db.ForeignKey(StratLithoUnit.StratLithoId),nullable=True)
     CorePictureSoftcopyPath = db.Column(db.TEXT)
     CorePictureHyperlink = db.Column(db.TEXT)
     PictureUploadDate = db.Column(db.DateTime)
@@ -63,10 +63,10 @@ class Cores(db.Model):
     ReportDocumentDate = db.Column(db.DateTime)
     ReportDocumentName = db.Column(db.NVARCHAR(100))
     Comments = db.Column(db.NVARCHAR(500))
-    CreatedBy_id = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUser_id),nullable=False)
+    CreatedById = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUserId),nullable=False)
     DateCreated = db.Column(db.DateTime)
     ModifiedOn = db.Column(db.DateTime)
-    ModifiedBy = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUser_id),nullable=True)
+    ModifiedBy = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUserId),nullable=True)
     
 
     def serialise(self):

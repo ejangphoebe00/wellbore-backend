@@ -55,12 +55,12 @@ def login():
 
         # update login history
         login_history = CraneUserLoginHistory(
-            HistLogUser_id = user.CraneUser_id,
-            LogStaff_id = user.UserStaff_id,
-            CraneCompany_id = user.UserCompany_id,   
-            LogCompanyAuthorisedUser_id = user.CraneUser_id,
+            HistLogUserId = user.CraneUserId,
+            LogStaffId = user.UserStaffId,
+            CraneCompanyId = user.UserCompanyId,   
+            LogCompanyAuthorisedUserId = user.CraneUserId,
             LogAuthorisedUserName = user.CraneUserName, 
-            LoginStatus_id = 0,   
+            LoginStatusId = 0,   
             UserOnlineStatus = 1,
             LogLoginDate = datetime.now(),
             UserLoginLogName = user.CraneUserName,
@@ -74,7 +74,7 @@ def login():
             user_role = "Data Admin"
         else:
             user_role = "Staff"
-        resp = jsonify({"CraneUser_id":user.CraneUser_id,"user_role":user_role,'access_token':access_token,
+        resp = jsonify({"CraneUserId":user.CraneUserId,"user_role":user_role,'access_token':access_token,
                         'refresh_token':refresh_token,'message':'Login Successful'
                     })
         return make_response(resp,200)
@@ -99,8 +99,8 @@ def register_user():
         if existing_user:
             return make_response(jsonify({'message': 'User already exists!'}), 400)
 
-        staff = CraneUser.query.filter(CraneUser.UserStaff_id == data['UserStaff_id']).first()
-        if staff and staff.UserStaff_id != None:
+        staff = CraneUser.query.filter(CraneUser.UserStaffId == data['UserStaffId']).first()
+        if staff and staff.UserStaffId != None:
             return make_response(jsonify({'message': 'StaffID already exists!'}), 400)
 
         if CraneUser.query.filter(CraneUser.CraneUserName==data['CraneUserName']).first():
@@ -116,21 +116,21 @@ def register_user():
                         LoginID = data['LoginID'],
                         LoginIDAlias = data['LoginIDAlias'],
                         # UserCategory = data['UserCategory'],
-                        UserCompany_id = data['UserCompany_id'],
-                        UserPremsUser_id = data['UserPremsUser_id'],
-                        UserStaff_id = data['UserStaff_id'],
+                        UserCompanyId = data['UserCompanyId'],
+                        UserPremsUserId = data['UserPremsUserId'],
+                        UserStaffId = data['UserStaffId'],
                         OrganisationName = data['OrganisationName'],
                         CredentialsSent = 1,
                         UserEmailAddress = data['UserEmailAddress'],
-                        UserSecurityLevel_id = data['UserSecurityLevel_id'],
-                        UserWebSecurityLevel_id = data['UserWebSecurityLevel_id'],#should come from websecurity model as forign key
-                        UserNogtrWebSecurityLevel_id = data['UserNogtrWebSecurityLevel_id'],
-                        UserPremsWebSecurityLevel_id = data['UserPremsWebSecurityLevel_id'],
-                        UserIntranetSecurityLevel_id = data['UserIntranetSecurityLevel_id'],
-                        UserNsdWebSecurityLevel_id = data['UserNsdWebSecurityLevel_id'],
+                        UserSecurityLevelId = data['UserSecurityLevelId'],
+                        UserWebSecurityLevelId = data['UserWebSecurityLevelId'],#should come from websecurity model as forign key
+                        UserNogtrWebSecurityLevelId = data['UserNogtrWebSecurityLevelId'],
+                        UserPremsWebSecurityLevelId = data['UserPremsWebSecurityLevelId'],
+                        UserIntranetSecurityLevelId = data['UserIntranetSecurityLevelId'],
+                        UserNsdWebSecurityLevelId = data['UserNsdWebSecurityLevelId'],
                         Comments = data['Comments'],
                         OrganisationUserName = data['OrganisationUserName'],
-                        CreatedBy_id = user.CraneUser_id,
+                        CreatedById = user.CraneUserId,
                         DeactivateAccount = 0,
                         LoginErrorCount = 0,
                         DefaultPassword = CraneUser.hash_password(data['DefaultPassword']),
@@ -154,23 +154,23 @@ def get_all_users():
         return make_response(str(traceback.format_exc()),500)
 
 
-@auth_bp.route('/user/get_user/<int:CraneUser_id>', methods=['GET'])
+@auth_bp.route('/user/get_user/<int:CraneUserId>', methods=['GET'])
 @jwt_required()
-def get_user(CraneUser_id):
+def get_user(CraneUserId):
     try:
-        user = CraneUser.query.get(CraneUser_id)
+        user = CraneUser.query.get(CraneUserId)
         return make_response(jsonify(user.serialise()),200)
     except:
         return make_response(str(traceback.format_exc()),500)
 
 
 # deactivate account
-@auth_bp.route('/user/deactivate_account/<int:CraneUser_id>', methods=['PUT'])
+@auth_bp.route('/user/deactivate_account/<int:CraneUserId>', methods=['PUT'])
 @jwt_required()
 @only_application_admin
-def deactivate_account(CraneUser_id):
+def deactivate_account(CraneUserId):
     try:
-        user = CraneUser.query.get(CraneUser_id)
+        user = CraneUser.query.get(CraneUserId)
         user.DeactivateAccount = 1
         user.update()
         return make_response(jsonify({'message':'Account successfully Deactivated'}),200)
@@ -179,12 +179,12 @@ def deactivate_account(CraneUser_id):
       
 
 # reactivate account
-@auth_bp.route('/user/reactivate_account/<int:CraneUser_id>', methods=['PUT'])
+@auth_bp.route('/user/reactivate_account/<int:CraneUserId>', methods=['PUT'])
 @jwt_required()
 @only_application_admin
-def reactivate_account(CraneUser_id):
+def reactivate_account(CraneUserId):
     try:
-        user = CraneUser.query.get(CraneUser_id)
+        user = CraneUser.query.get(CraneUserId)
         user.DeactivateAccount = 0
         user.update()
         return make_response(jsonify({'message':'Account successfully Reactivated'}),200)
@@ -205,13 +205,13 @@ def get_deactivated_accounts():
         return make_response(str(traceback.format_exc()),500)
 
 # update user role and permissions
-@auth_bp.route('/user/update_user_role/<int:CraneUser_id>', methods=['PUT'])
+@auth_bp.route('/user/update_user_role/<int:CraneUserId>', methods=['PUT'])
 @jwt_required()
 @only_application_admin
-def update_user_role(CraneUser_id):
+def update_user_role(CraneUserId):
     data = request.get_json(force=True)
     try:
-        user = CraneUser.query.get(CraneUser_id)
+        user = CraneUser.query.get(CraneUserId)
         user.UserCategory = data['UserCategory']
         user.update()
         return make_response(jsonify({'message':'User Role successfully Updated'}),200)
@@ -220,9 +220,9 @@ def update_user_role(CraneUser_id):
 
 
 # Edit profile
-@auth_bp.route('/user/edit_profile/<int:CraneUser_id>', methods=['PUT'])
+@auth_bp.route('/user/edit_profile/<int:CraneUserId>', methods=['PUT'])
 @jwt_required()
-def edit_profile(CraneUser_id):
+def edit_profile(CraneUserId):
     """Edit user details."""
     try:
         if request.is_json:
@@ -231,21 +231,21 @@ def edit_profile(CraneUser_id):
             data = request.form
 
         # user whose records are going to be updated
-        user = CraneUser.query.get(CraneUser_id)
+        user = CraneUser.query.get(CraneUserId)
         # logged in user details
         current_user_email = get_jwt()
         loggedin_user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
         # if the logged in user is an admin
         if loggedin_user.UserCategory == UserCatgoryEnum.Data_Admin:
             # check for redundancy
-            staff = CraneUser.query.filter(CraneUser.UserStaff_id == data['UserStaff_id']).first()
-            if staff and staff.UserStaff_id != None:
-                if CraneUser_id != staff.CraneUser_id:
+            staff = CraneUser.query.filter(CraneUser.UserStaffId == data['UserStaffId']).first()
+            if staff and staff.UserStaffId != None:
+                if CraneUserId != staff.CraneUserId:
                     return make_response(jsonify({'message': 'StaffID already exists!'}), 400)
 
             staff_name = CraneUser.query.filter(CraneUser.CraneUserName==data['CraneUserName']).first()
             if staff_name:
-                if CraneUser_id != staff_name.CraneUser_id:
+                if CraneUserId != staff_name.CraneUserId:
                     return make_response(jsonify({'message': 'Username already exists!'}), 400)
 
             user.FirstName = data['FirstName']
@@ -256,28 +256,28 @@ def edit_profile(CraneUser_id):
             user.LoginID = data['LoginID']
             user.LoginIDAlias = data['LoginIDAlias']
             # user.UserCategory = data['UserCategory']
-            user.UserCompany_id = data['UserCompany_id']
-            user.UserPremsUser_id = data['UserPremsUser_id']
-            user.UserStaff_id = data['UserStaff_id']
+            user.UserCompanyId = data['UserCompanyId']
+            user.UserPremsUserId = data['UserPremsUserId']
+            user.UserStaffId = data['UserStaffId']
             user.OrganisationName = data['OrganisationName']
             user.UserEmailAddress = data['UserEmailAddress']
-            user.UserSecurityLevel_id = data['UserSecurityLevel_id']
-            user.UserWebSecurityLevel_id = data['UserWebSecurityLevel_id']
-            user.UserNogtrWebSecurityLevel_id = data['UserNogtrWebSecurityLevel_id']
-            user.UserPremsWebSecurityLevel_id = data['UserPremsWebSecurityLevel_id']
-            user.UserIntranetSecurityLevel_id = data['UserIntranetSecurityLevel_id']
-            user.UserNsdWebSecurityLevel_id = data['UserNsdWebSecurityLevel_id']
+            user.UserSecurityLevelId = data['UserSecurityLevelId']
+            user.UserWebSecurityLevelId = data['UserWebSecurityLevelId']
+            user.UserNogtrWebSecurityLevelId = data['UserNogtrWebSecurityLevelId']
+            user.UserPremsWebSecurityLevelId = data['UserPremsWebSecurityLevelId']
+            user.UserIntranetSecurityLevelId = data['UserIntranetSecurityLevelId']
+            user.UserNsdWebSecurityLevelId = data['UserNsdWebSecurityLevelId']
             user.Comments = data['Comments']
             user.OrganisationUserName = data['OrganisationUserName']
             user.ActivationChangeComment = data['ActivationChangeComment']
             user.ActivationChangeDate = datetime.now()        
-            user.ModifiedBy = loggedin_user.CraneUser_id
+            user.ModifiedBy = loggedin_user.CraneUserId
             # if user can't log in due to expired password
             if data.get("DefaultPassword") != None and data["DefaultPassword"] != user.DefaultPassword:
                 user.DefaultPassword = CraneUser.hash_password(data['DefaultPassword'])
                 user.DateCreated = datetime.now()
             # if admin is updating their own records
-            if user.CraneUser_id == loggedin_user.CraneUser_id:
+            if user.CraneUserId == loggedin_user.CraneUserId:
                 if user.UserPassword != data.get('UserPassword'):
                     user.UserPassword = CraneUser.hash_password(data.get('UserPassword')) if data.get('UserPassword') else None
                     user.PasswordChangeDate = datetime.now() if data.get('UserPassword') else user.PasswordChangeDate
@@ -288,7 +288,7 @@ def edit_profile(CraneUser_id):
             # check for redundancy
             staff_name = CraneUser.query.filter(CraneUser.CraneUserName==data['CraneUserName']).first()
             if staff_name:
-                if CraneUser_id != staff_name.CraneUser_id:
+                if CraneUserId != staff_name.CraneUserId:
                     return make_response(jsonify({'message': 'Username already exists!'}), 400)
             # user.FirstName = data['FirstName']
             # user.MiddleName = data['MiddleName']
@@ -307,11 +307,11 @@ def edit_profile(CraneUser_id):
 
 
 # user logout
-@auth_bp.route('/user/logout/<int:CraneUser_id>', methods=['DELETE'])
+@auth_bp.route('/user/logout/<int:CraneUserId>', methods=['DELETE'])
 @jwt_required()
-def logout(CraneUser_id):
+def logout(CraneUserId):
     jti = get_jwt()['jti']
-    user = CraneUser.query.get(CraneUser_id)
+    user = CraneUser.query.get(CraneUserId)
     try:
         revoked_token = RevokedTokenModel(jti = jti)
         revoked_token.save()
@@ -322,7 +322,7 @@ def logout(CraneUser_id):
         user.update()
 
         # update login history (update last inserted)
-        login_history = CraneUserLoginHistory.query.filter(CraneUserLoginHistory.HistLogUser_id==CraneUser_id)[-1]
+        login_history = CraneUserLoginHistory.query.filter(CraneUserLoginHistory.HistLogUserId==CraneUserId)[-1]
         login_history.LogLogoutDate = datetime.now()
         login_history.update()
         return make_response(jsonify({'message': 'Logout successful'}),200)
@@ -350,35 +350,35 @@ def get_users_logs():
 
 
 # get logs per user
-@auth_bp.route('/user/get_user_logs/<int:CraneUser_id>', methods=['GET'])
+@auth_bp.route('/user/get_user_logs/<int:CraneUserId>', methods=['GET'])
 @jwt_required()
-def get_user_logs(CraneUser_id):
+def get_user_logs(CraneUserId):
     try:
-        logs = [z.serialise() for z in CraneUserLoginHistory.query.filter(CraneUserLoginHistory.HistLogUser_id == CraneUser_id)]
+        logs = [z.serialise() for z in CraneUserLoginHistory.query.filter(CraneUserLoginHistory.HistLogUserId == CraneUserId)]
         return make_response(jsonify(logs),200)
     except:
         return make_response(str(traceback.format_exc()),500)
 
 
-@auth_bp.route('/user/upload_profile_picture/<int:CraneUser_id>', methods=['POST'])
+@auth_bp.route('/user/upload_profile_picture/<int:CraneUserId>', methods=['POST'])
 @jwt_required()
-def upload_profile_picture(CraneUser_id):
+def upload_profile_picture(CraneUserId):
     try:
         data = request.files
-        user = CraneUser.query.get(CraneUser_id)
-        profile_image = upload_file(data['ProfilePicture'])
-        user.ProfilePicture = profile_image
+        user = CraneUser.query.get(CraneUserId)
+        profileImage = upload_file(data['ProfilePicture'])
+        user.ProfilePicture = profileImage
         user.update()
         return make_response(jsonify({'message': "Profile picture successfully uploaded"}),200)
     except:
         return make_response(str(traceback.format_exc()),500)
 
 
-@auth_bp.route('/user/get_profile_image/<int:CraneUser_id>', methods=['GET'])
+@auth_bp.route('/user/get_profileImage/<int:CraneUserId>', methods=['GET'])
 @jwt_required()
-def get_profile_image(CraneUser_id):
+def get_profileImage(CraneUserId):
     try:
-        user = CraneUser.query.get(CraneUser_id)
+        user = CraneUser.query.get(CraneUserId)
         # upload_path = "/static/files"
         # filename = str(user.ProfilePicture).split('/')[-1]
         # print(filename)
@@ -412,21 +412,21 @@ def create_default_user_and_security_level():
             LoginID = None,
             LoginIDAlias = None,
             UserCategory = UserCatgoryEnum.App_Admin,
-            UserCompany_id = None,
-            UserPremsUser_id = None,
-            UserStaff_id = 1,
+            UserCompanyId = None,
+            UserPremsUserId = None,
+            UserStaffId = 1,
             OrganisationName = "Petroleum Authority of Uganda",
             CredentialsSent = 1,
             UserEmailAddress = "admin@pau.go.ug",
-            UserSecurityLevel_id = None,
-            UserWebSecurityLevel_id = 1,#should come from websecurity model as forign key
-            UserNogtrWebSecurityLevel_id = None,
-            UserPremsWebSecurityLevel_id = None,
-            UserIntranetSecurityLevel_id = None,
-            UserNsdWebSecurityLevel_id = None,
+            UserSecurityLevelId = None,
+            UserWebSecurityLevelId = 1,#should come from websecurity model as forign key
+            UserNogtrWebSecurityLevelId = None,
+            UserPremsWebSecurityLevelId = None,
+            UserIntranetSecurityLevelId = None,
+            UserNsdWebSecurityLevelId = None,
             Comments = None,
             OrganisationUserName = "PAU",
-            CreatedBy_id = None,
+            CreatedById = None,
             DeactivateAccount = 0,
             LoginErrorCount = 0,
             DefaultPassword = CraneUser.hash_password("admin"),

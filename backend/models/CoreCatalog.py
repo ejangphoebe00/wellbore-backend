@@ -9,16 +9,16 @@ from .StratLithoUnit import StratLithoUnit
 
 class CoreCatalog(db.Model):
     __tablename__ = 'geosims_t_CoreCatalog'
-    CoreCatalog_id = db.Column(db.Integer,primary_key=True)
-    WellboreCore_id = db.Column(db.Integer, db.ForeignKey(Cores.WellboreCore_id),nullable=False)
-    # CoreType = db.Column(db.Integer, db.ForeignKey(CoreType.CoreType_id),nullable=False)
+    CoreCatalogId = db.Column(db.Integer,primary_key=True)
+    WellboreCoreId = db.Column(db.Integer, db.ForeignKey(Cores.WellboreCoreId),nullable=False)
+    # CoreType = db.Column(db.Integer, db.ForeignKey(CoreType.CoreTypeId),nullable=False)
     StoreIdentifier = db.Column(db.NVARCHAR(100))
     CatalogCoreFromDepth = db.Column(db.DECIMAL)
     CatalogCoreToDepth = db.Column(db.DECIMAL)
-    # CoreCatalogSecurityFlag_id = db.Column(db.Integer, db.ForeignKey(CatalogSecurityFlag.CatalogSecurityFlag_id),nullable=True)
-    WasAnalysed_id = db.Column(db.Integer)
-    TopStratLitho_id = db.Column(db.Integer, db.ForeignKey(StratLithoUnit.StratLitho_id),nullable=True)
-    BottomStratLitho_id = db.Column(db.Integer, db.ForeignKey(StratLithoUnit.StratLitho_id),nullable=True)
+    # CoreCatalogSecurityFlagId = db.Column(db.Integer, db.ForeignKey(CatalogSecurityFlag.CatalogSecurityFlagId),nullable=True)
+    WasAnalysedId = db.Column(db.Integer)
+    TopStratLithoId = db.Column(db.Integer, db.ForeignKey(StratLithoUnit.StratLithoId),nullable=True)
+    BottomStratLithoId = db.Column(db.Integer, db.ForeignKey(StratLithoUnit.StratLithoId),nullable=True)
     CatalogueCorePictureName = db.Column(db.TEXT)
     CataloguePictureSoftcopyPath = db.Column(db.TEXT)
     CataloguePictureHyperlink = db.Column(db.TEXT)
@@ -26,15 +26,15 @@ class CoreCatalog(db.Model):
     CatalogueReportSoftcopyPath = db.Column(db.TEXT)
     CatalogueReportHyperlink = db.Column(db.TEXT)
     CatReportUploadDate = db.Column(db.DateTime)
-    # CatalogReportFormat_id = db.Column(db.Integer, db.ForeignKey(FileFormat.FileFormat_id),nullable=True)
+    # CatalogReportFormatId = db.Column(db.Integer, db.ForeignKey(FileFormat.FileFormatId),nullable=True)
     CatalogReportFileSize = db.Column(db.DECIMAL)
-    # CatalogReportSecurityGrade_id = db.Column(db.Integer, db.ForeignKey(FileSecurityGrade.FileSecurityGrade_id),nullable=True)
+    # CatalogReportSecurityGradeId = db.Column(db.Integer, db.ForeignKey(FileSecurityGrade.FileSecurityGradeId),nullable=True)
     CoreCatalogName = db.Column(db.NVARCHAR(100), unique=True, nullable=False)
     Comments = db.Column(db.NVARCHAR(500))
-    CreatedBy_id = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUser_id),nullable=False)
+    CreatedById = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUserId),nullable=False)
     DateCreated = db.Column(db.DateTime)
     ModifiedOn = db.Column(db.DateTime)
-    ModifiedBy = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUser_id),nullable=True)
+    ModifiedBy = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUserId),nullable=True)
     
 
     def serialise(self):

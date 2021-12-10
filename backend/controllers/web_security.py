@@ -39,10 +39,10 @@ def add_web_security_level():
         return make_response(str(traceback.format_exc()),500)
 
 
-@web_security_level_bp.route('/apiv1/edit_web_security_level/<int:WebSecurityLevel_id>',methods=['PUT'])
+@web_security_level_bp.route('/apiv1/edit_web_security_level/<int:WebSecurityLevelId>',methods=['PUT'])
 @jwt_required()
 @only_application_admin
-def edit_web_security_level(WebSecurityLevel_id):
+def edit_web_security_level(WebSecurityLevelId):
     data = request.get_json(force=True)
     current_user_email = get_jwt()
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
@@ -51,19 +51,19 @@ def edit_web_security_level(WebSecurityLevel_id):
     level_name = CraneWebSecurityLevel.query.filter_by(WebSecurityLevelName=data['WebSecurityLevelName']).first()
     level_abbreviation = CraneWebSecurityLevel.query.filter_by(WebSecurityLevelAbbreviation=data['WebSecurityLevelAbbreviation']).first()
     if level_name:
-        if WebSecurityLevel_id != level_name.WebSecurityLevel_id:
+        if WebSecurityLevelId != level_name.WebSecurityLevelId:
             return make_response(jsonify({'message':'WebSecurityLevelName already exists.'}),409)
     if level_abbreviation and level_abbreviation.WebSecurityLevelAbbreviation != None:
-        if WebSecurityLevel_id != level_abbreviation.WebSecurityLevel_id:
+        if WebSecurityLevelId != level_abbreviation.WebSecurityLevelId:
             return make_response(jsonify({'message':'WebSecurityLevelAbbreviation already exists.'}),409)
     try:
-        web_security_level = CraneWebSecurityLevel.query.get(WebSecurityLevel_id)
+        web_security_level = CraneWebSecurityLevel.query.get(WebSecurityLevelId)
         web_security_level.WebSecurityLevelName = data['WebSecurityLevelName']
         web_security_level.WebSecurityLevelDescription = data['WebSecurityLevelDescription']
         web_security_level.WebSecurityLevelAbbreviation = data['WebSecurityLevelAbbreviation'] 
         web_security_level.Comments = data['Comments']
         web_security_level.ModifiedOn = datetime.datetime.today()
-        web_security_level.ModifiedBy = user.CraneUser_id
+        web_security_level.ModifiedBy = user.CraneUserId
         web_security_level.update()
         return make_response(jsonify({'message':'Web security level updated successfuly.'}),200)
     except:
@@ -71,11 +71,11 @@ def edit_web_security_level(WebSecurityLevel_id):
 
 
 # get single web_security_level object
-@web_security_level_bp.route('/apiv1/get_web_security_level/<int:WebSecurityLevel_id>',methods=['GET'])
+@web_security_level_bp.route('/apiv1/get_web_security_level/<int:WebSecurityLevelId>',methods=['GET'])
 @jwt_required()
-def get_web_security_level(WebSecurityLevel_id):
+def get_web_security_level(WebSecurityLevelId):
     try:
-        web_security_level = CraneWebSecurityLevel.query.get(WebSecurityLevel_id)
+        web_security_level = CraneWebSecurityLevel.query.get(WebSecurityLevelId)
         return make_response(jsonify(web_security_level.serialise()),200)
     except Exception as error:
         return make_response(str(traceback.format_exc()),500)
@@ -91,12 +91,12 @@ def get_all_web_security_level():
         return make_response(str(traceback.format_exc()),500)
 
 
-@web_security_level_bp.route('/apiv1/delete_web_security_level/<int:WebSecurityLevel_id>',methods=['DELETE'])
+@web_security_level_bp.route('/apiv1/delete_web_security_level/<int:WebSecurityLevelId>',methods=['DELETE'])
 @jwt_required()
 @only_application_admin
-def delete_web_security_level(WebSecurityLevel_id):
+def delete_web_security_level(WebSecurityLevelId):
     try:
-        web_security_level = CraneWebSecurityLevel.query.get(WebSecurityLevel_id)
+        web_security_level = CraneWebSecurityLevel.query.get(WebSecurityLevelId)
         web_security_level.delete()
         return make_response(jsonify({'message':'Web security level successfully deleted.'}),200)
     except:

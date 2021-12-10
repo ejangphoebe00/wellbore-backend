@@ -17,19 +17,19 @@ class BasinsEnum(enum.Enum):
 class RockSamples(db.Model):
     __tablename__ = 'geosims_t_RockSamples'
     id = db.Column(db.Integer,primary_key=True)
-    Store_id = db.Column(db.VARCHAR(100), nullable=False)
-    Date_collected = db.Column(db.DateTime)
-    Date_received = db.Column(db.DateTime)
-    Sample_basin = db.Column(db.Enum(BasinsEnum,
+    StoreId = db.Column(db.VARCHAR(100), nullable=False)
+    DateCollected = db.Column(db.DateTime)
+    DateReceived = db.Column(db.DateTime)
+    SampleBasin = db.Column(db.Enum(BasinsEnum,
              values_callable=lambda enum: [str(e.value) for e in enum]))
-    Sample_name = db.Column(db.VARCHAR(100))
-    Coordinate_location = db.Column(db.VARCHAR(100))
-    Petrographic_description = db.Column(db.VARCHAR(500))
+    SampleName = db.Column(db.VARCHAR(100))
+    CoordinateLocation = db.Column(db.VARCHAR(100))
+    PetrographicDescription = db.Column(db.VARCHAR(500))
     # Petrographic_analysis_reports = db.Column(db.VARCHAR(100))
-    CreatedBy_id = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUser_id),nullable=False)
+    CreatedById = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUserId),nullable=False)
     DateCreated = db.Column(db.DateTime, default=datetime.utcnow)
     ModifiedOn = db.Column(db.DateTime, default=datetime.utcnow, onupdate=db.func.current_timestamp())
-    ModifiedBy = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUser_id),nullable=True)
+    ModifiedBy = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUserId),nullable=True)
     
 
     def serialise(self):

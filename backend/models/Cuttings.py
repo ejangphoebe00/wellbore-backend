@@ -13,20 +13,20 @@ class CuttingsCategoryEnum(enum.Enum):
 
 class Cuttings(db.Model):
     __tablename__ = 'geosims_t_Cuttings'
-    Sample_id = db.Column(db.Integer,primary_key=True)
-    Wellbore_id = db.Column(db.Integer, db.ForeignKey(Wellbore.Wellbore_id))
-    Sample_box_number = db.Column(db.VARCHAR(100))
-    Cutting_category = db.Column(db.Enum(CuttingsCategoryEnum), nullable=False)
-    Sample_type = db.Column(db.VARCHAR(100))
-    Minimum_depth = db.Column(db.Float)
-    Maximum_depth = db.Column(db.Float)
-    Sample_interval = db.Column(db.VARCHAR(100))#
-    Date_received = db.Column(db.DateTime)
-    Other_description = db.Column(db.VARCHAR(500))
-    CreatedBy_id = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUser_id),nullable=False)
+    SampleId = db.Column(db.Integer,primary_key=True)
+    WellboreId = db.Column(db.Integer, db.ForeignKey(Wellbore.WellboreId))
+    SampleBoxNumber = db.Column(db.VARCHAR(100))
+    CuttingCategory = db.Column(db.Enum(CuttingsCategoryEnum), nullable=False)
+    SampleType = db.Column(db.VARCHAR(100))
+    MinimumDepth = db.Column(db.Float)
+    MaximumDepth = db.Column(db.Float)
+    SampleInterval = db.Column(db.VARCHAR(100))#
+    DateReceived = db.Column(db.DateTime)
+    OtherDescription = db.Column(db.VARCHAR(500))
+    CreatedById = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUserId),nullable=False)
     DateCreated = db.Column(db.DateTime, default=datetime.utcnow)
     ModifiedOn = db.Column(db.DateTime, default=datetime.utcnow, onupdate=db.func.current_timestamp())
-    ModifiedBy = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUser_id),nullable=True)
+    ModifiedBy = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUserId),nullable=True)
     
 
     def serialise(self):

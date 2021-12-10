@@ -23,16 +23,16 @@ def add_cutting():
 
     try:
         new_cutting = Cuttings(
-                        Wellbore_id = data['Wellbore_id'],
-                        Sample_box_number = data['Sample_box_number'],
-                        Cutting_category = data['Cutting_category'],
-                        Sample_type = data['Sample_type'],
-                        Minimum_depth = data['Minimum_depth'],
-                        Maximum_depth = data['Maximum_depth'],
-                        Sample_interval = data['Sample_interval'],
-                        Date_received = data['Date_received'],
-                        Other_description = data['Other_description'],
-                        CreatedBy_id = user.CraneUser_id
+                        WellboreId = data['WellboreId'],
+                        SampleBoxNumber = data['SampleBoxNumber'],
+                        CuttingCategory = data['CuttingCategory'],
+                        SampleType = data['SampleType'],
+                        MinimumDepth = data['MinimumDepth'],
+                        MaximumDepth = data['MaximumDepth'],
+                        SampleInterval = data['SampleInterval'],
+                        DateReceived = data['DateReceived'],
+                        OtherDescription = data['OtherDescription'],
+                        CreatedById = user.CraneUserId
                     )
         new_cutting.save()
         return make_response(jsonify({'message':'Cutting added successfuly.'}),201)
@@ -40,37 +40,37 @@ def add_cutting():
         return make_response(str(traceback.format_exc()),500)
 
 
-@cuttings_bp.route('/apiv1/edit_cutting/<int:Sample_id>',methods=['PUT'])
+@cuttings_bp.route('/apiv1/edit_cutting/<int:SampleId>',methods=['PUT'])
 @jwt_required()
 @only_data_admin
-def edit_cutting(Sample_id):
+def edit_cutting(SampleId):
     data = request.get_json(force=True)
     current_user_email = get_jwt()
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
 
     try:
-        cutting = Cuttings.query.get(Sample_id)
-        cutting.Wellbore_id = data['Wellbore_id']
-        cutting.Sample_box_number = data['Sample_box_number']
-        cutting.Cutting_category = data['Cutting_category']
-        cutting.Sample_type = data['Sample_type']
-        cutting.Minimum_depth = data['Minimum_depth']
-        cutting.Maximum_depth = data['Maximum_depth']
-        cutting.Sample_interval = data['Sample_interval']
-        cutting.Date_received = data['Date_received']
-        cutting.Other_description = data['Other_description']
-        cutting.Modified_by = user.CraneUser_id
+        cutting = Cuttings.query.get(SampleId)
+        cutting.WellboreId = data['WellboreId']
+        cutting.SampleBoxNumber = data['SampleBoxNumber']
+        cutting.CuttingCategory = data['CuttingCategory']
+        cutting.SampleType = data['SampleType']
+        cutting.MinimumDepth = data['MinimumDepth']
+        cutting.MaximumDepth = data['MaximumDepth']
+        cutting.SampleInterval = data['SampleInterval']
+        cutting.DateReceived = data['DateReceived']
+        cutting.OtherDescription = data['OtherDescription']
+        cutting.ModifiedBy = user.CraneUserId
         cutting.update()
         return make_response(jsonify({'message':'Cutting updated successfuly.'}),200)
     except:
         return make_response(str(traceback.format_exc()),500)
 
 
-@cuttings_bp.route('/apiv1/get_cutting/<int:Sample_id>',methods=['GET'])
+@cuttings_bp.route('/apiv1/get_cutting/<int:SampleId>',methods=['GET'])
 @jwt_required()
-def get_cutting(Sample_id):
+def get_cutting(SampleId):
     try:
-        cutting = Cuttings.query.get(Sample_id)
+        cutting = Cuttings.query.get(SampleId)
         return make_response(jsonify(cutting.serialise()),200)
     except:
         return make_response(str(traceback.format_exc()),500)
@@ -86,12 +86,12 @@ def get_all_cuttings():
         return make_response(str(traceback.format_exc()),500)
 
 
-@cuttings_bp.route('/apiv1/delete_cutting/<int:Sample_id>',methods=['DELETE'])
+@cuttings_bp.route('/apiv1/delete_cutting/<int:SampleId>',methods=['DELETE'])
 @jwt_required()
 @only_data_admin
-def delete_cutting(Sample_id):
+def delete_cutting(SampleId):
     try:
-        cutting = Cuttings.query.get(Sample_id)
+        cutting = Cuttings.query.get(SampleId)
         cutting.delete()
         return make_response(jsonify({'message':'Cutting successfully deleted.'}),200)
     except:

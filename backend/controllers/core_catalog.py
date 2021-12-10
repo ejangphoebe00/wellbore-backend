@@ -27,15 +27,15 @@ def add_core_catalog():
         return make_response(jsonify({'message':'CoreCatalogName already exists.'}),409)
     try:
         new_core_catalog = CoreCatalog(
-                        WellboreCore_id = data['WellboreCore_id'], # comes from welbore core
+                        WellboreCoreId = data['WellboreCoreId'], # comes from welbore core
                         # CoreType = data['CoreType'], # comes from core type
                         StoreIdentifier = data['StoreIdentifier'],
                         CatalogCoreFromDepth = data['CatalogCoreFromDepth'],
                         CatalogCoreToDepth = data['CatalogCoreToDepth'],
-                        # CoreCatalogSecurityFlag_id = data['CoreCatalogSecurityFlag_id'], # comes from catalog security flag
-                        WasAnalysed_id = data['WasAnalysed_id'],
-                        TopStratLitho_id = data['TopStratLitho_id'], # comes from strat litho
-                        BottomStratLitho_id = data['BottomStratLitho_id'], # comes from strat litho
+                        # CoreCatalogSecurityFlagId = data['CoreCatalogSecurityFlagId'], # comes from catalog security flag
+                        WasAnalysedId = data['WasAnalysedId'],
+                        TopStratLithoId = data['TopStratLithoId'], # comes from strat litho
+                        BottomStratLithoId = data['BottomStratLithoId'], # comes from strat litho
                         CatalogueCorePictureName = data['CatalogueCorePictureName'],
                         CataloguePictureSoftcopyPath = data['CataloguePictureSoftcopyPath'],
                         CataloguePictureHyperlink = data['CataloguePictureHyperlink'],
@@ -43,12 +43,12 @@ def add_core_catalog():
                         CatalogueReportSoftcopyPath = data['CatalogueReportSoftcopyPath'],
                         CatalogueReportHyperlink = data['CatalogueReportHyperlink'],
                         CatReportUploadDate = data['CatReportUploadDate'],
-                        # CatalogReportFormat_id = data['CatalogReportFormat_id'], # comes from file format
+                        # CatalogReportFormatId = data['CatalogReportFormatId'], # comes from file format
                         CatalogReportFileSize = data['CatalogReportFileSize'],
-                        # CatalogReportSecurityGrade_id = data['CatalogReportSecurityGrade_id'], # comes from file security grade
+                        # CatalogReportSecurityGradeId = data['CatalogReportSecurityGradeId'], # comes from file security grade
                         CoreCatalogName = data['CoreCatalogName'],
                         Comments = data['Comments'],
-                        CreatedBy_id = user.CraneUser_id,
+                        CreatedById = user.CraneUserId,
                         DateCreated = datetime.datetime.now(),
                     )
         new_core_catalog.save()
@@ -57,10 +57,10 @@ def add_core_catalog():
         return make_response(str(traceback.format_exc()),500)
 
 
-@core_catalog_bp.route('/apiv1/edit_core_catalog/<int:CoreCatalog_id>',methods=['PUT'])
+@core_catalog_bp.route('/apiv1/edit_core_catalog/<int:CoreCatalogId>',methods=['PUT'])
 @jwt_required()
 @only_data_admin
-def edit_core_catalog(CoreCatalog_id):
+def edit_core_catalog(CoreCatalogId):
     data = request.get_json(force=True)
     current_user_email = get_jwt()
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
@@ -68,19 +68,19 @@ def edit_core_catalog(CoreCatalog_id):
     # check for redundancies
     catalog_name = CoreCatalog.query.filter_by(CoreCatalogName=data['CoreCatalogName']).first()
     if catalog_name:
-        if CoreCatalog_id != catalog_name.CoreCatalog_id:
+        if CoreCatalogId != catalog_name.CoreCatalogId:
             return make_response(jsonify({'message':'CoreCatalogName already exists.'}),409)
     try:
-        core_catalog = CoreCatalog.query.get(CoreCatalog_id)
-        core_catalog.WellboreCore_id = data['WellboreCore_id'] # comes from welbore core
+        core_catalog = CoreCatalog.query.get(CoreCatalogId)
+        core_catalog.WellboreCoreId = data['WellboreCoreId'] # comes from welbore core
         # core_catalog.CoreType = data['CoreType'] # comes from core type
         core_catalog.StoreIdentifier = data['StoreIdentifier']
         core_catalog.CatalogCoreFromDepth = data['CatalogCoreFromDepth']
         core_catalog.CatalogCoreToDepth = data['CatalogCoreToDepth']
-        # core_catalog.CoreCatalogSecurityFlag_id = data['CoreCatalogSecurityFlag_id'] # comes from catalog security flag
-        core_catalog.WasAnalysed_id = data['WasAnalysed_id']
-        core_catalog.TopStratLitho_id = data['TopStratLitho_id'] # comes from strat litho
-        core_catalog.BottomStratLitho_id = data['BottomStratLitho_id'] # comes from strat litho
+        # core_catalog.CoreCatalogSecurityFlagId = data['CoreCatalogSecurityFlagId'] # comes from catalog security flag
+        core_catalog.WasAnalysedId = data['WasAnalysedId']
+        core_catalog.TopStratLithoId = data['TopStratLithoId'] # comes from strat litho
+        core_catalog.BottomStratLithoId = data['BottomStratLithoId'] # comes from strat litho
         core_catalog.CatalogueCorePictureName = data['CatalogueCorePictureName']
         core_catalog.CataloguePictureSoftcopyPath = data['CataloguePictureSoftcopyPath']
         core_catalog.CataloguePictureHyperlink = data['CataloguePictureHyperlink']
@@ -88,12 +88,12 @@ def edit_core_catalog(CoreCatalog_id):
         core_catalog.CatalogueReportSoftcopyPath = data['CatalogueReportSoftcopyPath']
         core_catalog.CatalogueReportHyperlink = data['CatalogueReportHyperlink']
         core_catalog.CatReportUploadDate = data['CatReportUploadDate']
-        # core_catalog.CatalogReportFormat_id = data['CatalogReportFormat_id'] # comes from file format
+        # core_catalog.CatalogReportFormatId = data['CatalogReportFormatId'] # comes from file format
         core_catalog.CatalogReportFileSize = data['CatalogReportFileSize']
-        # core_catalog.CatalogReportSecurityGrade_id = data['CatalogReportSecurityGrade_id'] # comes from file security grade
+        # core_catalog.CatalogReportSecurityGradeId = data['CatalogReportSecurityGradeId'] # comes from file security grade
         core_catalog.CoreCatalogName = data['CoreCatalogName']
         core_catalog.ModifiedOn = datetime.datetime.now()
-        core_catalog.ModifiedBy = user.CraneUser_id
+        core_catalog.ModifiedBy = user.CraneUserId
         core_catalog.update()
         return make_response(jsonify({'message':'Core Catalog updated successfuly.'}),200)
     except:
@@ -101,11 +101,11 @@ def edit_core_catalog(CoreCatalog_id):
 
 
 # get single core_catalog object
-@core_catalog_bp.route('/apiv1/get_core_catalog/<int:CoreCatalog_id>',methods=['GET'])
+@core_catalog_bp.route('/apiv1/get_core_catalog/<int:CoreCatalogId>',methods=['GET'])
 @jwt_required()
-def get_core_catalog(CoreCatalog_id):
+def get_core_catalog(CoreCatalogId):
     try:
-        core_catalog = CoreCatalog.query.get(CoreCatalog_id)
+        core_catalog = CoreCatalog.query.get(CoreCatalogId)
         return make_response(jsonify(core_catalog.serialise()),200)
     except:
         return make_response(str(traceback.format_exc()),500)
@@ -121,12 +121,12 @@ def get_all_core_catalogs():
         return make_response(str(traceback.format_exc()),500)
 
 
-@core_catalog_bp.route('/apiv1/delete_core_catalog/<int:CoreCatalog_id>',methods=['DELETE'])
+@core_catalog_bp.route('/apiv1/delete_core_catalog/<int:CoreCatalogId>',methods=['DELETE'])
 @jwt_required()
 @only_data_admin
-def delete_core_catalog(CoreCatalog_id):
+def delete_core_catalog(CoreCatalogId):
     try:
-        core_catalog = CoreCatalog.query.get(CoreCatalog_id)
+        core_catalog = CoreCatalog.query.get(CoreCatalogId)
         core_catalog.delete()
         return make_response(jsonify({'message':'Core Catalog successfully deleted.'}),200)
     except:

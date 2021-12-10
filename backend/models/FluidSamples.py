@@ -23,23 +23,23 @@ class FluidSampleBasin(enum.Enum):
 
 class FluidSamples(db.Model):
     __tablename__ = 'geosims_t_FluidSamples'
-    Sample_id = db.Column(db.Integer,primary_key=True)
-    Wellbore_id = db.Column(db.Integer, db.ForeignKey(Wellbore.Wellbore_id))
-    Sampling_activity = db.Column(db.VARCHAR(100))
-    Fluid_category = db.Column(db.Enum(FluidCategoryEnum), nullable=False)
-    Sample_type = db.Column(db.VARCHAR(100))
-    Sample_volume = db.Column(db.VARCHAR(100))
-    Sample_basin = db.Column(db.Enum(FluidSampleBasin,
+    SampleId = db.Column(db.Integer,primary_key=True)
+    WellboreId = db.Column(db.Integer, db.ForeignKey(Wellbore.WellboreId))
+    SamplingActivity = db.Column(db.VARCHAR(100))
+    FluidCategory = db.Column(db.Enum(FluidCategoryEnum), nullable=False)
+    SampleType = db.Column(db.VARCHAR(100))
+    SampleVolume = db.Column(db.VARCHAR(100))
+    SampleBasin = db.Column(db.Enum(FluidSampleBasin,
              values_callable=lambda enum: [str(e.value) for e in enum]))
-    Depth_obtained = db.Column(db.Float) #
-    Date_collected = db.Column(db.DateTime)
-    Date_received = db.Column(db.DateTime)
-    Sampling_company = db.Column(db.Integer, db.ForeignKey(Company.Company_id))
+    DepthObtained = db.Column(db.Float) #
+    DateCollected = db.Column(db.DateTime)
+    DateReceived = db.Column(db.DateTime)
+    SamplingCompany = db.Column(db.Integer, db.ForeignKey(Company.CompanyId))
     # Analysis_reports = db.Column(db.VARCHAR(100))
-    CreatedBy_id = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUser_id),nullable=False)
+    CreatedById = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUserId),nullable=False)
     DateCreated = db.Column(db.DateTime, default=datetime.utcnow)
     ModifiedOn = db.Column(db.DateTime, default=datetime.utcnow, onupdate=db.func.current_timestamp())
-    ModifiedBy = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUser_id),nullable=True)
+    ModifiedBy = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUserId),nullable=True)
     
 
     def serialise(self):

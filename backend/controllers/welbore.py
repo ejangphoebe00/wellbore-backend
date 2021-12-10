@@ -40,39 +40,39 @@ def add_wellbore():
                         WellboreAliasName = data['WellboreAliasName'],
                         WellboreSpudDate = data['WellboreSpudDate'],
                         # SpudYear = data['SpudYear'],
-                        WellboreType_id = data['WellboreType_id'],
-                        WellborePurpose_id = data['WellborePurpose_id'],
+                        WellboreTypeId = data['WellboreTypeId'],
+                        WellborePurposeId = data['WellborePurposeId'],
                         PurposeChangeDate = data['PurposeChangeDate'],
-                        # Well_id = data['Well_id'],
-                        Prospect_id = data['Prospect_id'], # should come from company
+                        # WellId = data['WellId'],
+                        ProspectId = data['ProspectId'], # should come from company
                         Discovery = data['Discovery'],
-                        WellboreContent_id = data['WellboreContent_id'],
+                        WellboreContentId = data['WellboreContentId'],
                         WellboreStatus = data['WellboreStatus'],
-                        # WellboreResponsibleLicence_id = data['WellboreResponsibleLicence_id'],
-                        LicenseOperatorCompany_id = data['LicenseOperatorCompany_id'], # should come from company
-                        DrillingContractorCompany_id = data['DrillingContractorCompany_id'], # should come from company
+                        # WellboreResponsibleLicenceId = data['WellboreResponsibleLicenceId'],
+                        LicenseOperatorCompanyId = data['LicenseOperatorCompanyId'], # should come from company
+                        DrillingContractorCompanyId = data['DrillingContractorCompanyId'], # should come from company
                         WellBoreRigName = data['WellBoreRigName'],
                         Basin = data['Basin'],
                         InitialWellborePurpose = data['InitialWellborePurpose'],
-                        Wellbore_type = data['Wellbore_type'],
+                        WellboreType = data['WellboreType'],
                         FormerExplAreaName = data['FormerExplAreaName'],
                         SeismicLine = data['SeismicLine'],
                         RotaryTableElavation = data['RotaryTableElavation'],
                         GroundLevelElavation = data['GroundLevelElavation'],
-                        TD_MD = data['TD_MD'],
-                        TD_TVD = data['TD_TVD'],
-                        TD_Date = data['TD_Date'],
-                        # WellboreCore_id = db.Column(db.Integer)
-                        CoreContractor_id = data['CoreContractor_id'], # should come from company
-                        # RCI_Taken_id = data['RCI_Taken_id'],
-                        MDT_Done_id = data['MDT_Done_id'],
-                        FET_Done_id = data['FET_Done_id'],
+                        TDMD = data['TDMD'],
+                        TDTVD = data['TDTVD'],
+                        TDDate = data['TDDate'],
+                        # WellboreCoreId = db.Column(db.Integer)
+                        CoreContractorId = data['CoreContractorId'], # should come from company
+                        # RCI_TakenId = data['RCI_TakenId'],
+                        MDTDoneId = data['MDTDoneId'],
+                        FETDoneId = data['FETDoneId'],
                         WFTContractor = data['WFTContractor'],
-                        DST_Done_id = data['DST_Done_id'],
-                        ManifoldFlowTested_id = data['ManifoldFlowTested_id'],
-                        DST_Contractor_id = data['DST_Contractor_id'], # should come from company
-                        HasPetrophysicalLogs_id = data['HasPetrophysicalLogs_id'],
-                        PetrophysicalContractor_id = data['PetrophysicalContractor_id'], # should come from company
+                        DSTDoneId = data['DSTDoneId'],
+                        ManifoldFlowTestedId = data['ManifoldFlowTestedId'],
+                        DSTContractorId = data['DSTContractorId'], # should come from company
+                        HasPetrophysicalLogsId = data['HasPetrophysicalLogsId'],
+                        PetrophysicalContractorId = data['PetrophysicalContractorId'], # should come from company
                         TopBasementMD = data['TopBasementMD'],
                         TopBasementTVD = data['TopBasementTVD'],
                         WellboreTestStatus = data['WellboreTestStatus'],
@@ -90,7 +90,7 @@ def add_wellbore():
                         WellboreMapHyperlink = data['WellboreMapHyperlink'],
                         MapPortalWellboreMapLink = data['MapPortalWellboreMapLink'],
                         WellboreFactsiteUrl = data['WellboreFactsiteUrl'],
-                        CreatedBy_id = user.CraneUser_id,
+                        CreatedById = user.CraneUserId,
                         DateCreated = datetime.datetime.now()
                     )
         new_wellbore.save()
@@ -99,26 +99,26 @@ def add_wellbore():
         return make_response(str(traceback.format_exc()),500)
 
 
-@wellbore_bp.route('/apiv1/edit_wellbore/<int:Wellbore_id>',methods=['PUT'])
+@wellbore_bp.route('/apiv1/edit_wellbore/<int:WellboreId>',methods=['PUT'])
 @jwt_required()
 @only_data_admin
-def edit_wellbore(Wellbore_id):
+def edit_wellbore(WellboreId):
     data = request.get_json(force=True)
     current_user_email = get_jwt()
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
     # check for redundancies
     welbore_name = Wellbore.query.filter_by(WellboreOfficialName=data['WellboreOfficialName']).first()
     if welbore_name and welbore_name.WellboreOfficialName != None:
-        if Wellbore_id != welbore_name.Wellbore_id:
+        if WellboreId != welbore_name.WellboreId:
             return make_response(jsonify({'message':'Wellbore name already exists.'}),409)
 
     welbore_PAUID = Wellbore.query.filter_by(PAUID=data['PAUID']).first()
     if welbore_PAUID and welbore_PAUID.PAUID != None:
-        if Wellbore_id != welbore_PAUID.Wellbore_id:
+        if WellboreId != welbore_PAUID.WellboreId:
             return make_response(jsonify({'message':'PAUID already exists.'}),409)
 
     try:
-        wellbore = Wellbore.query.get(Wellbore_id)
+        wellbore = Wellbore.query.get(WellboreId)
         wellbore.PAUID = data['PAUID']
         wellbore.WellboreOfficialName = data['WellboreOfficialName']
         wellbore.WellboreLocalName = data['WellboreLocalName']
@@ -127,38 +127,38 @@ def edit_wellbore(Wellbore_id):
         wellbore.WellboreAliasName = data['WellboreAliasName']
         wellbore.WellboreSpudDate = data['WellboreSpudDate']
         # wellbore.SpudYear = data['SpudYear']
-        wellbore.WellboreType_id = data['WellboreType_id']
-        wellbore.WellborePurpose_id = data['WellborePurpose_id']
+        wellbore.WellboreTypeId = data['WellboreTypeId']
+        wellbore.WellborePurposeId = data['WellborePurposeId']
         wellbore.PurposeChangeDate = data['PurposeChangeDate']
-        # wellbore.Well_id = data['Well_id']
-        wellbore.Prospect_id = data['Prospect_id']
+        # wellbore.WellId = data['WellId']
+        wellbore.ProspectId = data['ProspectId']
         wellbore.Discovery = data['Discovery']
-        wellbore.WellboreContent_id = data['WellboreContent_id']
-        # wellbore.WellboreResponsibleLicence_id = data['WellboreResponsibleLicence_id']
-        wellbore.LicenseOperatorCompany_id = data['LicenseOperatorCompany_id']
-        wellbore.DrillingContractorCompany_id = data['DrillingContractorCompany_id']
+        wellbore.WellboreContentId = data['WellboreContentId']
+        # wellbore.WellboreResponsibleLicenceId = data['WellboreResponsibleLicenceId']
+        wellbore.LicenseOperatorCompanyId = data['LicenseOperatorCompanyId']
+        wellbore.DrillingContractorCompanyId = data['DrillingContractorCompanyId']
         wellbore.WellBoreRigName = data['WellBoreRigName']
         wellbore.Basin = data['Basin']
         wellbore.InitialWellborePurpose = data['InitialWellborePurpose']
-        wellbore.Wellbore_type = data['Wellbore_type']
+        wellbore.WellboreType = data['WellboreType']
         wellbore.FormerExplAreaName = data['FormerExplAreaName']
         wellbore.SeismicLine = data['SeismicLine']
         wellbore.RotaryTableElavation = data['RotaryTableElavation']
         wellbore.GroundLevelElavation = data['GroundLevelElavation']
-        wellbore.TD_MD = data['TD_MD']
-        wellbore.TD_TVD = data['TD_TVD']
-        wellbore.TD_Date = data['TD_Date']
-        # WellboreCore_id = db.Column(db.Integer)
-        wellbore.CoreContractor_id = data['CoreContractor_id']
-        # wellbore.RCI_Taken_id = data['RCI_Taken_id']
-        wellbore.MDT_Done_id = data['MDT_Done_id']
-        wellbore.FET_Done_id = data['FET_Done_id']
+        wellbore.TDMD = data['TDMD']
+        wellbore.TDTVD = data['TDTVD']
+        wellbore.TDDate = data['TDDate']
+        # WellboreCoreId = db.Column(db.Integer)
+        wellbore.CoreContractorId = data['CoreContractorId']
+        # wellbore.RCI_TakenId = data['RCI_TakenId']
+        wellbore.MDTDoneId = data['MDTDoneId']
+        wellbore.FETDoneId = data['FETDoneId']
         wellbore.WFTContractor = data['WFTContractor']
-        wellbore.DST_Done_id = data['DST_Done_id']
-        wellbore.ManifoldFlowTested_id = data['ManifoldFlowTested_id']
-        wellbore.DST_Contractor_id = data['DST_Contractor_id']
-        wellbore.HasPetrophysicalLogs_id = data['HasPetrophysicalLogs_id']
-        wellbore.PetrophysicalContractor_id = data['PetrophysicalContractor_id']
+        wellbore.DSTDoneId = data['DSTDoneId']
+        wellbore.ManifoldFlowTestedId = data['ManifoldFlowTestedId']
+        wellbore.DSTContractorId = data['DSTContractorId']
+        wellbore.HasPetrophysicalLogsId = data['HasPetrophysicalLogsId']
+        wellbore.PetrophysicalContractorId = data['PetrophysicalContractorId']
         wellbore.TopBasementMD = data['TopBasementMD']
         wellbore.TopBasementTVD = data['TopBasementTVD']
         wellbore.WellboreTestStatus = data['WellboreTestStatus']
@@ -178,7 +178,7 @@ def edit_wellbore(Wellbore_id):
         wellbore.WellboreFactsiteUrl = data['WellboreFactsiteUrl']
         wellbore.WellboreStatus = data['WellboreStatus']
         wellbore.ModifiedOn = datetime.datetime.today()
-        wellbore.ModifiedBy = user.CraneUser_id
+        wellbore.ModifiedBy = user.CraneUserId
         wellbore.update()
         return make_response(jsonify({'message':'Welbore updated successfuly.'}),200)
     except:
@@ -186,11 +186,11 @@ def edit_wellbore(Wellbore_id):
 
 
 # get single wellbore object
-@wellbore_bp.route('/apiv1/get_wellbore/<int:Wellbore_id>',methods=['GET'])
+@wellbore_bp.route('/apiv1/get_wellbore/<int:WellboreId>',methods=['GET'])
 @jwt_required()
-def get_wellbore(Wellbore_id):
+def get_wellbore(WellboreId):
     try:
-        wellbore = Wellbore.query.get(Wellbore_id)
+        wellbore = Wellbore.query.get(WellboreId)
         return make_response(jsonify(wellbore.serialise()),200)
     except:
         return make_response(str(traceback.format_exc()),500)
@@ -206,25 +206,14 @@ def get_all_wellbore():
         return make_response(str(traceback.format_exc()),500)
 
 
-@wellbore_bp.route('/apiv1/delete_wellbore/<int:Wellbore_id>',methods=['DELETE'])
+@wellbore_bp.route('/apiv1/delete_wellbore/<int:WellboreId>',methods=['DELETE'])
 @jwt_required()
 @only_data_admin
-def delete_wellbore(Wellbore_id):
+def delete_wellbore(WellboreId):
     try:
-        wellbore = Wellbore.query.get(Wellbore_id)
+        wellbore = Wellbore.query.get(WellboreId)
         wellbore.delete()
         return make_response(jsonify({'message':'Welbore successfully deleted.'}),200)
-    except:
-        return make_response(str(traceback.format_exc()),500)
-
-
-# get wellbore cores of a specific welbore
-@wellbore_bp.route('/apiv1/get_wellbore_cores/<int:Wellbore_id>',methods=['GET'])
-@jwt_required()
-def get_all_wellbore_cores(Wellbore_id):
-    try:
-        wellbore_cores = [z.serialise() for z in Cores.query.filter(Cores.Wellbore_id == Wellbore_id)]
-        return make_response(jsonify(wellbore_cores),200)
     except:
         return make_response(str(traceback.format_exc()),500)
 
