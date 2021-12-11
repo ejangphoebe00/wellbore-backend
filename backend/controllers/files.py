@@ -45,10 +45,16 @@ def add_file(sampleId):
             if "AnalysisReports" in file:
                 report_name = upload_file(file['AnalysisReports'])
                 Report_type = "Fluid_Samples"
+            if "FluidPhotograph" in file:
+                image = upload_file(file['FluidPhotograph'])
+                Report_type = "Fluid_Samples"
             # rock sample
             if "PetrographicAnalysisReports" in file:
                 report_name = upload_file(file['PetrographicAnalysisReports'])
                 Report_type = "Rock_Samples"
+            if "RockPhotograph" in file:
+                image = upload_file(file['RockPhotograph'])
+                Report_type = "Fluid_Samples"
             # cuttings
             if "CuttingsReport" in file:
                 report_name = upload_file(file['CuttingsReport'])
@@ -67,10 +73,16 @@ def add_file(sampleId):
             if "AnalysisReports" in data:
                 report_name = data['AnalysisReports']
                 Report_type = "Fluid_Samples"
+            if "FluidPhotograph" in data:
+                image = data['FluidPhotograph']
+                Report_type = "Fluid_Samples"
             # rock sample
             if "PetrographicAnalysisReports" in data:
                 report_name = data['PetrographicAnalysisReports']
                 Report_type = "Rock_Samples"
+            if "RockPhotograph" in data:
+                image = data['RockPhotograph']
+                Report_type = "Fluid_Samples"
             # cuttings
             if "CuttingsReport" in data:
                 report_name = data['CuttingsReport']

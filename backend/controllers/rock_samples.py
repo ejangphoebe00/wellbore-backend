@@ -80,6 +80,13 @@ def edit_rock_sample(id):
 @jwt_required()
 def get_rock_sample(id):
     try:
+        # get photographs
+        photos = Files.query.filter(Files.RockSamplesId == id, Files.PhotographPath!=None)
+        photo_names = []
+        if photos:
+            for photo in photos:
+                photo_names.append(photo.PhotographPath)
+
         # get Petrographic_analysis_reports
         reports = Files.query.filter(Files.RockSamplesId == id, Files.ReportPath!=None)
         report_names = []
@@ -90,6 +97,7 @@ def get_rock_sample(id):
         rock_sample = RockSamples.query.get(id)
         new_rock_sample_object  = rock_sample.serialise()
         new_rock_sample_object['PetrographicAnalysisReports'] = report_names
+        new_rock_sample_object['RockPhotograph'] = photo_names
         
         return make_response(jsonify(new_rock_sample_object),200)
     except:
@@ -103,6 +111,13 @@ def get_all_rock_samples():
         rock_samples = [z.serialise() for z in RockSamples.query.all()]
         new_rock_samples = []
         for sample in rock_samples:
+            # get photographs
+            photos = Files.query.filter(Files.RockSamplesId == sample["id"], Files.PhotographPath!=None)
+            photo_names = []
+            if photos:
+                for photo in photos:
+                    photo_names.append(photo.PhotographPath)
+
             # get Analysis_reports
             reports = Files.query.filter(Files.RockSamplesId == sample['id'], Files.ReportPath!=None)
             report_names = []
@@ -111,6 +126,7 @@ def get_all_rock_samples():
                     report_names.append(report.ReportPath)
 
             sample['PetrographicAnalysisReports'] = report_names
+            sample['RockPhotograph'] = photo_names
             new_rock_samples.append(sample)
         
         return make_response(jsonify(new_rock_samples),200)

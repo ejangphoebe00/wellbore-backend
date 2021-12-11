@@ -75,6 +75,13 @@ def edit_fluid_sample(SampleId):
 @jwt_required()
 def get_fluid_sample(SampleId):
     try:
+        # get photographs
+        photos = Files.query.filter(Files.FluidSamplesId == SampleId, Files.PhotographPath!=None)
+        photo_names = []
+        if photos:
+            for photo in photos:
+                photo_names.append(photo.PhotographPath)
+
         # get Analysis_reports
         reports = Files.query.filter(Files.FluidSamplesId == SampleId, Files.ReportPath!=None)
         report_names = []
@@ -85,6 +92,7 @@ def get_fluid_sample(SampleId):
         fluid_sample = FluidSamples.query.get(SampleId)
         new_fluid_sample_object  = fluid_sample.serialise()
         new_fluid_sample_object['AnalysisReports'] = report_names
+        new_fluid_sample_object['FluidPhotographs'] = photo_names
         
         return make_response(jsonify(new_fluid_sample_object),200)
     except:
@@ -98,6 +106,13 @@ def get_all_fluid_samples():
         fluid_samples = [z.serialise() for z in FluidSamples.query.all()]
         new_fluid_sample = []
         for sample in fluid_samples:
+            # get photographs
+            photos = Files.query.filter(Files.FluidSamplesId == sample["SampleId"], Files.PhotographPath!=None)
+            photo_names = []
+            if photos:
+                for photo in photos:
+                    photo_names.append(photo.PhotographPath)
+
             # get Analysis_reports
             reports = Files.query.filter(Files.FluidSamplesId == sample['SampleId'], Files.ReportPath!=None)
             report_names = []
@@ -106,6 +121,7 @@ def get_all_fluid_samples():
                     report_names.append(report.ReportPath)
 
             sample['AnalysisReports'] = report_names
+            sample['FluidPhotographs'] = photo_names
             new_fluid_sample.append(sample)
 
         return make_response(jsonify(fluid_samples),200)
