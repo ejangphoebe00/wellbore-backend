@@ -12,10 +12,10 @@ from flask_jwt_extended import (
     )
 # reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
 from datetime import datetime, timedelta
-from .helper_functions import send_security_alert_email, upload_file
+from .helper_functions import send_security_alert_email, upload_file, reset_token, send_reset_email
 import traceback
 from ..middleware.permissions import only_data_admin, only_application_and_data_admin, only_application_admin
-
+from ..models.PasswordReset import PasswordReset
 
 
 auth_bp = Blueprint('auth_bp', __name__)
@@ -386,6 +386,64 @@ def get_profileImage(CraneUserId):
         return make_response(jsonify({'ProfilePicture': user.ProfilePicture}),200)
     except:
         return make_response(str(traceback.format_exc()),500)
+
+
+# forgot password
+# url is UI link for a password reset form
+@auth_bp.route('/user/forgot_password_email_request/<string:url>',methods=['POST'])
+def recover_password_email(url):
+    '''email request for password recovery'''
+    if request.is_json:
+        data = request.get_json(force=True)
+    else:
+        data = request.form
+    token = str(reset_token())
+    user = CraneUser.query.filter_by(UserEmailAddress=data['UserEmailAddress']).first()
+    if not user:
+        return make_response(jsonify({'message': 'The email you supplied is not registered with us, please check your email and try again.'}),404)
+    
+    # unused token
+    existing_record_inactive = PasswordReset.query.filter_by(CraneUserId=user.CraneUserId, HasActivated=False).first()
+    if existing_record_inactive:
+        creation_date = existing_record_inactive.CreationDate
+        today = datetime.utcnow()
+        delta = today - creation_date
+        if delta.days > 1:
+            existing_record_inactive.HasActivated = True
+            existing_record_inactive.save()
+            return make_response(jsonify({'message': 'Expired token, please restart the password reset process.'}))
+    
+    existing_record_active = PasswordReset.query.filter_by(CraneUserId=user.CraneUserId, HasActivated=True).first()
+    if existing_record_active:
+        send_reset_email(data['UserEmailAddress'],str(url))
+        existing_record_active.ResetKey = token
+        existing_record_active.HasActivated = False
+        existing_record_active.update()
+    else:
+        send_reset_email(data['UserEmailAddress'],str(url))
+        reset_password = PasswordReset(
+            CraneUserId = user.CraneUserId,
+            ResetKey = token,
+        )
+        reset_password.save()
+    
+    return make_response(jsonify({'message': 'An email has been sent with instructions to reset your password.'}),200)
+
+# save  new password
+@auth_bp.route('/user/store_updated_password/<int:CraneUserId>', methods=['POST'])
+def store_reset_password(CraneUserId):
+    '''update password'''
+    data = request.get_json(force=True)
+
+    user = CraneUser.query.get(CraneUserId)
+    user.UserPassword = CraneUser.hash_password(data['Password']),
+    user.save()
+
+    existing_record = PasswordReset.query.filter_by(CraneUserId=CraneUserId).first()
+    existing_record.HasActivated = True
+    existing_record.save()
+    
+    return make_response(jsonify({'message': 'Your password was successfully updated.'}),200)
 
 
 # user helper functions

@@ -7,6 +7,7 @@ from flask_jwt_extended import JWTManager
 from flask_mail import Mail
 from dotenv import load_dotenv
 load_dotenv()
+import traceback
 # from flask_caching import Cache
 
 # instantiating db object
@@ -49,7 +50,7 @@ def create_app():
 
         # Import controller blueprints
         from .controllers.web_security import web_security_level_bp
-        from .controllers.user import auth_bp
+        from .controllers.user import auth_bp, create_default_user_and_security_level
         from .controllers.company import company_bp
         from .controllers.welbore import wellbore_bp
         # from .controllers.welbore_core import welbore_core_bp
@@ -96,5 +97,12 @@ def create_app():
             jti = jwt_payload["jti"]
             token = db.session.query(Token.RevokedTokenModel.id).filter_by(jti=jti).scalar()
             return token is not None
+
+        # add default applciation data
+        try:
+            create_default_user_and_security_level()
+        except:
+            print(str(traceback.format_exc()))
+            print("PLEASE RUN MIGRATIONS")
 
         return app

@@ -11,8 +11,18 @@ import os
 def reset_token():
     return uuid4()
 
+def send_reset_email(email,url):
+    msg = Message('Geosims Password Reset Request',
+                  recipients=[email])
+    msg.body = f'''To reset your password, visit the following link:
+{url}
+If you did not make this request then simply ignore this email and no changes will be made.
+'''
+    mail.send(msg)
+
+
 def send_security_alert_email(email):
-    msg = Message('Welbore Security Alert!',
+    msg = Message('Geosims Security Alert!',
                   recipients=[email])
     msg.body = f'''Someone has been trying to access your account, head over to the Geo-Samples Information Management System and change your password.
 If this was you, kindly ignore this message.
