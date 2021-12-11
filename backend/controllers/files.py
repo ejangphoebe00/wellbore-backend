@@ -33,6 +33,7 @@ def add_file(sampleId):
         CoresId = None
         Fluid_samplesId = None
         Rock_samplesId = None
+        Cuttings_samplesId = None
         Report_type = "Cores"
         if file:
             # cores
@@ -48,6 +49,13 @@ def add_file(sampleId):
             if "PetrographicAnalysisReports" in file:
                 report_name = upload_file(file['PetrographicAnalysisReports'])
                 Report_type = "Rock_Samples"
+            # cuttings
+            if "CuttingsReport" in file:
+                report_name = upload_file(file['CuttingsReport'])
+                Report_type = "Cuttings"
+            if "CuttingsPhotograph" in file:
+                image = upload_file(file['CuttingsPhotograph'])
+                Report_type = "Cuttings"
 
         if data:
             # cores
@@ -63,12 +71,21 @@ def add_file(sampleId):
             if "PetrographicAnalysisReports" in data:
                 report_name = data['PetrographicAnalysisReports']
                 Report_type = "Rock_Samples"
+            # cuttings
+            if "CuttingsReport" in data:
+                report_name = data['CuttingsReport']
+                Report_type = "Cuttings"
+            if "CuttingsPhotograph" in data:
+                image = data['CuttingsPhotograph']
+                Report_type = "Cuttings"
 
         # update foreign keys
         if Report_type == "Cores":
             CoresId = sampleId
         elif Report_type == "Fluid_Samples":
             Fluid_samplesId = sampleId
+        elif Report_type == "Cuttings":
+            Cuttings_samplesId = sampleId
         else:
             Rock_samplesId = sampleId
 
@@ -78,6 +95,7 @@ def add_file(sampleId):
             CoresId = CoresId,
             FluidSamplesId = Fluid_samplesId,
             RockSamplesId = Rock_samplesId,
+            CuttingsId = Cuttings_samplesId,
             ReportType = Report_type,
             ReportPath = report_name,
             PhotographPath = image,

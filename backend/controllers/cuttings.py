@@ -1,4 +1,6 @@
 from flask import Blueprint, request, make_response, jsonify
+
+from backend.models.Files import Files
 from ..models.Cuttings import Cuttings
 from ..models.CraneUser import CraneUser, UserCatgoryEnum
 from flask_jwt_extended import (
@@ -32,7 +34,13 @@ def add_cutting():
                         SampleInterval = data['SampleInterval'],
                         DateReceived = data['DateReceived'],
                         OtherDescription = data['OtherDescription'],
-                        CreatedById = user.CraneUserId
+                        CreatedById = user.CraneUserId,
+                        TopDepth = data['TopDepth'],
+                        BottomDepth = data['BottomDepth'],
+                        StoreIdentifier = data['StoreIdentifier'],
+                        Operator = data['Operator'],
+                        SamplingCompany = data['SamplingCompany'],
+                        SamplingDate = data['SamplingDate'],
                     )
         new_cutting.save()
         return make_response(jsonify({'message':'Cutting added successfuly.'}),201)
@@ -60,6 +68,12 @@ def edit_cutting(SampleId):
         cutting.DateReceived = data['DateReceived']
         cutting.OtherDescription = data['OtherDescription']
         cutting.ModifiedBy = user.CraneUserId
+        cutting.TopDepth = data['TopDepth']
+        cutting.BottomDepth = data['BottomDepth']
+        cutting.StoreIdentifier = data['StoreIdentifier']
+        cutting.Operator = data['Operator']
+        cutting.SamplingCompany = data['SamplingCompany']
+        cutting.SamplingDate = data['SamplingDate']
         cutting.update()
         return make_response(jsonify({'message':'Cutting updated successfuly.'}),200)
     except:
@@ -70,8 +84,26 @@ def edit_cutting(SampleId):
 @jwt_required()
 def get_cutting(SampleId):
     try:
+        # get photographs
+        photos = Files.query.filter(Files.CuttingsId == SampleId, Files.PhotographPath!=None)
+        photo_names = []
+        if photos:
+            for photo in photos:
+                photo_names.append(photo.PhotographPath)
+        
+        # get reports
+        reports = Files.query.filter(Files.CuttingsId == SampleId, Files.ReportPath!=None)
+        report_names = []
+        if reports:
+            for report in reports:
+                report_names.append(report.ReportPath)
+
         cutting = Cuttings.query.get(SampleId)
-        return make_response(jsonify(cutting.serialise()),200)
+        new_cutting_object  = cutting.serialise()
+        new_cutting_object['CuttingsReport'] = report_names
+        new_cutting_object['CuttingsPhotograph'] = photo_names
+
+        return make_response(jsonify(new_cutting_object),200)
     except:
         return make_response(str(traceback.format_exc()),500)
 
@@ -81,7 +113,26 @@ def get_cutting(SampleId):
 def get_all_cuttings():
     try:
         cuttings = [z.serialise() for z in Cuttings.query.all()]
-        return make_response(jsonify(cuttings),200)
+        new_cuttings = []
+        for cutting in cuttings:
+            # get photographs
+            photos = Files.query.filter(Files.CuttingsId == cutting["SampleId"], Files.PhotographPath!=None)
+            photo_names = []
+            if photos:
+                for photo in photos:
+                    photo_names.append(photo.PhotographPath)
+            
+            # get reports
+            reports = Files.query.filter(Files.CuttingsId == cutting["SampleId"], Files.ReportPath!=None)
+            report_names = []
+            if reports:
+                for report in reports:
+                    report_names.append(report.ReportPath)
+
+            cutting['CuttingsReport'] = report_names
+            cutting['CuttingsPhotograph'] = photo_names
+            new_cuttings.append(cutting)
+        return make_response(jsonify(new_cuttings),200)
     except:
         return make_response(str(traceback.format_exc()),500)
 

@@ -1,3 +1,4 @@
+from backend.models.Company import Company
 from .. import db
 from .CraneUser import CraneUser
 from .Wellbore import Wellbore
@@ -18,8 +19,12 @@ class Cuttings(db.Model):
     SampleBoxNumber = db.Column(db.VARCHAR(100))
     CuttingCategory = db.Column(db.Enum(CuttingsCategoryEnum), nullable=False)
     SampleType = db.Column(db.VARCHAR(100))
-    MinimumDepth = db.Column(db.Float)
-    MaximumDepth = db.Column(db.Float)
+    TopDepth = db.Column(db.Float)
+    BottomDepth = db.Column(db.Float)
+    StoreIdentifier = db.Column(db.VARCHAR(100))
+    Operator = db.Column(db.VARCHAR(100))
+    SamplingCompany = db.Column(db.NVARCHAR(255), db.ForeignKey(Company.CompanyLongName),nullable=True)
+    SamplingDate = db.Column(db.DateTime)
     SampleInterval = db.Column(db.VARCHAR(100))#
     DateReceived = db.Column(db.DateTime)
     OtherDescription = db.Column(db.VARCHAR(500))

@@ -1,3 +1,4 @@
+from backend.models.Cuttings import Cuttings
 from .. import db
 from .CraneUser import CraneUser
 from .RockSamples import RockSamples
@@ -19,6 +20,7 @@ class Files(db.Model):
     CoresId = db.Column(db.Integer, db.ForeignKey(Cores.WellboreCoreId))
     FluidSamplesId = db.Column(db.Integer, db.ForeignKey(FluidSamples.SampleId))
     RockSamplesId = db.Column(db.Integer, db.ForeignKey(RockSamples.id))
+    CuttingsId = db.Column(db.Integer, db.ForeignKey(Cuttings.SampleId))
     ReportType = db.Column(db.Enum(ReportTypeEnum))
     ReportPath = db.Column(db.VARCHAR(500))
     PhotographPath = db.Column(db.VARCHAR(500))
