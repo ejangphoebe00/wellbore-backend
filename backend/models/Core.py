@@ -62,6 +62,8 @@ class Cores(db.Model):
     ReportReceivedDate = db.Column(db.DateTime)
     ReportDocumentDate = db.Column(db.DateTime)
     ReportDocumentName = db.Column(db.NVARCHAR(100))
+    StoreIdentifier = db.Column(db.NVARCHAR(100))
+    AnalysisReportDetails = db.Column(db.NVARCHAR(500))
     Comments = db.Column(db.NVARCHAR(500))
     CreatedById = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUserId),nullable=False)
     DateCreated = db.Column(db.DateTime)

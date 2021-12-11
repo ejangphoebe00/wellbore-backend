@@ -62,6 +62,8 @@ def add_core():
                         ReportReceivedDate = data['ReportReceivedDate'],
                         ReportDocumentDate = data['ReportDocumentDate'],
                         ReportDocumentName = data['ReportDocumentName'],
+                        StoreIdentifier = data['StoreIdentifier'],
+                        AnalysisReportDetails = data['AnalysisReportDetails'],
                         # WellboreCoreName = data['WellboreCoreName'],
                         Comments = data['Comments'],
                         CreatedById = user.CraneUserId,
@@ -121,6 +123,8 @@ def edit_core(WellboreCoreId):
         core.ReportReceivedDate = data['ReportReceivedDate']
         core.ReportDocumentDate = data['ReportDocumentDate']
         core.ReportDocumentName = data['ReportDocumentName']
+        core.StoreIdentifier = data['StoreIdentifier']
+        core.AnalysisReportDetails = data['AnalysisReportDetails']    
         # core.WellboreCoreName = data['WellboreCoreName']
         core.Comments = data['Comments']
         core.ModifiedOn = datetime.datetime.now()
