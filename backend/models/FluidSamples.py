@@ -21,6 +21,13 @@ class FluidSampleBasin(enum.Enum):
     Wamala = "Lake Wamala Basin"
     Kadam = "Kadam-Moroto Basin"
 
+class FluidSamplePurposeEnum(enum.Enum):
+    Crude_Oil_Analysis = "Crude Oil Analysis"
+    PVT_Analysis = "PVT Analysis"
+    Formation_Water_Analysis = "Formation Water Analysis"
+    Natural_Gas_Analysis = "Natural Gas Analysis"
+    Others = "Others"
+
 class FluidSamples(db.Model):
     __tablename__ = 'geosims_t_FluidSamples'
     SampleId = db.Column(db.Integer,primary_key=True)
@@ -35,6 +42,9 @@ class FluidSamples(db.Model):
     DateCollected = db.Column(db.DateTime)
     DateReceived = db.Column(db.DateTime)
     SamplingCompany = db.Column(db.Integer, db.ForeignKey(Company.CompanyId))
+    SamplePurpose = db.Column(db.Enum(FluidSamplePurposeEnum,
+             values_callable=lambda enum: [str(e.value) for e in enum]))
+    OtherSpecifiedSamplePurpose = db.Column(db.VARCHAR(100))
     # Analysis_reports = db.Column(db.VARCHAR(100))
     CreatedById = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUserId),nullable=False)
     DateCreated = db.Column(db.DateTime, default=datetime.utcnow)
