@@ -13,6 +13,12 @@ class BasinsEnum(enum.Enum):
     Wamala = "Lake Wamala Basin"
     Kadam = "Kadam-Moroto Basin"
 
+class SamplePurposeEnum(enum.Enum):
+    Rock_Minerals_Analysis = "Rock Minerals Analysis"
+    Clay_and_Whole_rock_Analysis = "Clay and Whole-rock Analysis"
+    Rock_Pyrolysis_Analysis = "Rock Pyrolysis Analysis"
+    Others = "Others"
+
 
 class RockSamples(db.Model):
     __tablename__ = 'geosims_t_RockSamples'
@@ -22,8 +28,13 @@ class RockSamples(db.Model):
     DateReceived = db.Column(db.DateTime)
     SampleBasin = db.Column(db.Enum(BasinsEnum,
              values_callable=lambda enum: [str(e.value) for e in enum]))
+    SamplePurpose = db.Column(db.Enum(SamplePurposeEnum,
+             values_callable=lambda enum: [str(e.value) for e in enum]))
+    OtherSpecifiedSamplePurpose = db.Column(db.VARCHAR(100))
     SampleName = db.Column(db.VARCHAR(100))
-    CoordinateLocation = db.Column(db.VARCHAR(100))
+    Latitude = db.Column(db.VARCHAR(100))
+    Longitude = db.Column(db.VARCHAR(100))
+    Operator = db.Column(db.VARCHAR(100))
     PetrographicDescription = db.Column(db.VARCHAR(500))
     # Petrographic_analysis_reports = db.Column(db.VARCHAR(100))
     CreatedById = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUserId),nullable=False)

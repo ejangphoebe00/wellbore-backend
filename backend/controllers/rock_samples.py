@@ -34,7 +34,11 @@ def add_rock_sample():
                         DateReceived = data['DateReceived'],
                         SampleBasin = data['SampleBasin'],
                         SampleName = data['SampleName'],
-                        CoordinateLocation = data['CoordinateLocation'],
+                        SamplePurpose = data['SamplePurpose'],
+                        OtherSpecifiedSamplePurpose = data['OtherSpecifiedSamplePurpose'],
+                        Latitude = data['Latitude'],
+                        Longitude = data['Longitude'],
+                        Operator = data['Operator'],
                         PetrographicDescription = data['PetrographicDescription'],
                         # Petrographic_analysis_reports = data['Petrographic_analysis_reports'],
                         CreatedById = user.CraneUserId
@@ -66,7 +70,11 @@ def edit_rock_sample(id):
         rock_sample.DateReceived = data['DateReceived']
         rock_sample.SampleBasin = data['SampleBasin']
         rock_sample.SampleName = data['SampleName']
-        rock_sample.CoordinateLocation = data['CoordinateLocation']
+        rock_sample.SamplePurpose = data['SamplePurpose']
+        rock_sample.OtherSpecifiedSamplePurpose = data['OtherSpecifiedSamplePurpose']
+        rock_sample.Latitude = data['Latitude']
+        rock_sample.Longitude = data['Longitude']
+        rock_sample.Operator = data['Operator']
         rock_sample.PetrographicDescription = data['PetrographicDescription']
         # rock_sample.Petrographic_analysis_reports = data['Petrographic_analysis_reports']
         rock_sample.ModifiedBy = user.CraneUserId
