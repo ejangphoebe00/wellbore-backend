@@ -102,7 +102,8 @@ def create_app():
         try:
             create_default_user_and_security_level()
         except:
-            print(str(traceback.format_exc()))
-            print("PLEASE RUN MIGRATIONS")
+            # print(str(traceback.format_exc()))
+            print("Continue...")
+            pass
 
         return app
