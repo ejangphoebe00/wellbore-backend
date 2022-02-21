@@ -12,6 +12,7 @@ class ReportTypeEnum(enum.Enum):
     Cores = 'Cores'
     Fluid_Samples = 'Fluid_Samples'
     Rock_Samples = 'Rock_Samples'
+    Cuttings = "Cuttings"
 
 # named files in order to accommodate both images and documents/reports
 class Files(db.Model):

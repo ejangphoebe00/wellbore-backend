@@ -29,8 +29,8 @@ def add_cutting():
                         SampleBoxNumber = data['SampleBoxNumber'],
                         CuttingCategory = data['CuttingCategory'],
                         SampleType = data['SampleType'],
-                        MinimumDepth = data['MinimumDepth'],
-                        MaximumDepth = data['MaximumDepth'],
+                        # MinimumDepth = data['MinimumDepth'],
+                        # MaximumDepth = data['MaximumDepth'],
                         SampleInterval = data['SampleInterval'],
                         DateReceived = data['DateReceived'],
                         OtherDescription = data['OtherDescription'],
@@ -62,8 +62,8 @@ def edit_cutting(SampleId):
         cutting.SampleBoxNumber = data['SampleBoxNumber']
         cutting.CuttingCategory = data['CuttingCategory']
         cutting.SampleType = data['SampleType']
-        cutting.MinimumDepth = data['MinimumDepth']
-        cutting.MaximumDepth = data['MaximumDepth']
+        # cutting.MinimumDepth = data['MinimumDepth']
+        # cutting.MaximumDepth = data['MaximumDepth']
         cutting.SampleInterval = data['SampleInterval']
         cutting.DateReceived = data['DateReceived']
         cutting.OtherDescription = data['OtherDescription']
