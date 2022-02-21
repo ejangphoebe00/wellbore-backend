@@ -54,7 +54,7 @@ def add_file(sampleId):
                 Report_type = "Rock_Samples"
             if "RockPhotograph" in file:
                 image = upload_file(file['RockPhotograph'])
-                Report_type = "Fluid_Samples"
+                Report_type = "Rock_Samples"
             # cuttings
             if "CuttingsReport" in file:
                 report_name = upload_file(file['CuttingsReport'])
@@ -82,7 +82,7 @@ def add_file(sampleId):
                 Report_type = "Rock_Samples"
             if "RockPhotograph" in data:
                 image = data['RockPhotograph']
-                Report_type = "Fluid_Samples"
+                Report_type = "Rock_Samples"
             # cuttings
             if "CuttingsReport" in data:
                 report_name = data['CuttingsReport']
