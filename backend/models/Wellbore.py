@@ -31,6 +31,11 @@ class FluidSampleBasin(enum.Enum):
     Edward = "Edward-George"
     Semiliki = "Semiliki"
     Pakwach = "Pakwach"
+    Albertine = "The Albertine Graben"
+    Hoima = "Hoima Basin"
+    Kyoga = "Lake Kyoga Basin"
+    Wamala = "Lake Wamala Basin"
+    Kadam = "Kadam-Moroto Basin"
 
 
 class Wellbore(db.Model):
