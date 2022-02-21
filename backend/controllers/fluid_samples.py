@@ -65,8 +65,8 @@ def edit_fluid_sample(SampleId):
         fluid_sample.DateCollected = data['DateCollected']
         fluid_sample.DateReceived = data['DateReceived']
         fluid_sample.SamplingCompany = data['SamplingCompany']
-        fluid_sample.SamplePurpose = data['SamplePurpose'],
-        fluid_sample.OtherSpecifiedSamplePurpose = data['OtherSpecifiedSamplePurpose'],
+        fluid_sample.SamplePurpose = data['SamplePurpose']
+        fluid_sample.OtherSpecifiedSamplePurpose = data['OtherSpecifiedSamplePurpose']
         # fluid_sample.Analysis_reports = data['Analysis_reports']
         fluid_sample.ModifiedBy = user.CraneUserId
         fluid_sample.update()
