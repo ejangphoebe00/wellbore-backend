@@ -415,12 +415,12 @@ def recover_password_email(url):
     
     existing_record_active = PasswordReset.query.filter_by(CraneUserId=user.CraneUserId, HasActivated=True).first()
     if existing_record_active:
-        send_reset_email(data['UserEmailAddress'],str(url))
+        send_reset_email(data['UserEmailAddress'],str(url)+"/"+str(user.user_id))
         existing_record_active.ResetKey = token
         existing_record_active.HasActivated = False
         existing_record_active.update()
     else:
-        send_reset_email(data['UserEmailAddress'],str(url))
+        send_reset_email(data['UserEmailAddress'],str(url)+"/"+str(user.user_id))
         reset_password = PasswordReset(
             CraneUserId = user.CraneUserId,
             ResetKey = token,
