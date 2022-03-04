@@ -1,6 +1,6 @@
 from flask import Blueprint, request, make_response, jsonify
 from ..models.StratLithoUnit import StratLithoUnit
-from ..models.CraneUser import CraneUser, UserCatgoryEnum
+from ..models.CraneUser import CraneUser, DeleteStatusEnum, UserCatgoryEnum
 from flask_jwt_extended import (
     jwt_required,
     get_jwt
@@ -100,7 +100,8 @@ def get_strat_litho_unit(StratLithoId):
 @jwt_required()
 def get_all_strat_litho_units():
     try:
-        strat_litho_units = [z.serialise() for z in StratLithoUnit.query.all()]
+        strat_litho_units = [z.serialise() for z in StratLithoUnit.query.\
+            filter((StratLithoUnit.DeleteStatus==DeleteStatusEnum.Available) | (StratLithoUnit.DeleteStatus==None))]
         return make_response(jsonify(strat_litho_units),200)
     except:
         return make_response(str(traceback.format_exc()),500)
@@ -112,7 +113,8 @@ def get_all_strat_litho_units():
 def delete_strat_litho_unit(StratLithoId):
     try:
         strat_litho_unit = StratLithoUnit.query.get(StratLithoId)
-        strat_litho_unit.delete()
+        strat_litho_unit.DeleteStatus = DeleteStatusEnum.Deleted
+        strat_litho_unit.update()
         return make_response(jsonify({'message':'Strat Litho Unit successfully deleted.'}),200)
     except:
         return make_response(str(traceback.format_exc()),500)

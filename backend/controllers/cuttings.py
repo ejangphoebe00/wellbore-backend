@@ -2,7 +2,7 @@ from flask import Blueprint, request, make_response, jsonify
 
 from backend.models.Files import Files
 from ..models.Cuttings import Cuttings
-from ..models.CraneUser import CraneUser, UserCatgoryEnum
+from ..models.CraneUser import CraneUser, DeleteStatusEnum, UserCatgoryEnum
 from flask_jwt_extended import (
     jwt_required,
     get_jwt
@@ -112,7 +112,8 @@ def get_cutting(SampleId):
 @jwt_required()
 def get_all_cuttings():
     try:
-        cuttings = [z.serialise() for z in Cuttings.query.all()]
+        cuttings = [z.serialise() for z in Cuttings.query.\
+            filter((Cuttings.DeleteStatus==DeleteStatusEnum.Available) | (Cuttings.DeleteStatus==None))]
         new_cuttings = []
         for cutting in cuttings:
             # get photographs
@@ -143,7 +144,8 @@ def get_all_cuttings():
 def delete_cutting(SampleId):
     try:
         cutting = Cuttings.query.get(SampleId)
-        cutting.delete()
+        cutting.DeleteStatus = DeleteStatusEnum.Deleted
+        cutting.update()
         return make_response(jsonify({'message':'Cutting successfully deleted.'}),200)
     except:
         return make_response(str(traceback.format_exc()),500)

@@ -1,6 +1,6 @@
 from flask import Blueprint, request, make_response, jsonify
 from ..models.FluidSamples import FluidSamples
-from ..models.CraneUser import CraneUser, UserCatgoryEnum
+from ..models.CraneUser import CraneUser, DeleteStatusEnum, UserCatgoryEnum
 from flask_jwt_extended import (
     jwt_required,
     get_jwt
@@ -107,7 +107,8 @@ def get_fluid_sample(SampleId):
 @jwt_required()
 def get_all_fluid_samples():
     try:
-        fluid_samples = [z.serialise() for z in FluidSamples.query.all()]
+        fluid_samples = [z.serialise() for z in FluidSamples.query.\
+            filter((FluidSamples.DeleteStatus==DeleteStatusEnum.Available) | (FluidSamples.DeleteStatus==None))]
         new_fluid_sample = []
         for sample in fluid_samples:
             # get photographs
@@ -139,7 +140,8 @@ def get_all_fluid_samples():
 def delete_fluid_sample(SampleId):
     try:
         fluid_sample = FluidSamples.query.get(SampleId)
-        fluid_sample.delete()
+        fluid_sample.DeleteStatus = DeleteStatusEnum.Deleted
+        fluid_sample.update()
         return make_response(jsonify({'message':'Fluid sample successfully deleted.'}),200)
     except:
         return make_response(str(traceback.format_exc()),500)

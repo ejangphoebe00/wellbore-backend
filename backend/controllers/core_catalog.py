@@ -1,6 +1,6 @@
 from flask import Blueprint, request, make_response, jsonify
 from ..models.CoreCatalog import CoreCatalog
-from ..models.CraneUser import CraneUser, UserCatgoryEnum
+from ..models.CraneUser import CraneUser, DeleteStatusEnum, UserCatgoryEnum
 from flask_jwt_extended import (
     jwt_required,
     get_jwt
@@ -115,7 +115,8 @@ def get_core_catalog(CoreCatalogId):
 @jwt_required()
 def get_all_core_catalogs():
     try:
-        core_catalogs = [z.serialise() for z in CoreCatalog.query.all()]
+        core_catalogs = [z.serialise() for z in CoreCatalog.query.\
+        filter((CoreCatalog.DeleteStatus==DeleteStatusEnum.Available) | (CoreCatalog.DeleteStatus==None))]
         return make_response(jsonify(core_catalogs),200)
     except:
         return make_response(str(traceback.format_exc()),500)
@@ -127,7 +128,8 @@ def get_all_core_catalogs():
 def delete_core_catalog(CoreCatalogId):
     try:
         core_catalog = CoreCatalog.query.get(CoreCatalogId)
-        core_catalog.delete()
+        core_catalog.DeleteStatus = DeleteStatusEnum.Deleted
+        core_catalog.updated()
         return make_response(jsonify({'message':'Core Catalog successfully deleted.'}),200)
     except:
         return make_response(str(traceback.format_exc()),500)

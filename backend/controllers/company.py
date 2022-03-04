@@ -1,6 +1,6 @@
 from flask import Blueprint, request, make_response, jsonify
 from ..models.Company import Company
-from ..models.CraneUser import CraneUser, UserCatgoryEnum
+from ..models.CraneUser import CraneUser, DeleteStatusEnum, UserCatgoryEnum
 from flask_jwt_extended import (
     jwt_required,
     get_jwt
@@ -211,7 +211,8 @@ def get_company(CompanyId):
 @jwt_required()
 def get_all_companies():
     try:
-        company = [z.serialise() for z in Company.query.all()]
+        company = [z.serialise() for z in Company.query.\
+            filter((Company.DeleteStatus==DeleteStatusEnum.Available) | (Company.DeleteStatus==None))]
         return make_response(jsonify(company),200)
     except:
         return make_response(str(traceback.format_exc()),500)
@@ -219,11 +220,12 @@ def get_all_companies():
 
 @company_bp.route('/apiv1/delete_company/<int:CompanyId>',methods=['DELETE'])
 @jwt_required()
-@only_data_admin
+# @only_data_admin
 def delete_company(CompanyId):
     try:
         company = Company.query.get(CompanyId)
-        company.delete()
+        company.DeleteStatus = DeleteStatusEnum.Deleted
+        company.update()
         return make_response(jsonify({'message':'Company successfully deleted.'}),200)
     except:
         return make_response(str(traceback.format_exc()),500)

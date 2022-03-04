@@ -1,6 +1,6 @@
 from enum import Enum
 from .. import db
-from .CraneUser import CraneUser
+from .CraneUser import CraneUser, DeleteStatusEnum
 
 class LithoAgeEnum(Enum):
     Early_Pliocene = "Early Pliocene"
@@ -34,6 +34,8 @@ class StratLithoUnit(db.Model):
     DateCreated = db.Column(db.DateTime)
     ModifiedOn = db.Column(db.DateTime)
     ModifiedBy = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUserId),nullable=True)
+    DeleteStatus = db.Column(db.Enum(DeleteStatusEnum,
+                                     values_callable=lambda x: [str(e.value) for e in DeleteStatusEnum]), nullable=True)
     
 
     def serialise(self):

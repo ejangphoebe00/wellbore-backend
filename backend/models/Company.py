@@ -1,6 +1,6 @@
 from enum import unique
 from .. import db
-from .CraneUser import CraneUser
+from .CraneUser import CraneUser, DeleteStatusEnum
 
 class Company(db.Model):
     __tablename__ = 'geosims_t_Company'
@@ -63,6 +63,8 @@ class Company(db.Model):
     ModifiedBy = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUserId),nullable=True)
     RecordChangeStamp = db.Column(db.NVARCHAR(100))
     PreviousLegalName = db.Column(db.NVARCHAR(100))
+    DeleteStatus = db.Column(db.Enum(DeleteStatusEnum,
+                                     values_callable=lambda x: [str(e.value) for e in DeleteStatusEnum]), nullable=True)
     
     def __repr__(self):
         return '<Company {}>'.format(self.CompanyShortName)

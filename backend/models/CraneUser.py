@@ -1,3 +1,4 @@
+from sqlalchemy import true
 from .. import db
 import enum
 from flask_bcrypt import Bcrypt
@@ -8,6 +9,10 @@ class UserCatgoryEnum(enum.Enum):
     App_Admin = 'App Admin'
     Data_Admin = 'Data Admin'
     Staff = 'Staff'
+
+class DeleteStatusEnum(enum.Enum):
+    Deleted = "Deleted"
+    Available = "Available"
 # print(UserCatgoryEnum.App_Admin)
 
 class CraneUser(db.Model):
@@ -57,6 +62,8 @@ class CraneUser(db.Model):
     DefaultChangeDate = db.Column(db.DateTime,default=datetime.utcnow, onupdate=db.func.current_timestamp())
     # StoredUserPassword = db.Column(db.NVARCHAR(255),nullable=True)
     PasswordChangeDate = db.Column(db.DateTime,default=db.func.current_timestamp(),nullable=True)
+    DeleteStatus = db.Column(db.Enum(DeleteStatusEnum,
+                                     values_callable=lambda x: [str(e.value) for e in DeleteStatusEnum]), nullable=True)
 
     # relationships
     # login_history = db.relationship('geosims_t_CraneUserLoginHistory', backref='geosims_t_CraneUser', lazy=True)

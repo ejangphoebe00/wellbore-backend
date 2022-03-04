@@ -2,7 +2,7 @@ from flask import Blueprint, request, make_response, jsonify
 from ..models.Core import Cores
 from .. models.Wellbore import Wellbore
 from .. models.Files import Files
-from ..models.CraneUser import CraneUser, UserCatgoryEnum
+from ..models.CraneUser import CraneUser, DeleteStatusEnum, UserCatgoryEnum
 from flask_jwt_extended import (
     jwt_required,
     get_jwt
@@ -17,7 +17,7 @@ core_bp = Blueprint('core_bp', __name__)
 
 @core_bp.route('/apiv1/add_core',methods=['POST'])
 @jwt_required()
-@only_data_admin
+# @only_data_admin
 def add_core():
     data = request.get_json(force=True)
     current_user_email = get_jwt()
@@ -168,7 +168,8 @@ def get_core(WellboreCoreId):
 @jwt_required()
 def get_all_cores():
     try:
-        cores = [z.serialise() for z in Cores.query.all()]
+        cores = [z.serialise() for z in Cores.query.\
+            filter((Cores.DeleteStatus==DeleteStatusEnum.Available) | (Cores.DeleteStatus==None))]
         new_cores = []
         for core in cores:
             # get Core_photographs
@@ -201,6 +202,7 @@ def get_all_cores():
 def delete_core(WellboreCoreId):
     try:
         core = Cores.query.get(WellboreCoreId)
+        core.DeleteStatus = DeleteStatusEnum.Deleted
         core.delete()
         return make_response(jsonify({'message':'Welbore Core successfully deleted.'}),200)
     except:

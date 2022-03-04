@@ -1,6 +1,6 @@
 import enum
 from .. import db
-from .CraneUser import CraneUser
+from .CraneUser import CraneUser, DeleteStatusEnum
 from datetime import datetime
 
 class BasinsEnum(enum.Enum):
@@ -41,6 +41,8 @@ class RockSamples(db.Model):
     DateCreated = db.Column(db.DateTime, default=datetime.utcnow)
     ModifiedOn = db.Column(db.DateTime, default=datetime.utcnow, onupdate=db.func.current_timestamp())
     ModifiedBy = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUserId),nullable=True)
+    DeleteStatus = db.Column(db.Enum(DeleteStatusEnum,
+                                     values_callable=lambda x: [str(e.value) for e in DeleteStatusEnum]), nullable=True)
     
 
     def serialise(self):

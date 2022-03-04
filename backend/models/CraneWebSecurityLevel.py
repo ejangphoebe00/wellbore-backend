@@ -1,4 +1,10 @@
+# from backend.models.CraneUser import DeleteStatusEnum
+import enum
 from .. import db
+
+class DeleteStatusEnum(enum.Enum):
+    Deleted = "Deleted"
+    Available = "Available"
 
 class CraneWebSecurityLevel(db.Model):
     __tablename__ = "geosims_rt_CraneWebSecurityLevel"
@@ -9,6 +15,8 @@ class CraneWebSecurityLevel(db.Model):
     Comments = db.Column(db.NVARCHAR(500))
     ModifiedOn = db.Column(db.DateTime)
     ModifiedBy = db.Column(db.NVARCHAR(255))
+    DeleteStatus = db.Column(db.Enum(DeleteStatusEnum,
+                                     values_callable=lambda x: [str(e.value) for e in DeleteStatusEnum]), nullable=True)
 
     # relationships
     # users = db.relationship('geosims_t_CraneUser', backref='geosims_rt_CraneWebSecurityLevel', lazy=True)

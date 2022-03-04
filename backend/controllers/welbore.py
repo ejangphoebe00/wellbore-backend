@@ -1,7 +1,7 @@
 from flask import Blueprint, request, make_response, jsonify
 from ..models.Wellbore import Wellbore, DevelopmentAreaEnum
 from ..models.Core import Cores
-from ..models.CraneUser import CraneUser, UserCatgoryEnum
+from ..models.CraneUser import CraneUser, DeleteStatusEnum, UserCatgoryEnum
 from flask_jwt_extended import (
     jwt_required,
     get_jwt
@@ -200,7 +200,8 @@ def get_wellbore(WellboreId):
 @jwt_required()
 def get_all_wellbore():
     try:
-        wellbore = [z.serialise() for z in Wellbore.query.all()]
+        wellbore = [z.serialise() for z in Wellbore.query.\
+            filter((Wellbore.DeleteStatus==DeleteStatusEnum.Available) | (Wellbore.DeleteStatus==None))]
         return make_response(jsonify(wellbore),200)
     except:
         return make_response(str(traceback.format_exc()),500)
@@ -212,7 +213,8 @@ def get_all_wellbore():
 def delete_wellbore(WellboreId):
     try:
         wellbore = Wellbore.query.get(WellboreId)
-        wellbore.delete()
+        wellbore.DeleteStatus = DeleteStatusEnum.Deleted
+        wellbore.updated()
         return make_response(jsonify({'message':'Welbore successfully deleted.'}),200)
     except:
         return make_response(str(traceback.format_exc()),500)
@@ -223,7 +225,8 @@ def delete_wellbore(WellboreId):
 @jwt_required()
 def get_TDA_welbores():
     try:
-        wellbores = [z.serialise() for z in Wellbore.query.filter(Wellbore.DevelopmentAreaName == DevelopmentAreaEnum.TDA)]
+        wellbores = [z.serialise() for z in Wellbore.query.filter(Wellbore.DevelopmentAreaName == DevelopmentAreaEnum.TDA,\
+            (Wellbore.DeleteStatus==DeleteStatusEnum.Available) | (Wellbore.DeleteStatus==None))]
         return make_response(jsonify(wellbores),200)
     except:
         return make_response(str(traceback.format_exc()),500)
@@ -234,7 +237,8 @@ def get_TDA_welbores():
 @jwt_required()
 def get_KFDA_welbores():
     try:
-        wellbores = [z.serialise() for z in Wellbore.query.filter(Wellbore.DevelopmentAreaName == DevelopmentAreaEnum.KFDA)]
+        wellbores = [z.serialise() for z in Wellbore.query.filter(Wellbore.DevelopmentAreaName == DevelopmentAreaEnum.KFDA,\
+            (Wellbore.DeleteStatus==DeleteStatusEnum.Available) | (Wellbore.DeleteStatus==None))]
         return make_response(jsonify(wellbores),200)
     except:
         return make_response(str(traceback.format_exc()),500)        

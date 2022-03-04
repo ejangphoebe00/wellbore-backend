@@ -1,5 +1,5 @@
 from flask import Blueprint, request, make_response, jsonify
-from ..models.CraneWebSecurityLevel import CraneWebSecurityLevel
+from ..models.CraneWebSecurityLevel import CraneWebSecurityLevel, DeleteStatusEnum
 from ..models.CraneUser import CraneUser, UserCatgoryEnum
 from flask_jwt_extended import (
     jwt_required,
@@ -85,7 +85,8 @@ def get_web_security_level(WebSecurityLevelId):
 @jwt_required()
 def get_all_web_security_level():
     try:
-        web_security_level = [z.serialise() for z in CraneWebSecurityLevel.query.all()]
+        web_security_level = [z.serialise() for z in CraneWebSecurityLevel.query.\
+            filter((CraneWebSecurityLevel.DeleteStatus==DeleteStatusEnum.Available) | (CraneWebSecurityLevel.DeleteStatus==None))]
         return make_response(jsonify(web_security_level),200)
     except:
         return make_response(str(traceback.format_exc()),500)
@@ -97,7 +98,8 @@ def get_all_web_security_level():
 def delete_web_security_level(WebSecurityLevelId):
     try:
         web_security_level = CraneWebSecurityLevel.query.get(WebSecurityLevelId)
-        web_security_level.delete()
+        web_security_level.DeleteStatus = DeleteStatusEnum.Deleted
+        web_security_level.update()
         return make_response(jsonify({'message':'Web security level successfully deleted.'}),200)
     except:
         return make_response(str(traceback.format_exc()),500)

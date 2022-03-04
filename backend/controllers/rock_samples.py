@@ -1,6 +1,6 @@
 from flask import Blueprint, request, make_response, jsonify
 from ..models.RockSamples import RockSamples, BasinsEnum
-from ..models.CraneUser import CraneUser, UserCatgoryEnum
+from ..models.CraneUser import CraneUser, DeleteStatusEnum, UserCatgoryEnum
 from flask_jwt_extended import (
     jwt_required,
     get_jwt
@@ -116,7 +116,8 @@ def get_rock_sample(id):
 @jwt_required()
 def get_all_rock_samples():
     try:
-        rock_samples = [z.serialise() for z in RockSamples.query.all()]
+        rock_samples = [z.serialise() for z in RockSamples.query.\
+            filter((RockSamples.DeleteStatus==DeleteStatusEnum.Available) | (RockSamples.DeleteStatus==None))]
         new_rock_samples = []
         for sample in rock_samples:
             # get photographs
@@ -148,7 +149,8 @@ def get_all_rock_samples():
 def delete_rock_sample(id):
     try:
         rock_sample = RockSamples.query.get(id)
-        rock_sample.delete()
+        rock_sample.DeleteStatus = DeleteStatusEnum.Deleted
+        rock_sample.update()
         return make_response(jsonify({'message':'Rock sample successfully deleted.'}),200)
     except:
         return make_response(str(traceback.format_exc()),500)

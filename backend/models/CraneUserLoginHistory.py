@@ -1,5 +1,5 @@
 from .. import db
-from .CraneUser import CraneUser
+from .CraneUser import CraneUser, DeleteStatusEnum
 
 class CraneUserLoginHistory(db.Model):
     __tablename__ = 'geosims_t_CraneUserLoginHistory'
@@ -16,6 +16,8 @@ class CraneUserLoginHistory(db.Model):
     UserLoginLogName = db.Column(db.VARCHAR(100)) 
     UserAcessLogName = db.Column(db.VARCHAR(100))   
     Comments = db.Column(db.NVARCHAR(500))
+    DeleteStatus = db.Column(db.Enum(DeleteStatusEnum,
+                                     values_callable=lambda x: [str(e.value) for e in DeleteStatusEnum]), nullable=True)
     
     def __repr__(self):
         return '<CraneUserLoginHistory {}>'.format(self.LogAuthorisedUserName)
