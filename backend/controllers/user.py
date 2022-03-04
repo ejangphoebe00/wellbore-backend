@@ -390,7 +390,7 @@ def get_profileImage(CraneUserId):
 
 # forgot password
 # url is UI link for a password reset form
-@auth_bp.route('/user/forgot_password_email_request/<string:url>',methods=['POST'])
+@auth_bp.route('/user/forgot_password_email_request/<path:url>',methods=['POST'])
 def recover_password_email(url):
     '''email request for password recovery'''
     if request.is_json:
@@ -415,12 +415,12 @@ def recover_password_email(url):
     
     existing_record_active = PasswordReset.query.filter_by(CraneUserId=user.CraneUserId, HasActivated=True).first()
     if existing_record_active:
-        send_reset_email(data['UserEmailAddress'],str(url)+"/"+str(user.user_id))
+        send_reset_email(data['UserEmailAddress'],str(url)+"/"+str(user.CraneUserId))
         existing_record_active.ResetKey = token
         existing_record_active.HasActivated = False
         existing_record_active.update()
     else:
-        send_reset_email(data['UserEmailAddress'],str(url)+"/"+str(user.user_id))
+        send_reset_email(data['UserEmailAddress'],str(url)+"/"+str(user.CraneUserId))
         reset_password = PasswordReset(
             CraneUserId = user.CraneUserId,
             ResetKey = token,
