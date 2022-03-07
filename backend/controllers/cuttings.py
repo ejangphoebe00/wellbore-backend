@@ -2,13 +2,11 @@ from flask import Blueprint, request, make_response, jsonify
 
 from backend.models.Files import Files
 from ..models.Cuttings import Cuttings
-from ..models.CraneUser import CraneUser, DeleteStatusEnum, UserCatgoryEnum
+from ..models.CraneUser import CraneUser, DeleteStatusEnum
 from flask_jwt_extended import (
     jwt_required,
     get_jwt
     )
-# reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
-import datetime
 import traceback
 from ..middleware.permissions import only_data_admin
 
@@ -29,8 +27,6 @@ def add_cutting():
                         SampleBoxNumber = data['SampleBoxNumber'],
                         CuttingCategory = data['CuttingCategory'],
                         SampleType = data['SampleType'],
-                        # MinimumDepth = data['MinimumDepth'],
-                        # MaximumDepth = data['MaximumDepth'],
                         SampleInterval = data['SampleInterval'],
                         DateReceived = data['DateReceived'],
                         OtherDescription = data['OtherDescription'],
@@ -62,8 +58,6 @@ def edit_cutting(SampleId):
         cutting.SampleBoxNumber = data['SampleBoxNumber']
         cutting.CuttingCategory = data['CuttingCategory']
         cutting.SampleType = data['SampleType']
-        # cutting.MinimumDepth = data['MinimumDepth']
-        # cutting.MaximumDepth = data['MaximumDepth']
         cutting.SampleInterval = data['SampleInterval']
         cutting.DateReceived = data['DateReceived']
         cutting.OtherDescription = data['OtherDescription']

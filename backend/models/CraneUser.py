@@ -29,11 +29,9 @@ class CraneUser(db.Model):
                                      values_callable=lambda x: [str(e.value) for e in UserCatgoryEnum]),
                                      default='Staff') # persist values instead of keys in the db
     UserCompanyId = db.Column(db.Integer)
-    # UserCategoryId = db.Column(db.Integer,nullable=True)
     UserPremsUserId = db.Column(db.Integer)
     UserStaffId = db.Column(db.Integer, unique=True)
     OrganisationName = db.Column(db.NVARCHAR(255),nullable=False)
-    # CraneUserID = db.Column(db.NVARCHAR(255), nullable=True)
     UserPassword = db.Column(db.NVARCHAR(255),nullable=True)
     UserEmailAddress = db.Column(db.NVARCHAR(255),nullable=False, unique=True)
     UserSecurityLevelId = db.Column(db.Integer)
@@ -60,13 +58,10 @@ class CraneUser(db.Model):
     RecordChangeStamp = db.Column(db.NVARCHAR(100),nullable=True)
     DefaultPassword = db.Column(db.NVARCHAR(255),nullable=True)
     DefaultChangeDate = db.Column(db.DateTime,default=datetime.utcnow, onupdate=db.func.current_timestamp())
-    # StoredUserPassword = db.Column(db.NVARCHAR(255),nullable=True)
     PasswordChangeDate = db.Column(db.DateTime,default=db.func.current_timestamp(),nullable=True)
     DeleteStatus = db.Column(db.Enum(DeleteStatusEnum,
                                      values_callable=lambda x: [str(e.value) for e in DeleteStatusEnum]), nullable=True)
 
-    # relationships
-    # login_history = db.relationship('geosims_t_CraneUserLoginHistory', backref='geosims_t_CraneUser', lazy=True)
     
     def __repr__(self):
         return '<CraneUser {}>'.format(self.CraneUserName)

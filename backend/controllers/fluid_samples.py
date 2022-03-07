@@ -1,12 +1,10 @@
 from flask import Blueprint, request, make_response, jsonify
 from ..models.FluidSamples import FluidSamples
-from ..models.CraneUser import CraneUser, DeleteStatusEnum, UserCatgoryEnum
+from ..models.CraneUser import CraneUser, DeleteStatusEnum
 from flask_jwt_extended import (
     jwt_required,
     get_jwt
     )
-# reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
-import datetime
 import traceback
 from ..models.Files import Files
 from ..middleware.permissions import only_data_admin
@@ -36,7 +34,6 @@ def add_fluid_sample():
                         SamplingCompany = data['SamplingCompany'],
                         SamplePurpose = data['SamplePurpose'],
                         OtherSpecifiedSamplePurpose = data['OtherSpecifiedSamplePurpose'],
-                        # Analysis_reports = data['Analysis_reports'],
                         CreatedById = user.CraneUserId
                     )
         new_fluid_sample.save()
@@ -67,7 +64,6 @@ def edit_fluid_sample(SampleId):
         fluid_sample.SamplingCompany = data['SamplingCompany']
         fluid_sample.SamplePurpose = data['SamplePurpose']
         fluid_sample.OtherSpecifiedSamplePurpose = data['OtherSpecifiedSamplePurpose']
-        # fluid_sample.Analysis_reports = data['Analysis_reports']
         fluid_sample.ModifiedBy = user.CraneUserId
         fluid_sample.update()
         return make_response(jsonify({'message':'Fluid sample updated successfuly.'}),200)

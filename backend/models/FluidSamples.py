@@ -45,7 +45,6 @@ class FluidSamples(db.Model):
     SamplePurpose = db.Column(db.Enum(FluidSamplePurposeEnum,
              values_callable=lambda enum: [str(e.value) for e in enum]))
     OtherSpecifiedSamplePurpose = db.Column(db.VARCHAR(100))
-    # Analysis_reports = db.Column(db.VARCHAR(100))
     CreatedById = db.Column(db.Integer, db.ForeignKey(CraneUser.CraneUserId),nullable=False)
     DateCreated = db.Column(db.DateTime, default=datetime.utcnow)
     ModifiedOn = db.Column(db.DateTime, default=datetime.utcnow, onupdate=db.func.current_timestamp())

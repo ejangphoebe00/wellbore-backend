@@ -1,13 +1,11 @@
 from flask import Blueprint, request, make_response, jsonify
 from ..models.Core import Cores
-from .. models.Wellbore import Wellbore
 from .. models.Files import Files
-from ..models.CraneUser import CraneUser, DeleteStatusEnum, UserCatgoryEnum
+from ..models.CraneUser import CraneUser, DeleteStatusEnum
 from flask_jwt_extended import (
     jwt_required,
     get_jwt
     )
-# reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
 import datetime
 import traceback
 from ..middleware.permissions import only_data_admin
@@ -17,7 +15,7 @@ core_bp = Blueprint('core_bp', __name__)
 
 @core_bp.route('/apiv1/add_core',methods=['POST'])
 @jwt_required()
-# @only_data_admin
+@only_data_admin
 def add_core():
     data = request.get_json(force=True)
     current_user_email = get_jwt()
@@ -25,11 +23,8 @@ def add_core():
 
     # check for redundancies
     core_number = Cores.query.filter_by(CoreNumber=data['CoreNumber']).first()
-    # core_name = Cores.query.filter_by(WellboreCoreName=data['WellboreCoreName']).first()
     if core_number and core_number.CoreNumber != None:
         return make_response(jsonify({'message':'CoreNumber already exists.'}),409)
-    # if core_name and core_name.WellboreCoreName != None:
-    #     return make_response(jsonify({'message':'WellboreCoreName already exists.'}),409)
     try:
         new_core = Cores(
                         WellborePAUID = data['WellborePAUID'],#comes from welbore
@@ -64,7 +59,6 @@ def add_core():
                         ReportDocumentName = data['ReportDocumentName'],
                         StoreIdentifier = data['StoreIdentifier'],
                         AnalysisReportDetails = data['AnalysisReportDetails'],
-                        # WellboreCoreName = data['WellboreCoreName'],
                         Comments = data['Comments'],
                         CreatedById = user.CraneUserId,
                         DateCreated = datetime.datetime.now()
@@ -84,13 +78,9 @@ def edit_core(WellboreCoreId):
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
     # check for redundancies
     core_number = Cores.query.filter_by(CoreNumber=data['CoreNumber']).first()
-    # core_name = Cores.query.filter_by(WellboreCoreName=data['WellboreCoreName']).first()
     if core_number and core_number.CoreNumber != None:
         if WellboreCoreId != core_number.WellboreCoreId:
             return make_response(jsonify({'message':'CoreNumber already exists.'}),409)
-    # if core_name and core_name.WellboreCoreName != None:
-    #     if WellboreCoreId != core_name.WellboreCoreId:
-    #         return make_response(jsonify({'message':'WellboreCoreName already exists.'}),409)
     try:
         core = Cores.query.get(WellboreCoreId)
         core.WellborePAUID = data['WellborePAUID'] #comes from welbore
@@ -125,7 +115,6 @@ def edit_core(WellboreCoreId):
         core.ReportDocumentName = data['ReportDocumentName']
         core.StoreIdentifier = data['StoreIdentifier']
         core.AnalysisReportDetails = data['AnalysisReportDetails']    
-        # core.WellboreCoreName = data['WellboreCoreName']
         core.Comments = data['Comments']
         core.ModifiedOn = datetime.datetime.now()
         core.ModifiedBy = user.CraneUserId
@@ -189,8 +178,6 @@ def get_all_cores():
             core['CoreAnalysisReports'] = report_names
             core['CorePhotographs'] = photo_names
             new_cores.append(core)
-
-        # cores = [z.serialise() for z in Cores.query.all()]
         return make_response(jsonify(new_cores),200)
     except:
         return make_response(str(traceback.format_exc()),500)

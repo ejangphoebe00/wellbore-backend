@@ -6,7 +6,6 @@ from flask_jwt_extended import (
     jwt_required,
     get_jwt
     )
-# reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
 import datetime
 import traceback
 from ..middleware.permissions import only_data_admin
@@ -39,16 +38,13 @@ def add_wellbore():
                         WellboreLocalName = data['WellboreLocalName'],
                         WellboreAliasName = data['WellboreAliasName'],
                         WellboreSpudDate = data['WellboreSpudDate'],
-                        # SpudYear = data['SpudYear'],
                         WellboreTypeId = data['WellboreTypeId'],
                         WellborePurposeId = data['WellborePurposeId'],
                         PurposeChangeDate = data['PurposeChangeDate'],
-                        # WellId = data['WellId'],
                         ProspectId = data['ProspectId'], # should come from company
                         Discovery = data['Discovery'],
                         WellboreContentId = data['WellboreContentId'],
                         WellboreStatus = data['WellboreStatus'],
-                        # WellboreResponsibleLicenceId = data['WellboreResponsibleLicenceId'],
                         LicenseOperatorCompanyId = data['LicenseOperatorCompanyId'], # should come from company
                         DrillingContractorCompanyId = data['DrillingContractorCompanyId'], # should come from company
                         WellBoreRigName = data['WellBoreRigName'],
@@ -62,9 +58,7 @@ def add_wellbore():
                         TDMD = data['TDMD'],
                         TDTVD = data['TDTVD'],
                         TDDate = data['TDDate'],
-                        # WellboreCoreId = db.Column(db.Integer)
                         CoreContractorId = data['CoreContractorId'], # should come from company
-                        # RCI_TakenId = data['RCI_TakenId'],
                         MDTDoneId = data['MDTDoneId'],
                         FETDoneId = data['FETDoneId'],
                         WFTContractor = data['WFTContractor'],
@@ -126,15 +120,12 @@ def edit_wellbore(WellboreId):
         wellbore.OtherDevelopmentArea = data['OtherDevelopmentArea']
         wellbore.WellboreAliasName = data['WellboreAliasName']
         wellbore.WellboreSpudDate = data['WellboreSpudDate']
-        # wellbore.SpudYear = data['SpudYear']
         wellbore.WellboreTypeId = data['WellboreTypeId']
         wellbore.WellborePurposeId = data['WellborePurposeId']
         wellbore.PurposeChangeDate = data['PurposeChangeDate']
-        # wellbore.WellId = data['WellId']
         wellbore.ProspectId = data['ProspectId']
         wellbore.Discovery = data['Discovery']
         wellbore.WellboreContentId = data['WellboreContentId']
-        # wellbore.WellboreResponsibleLicenceId = data['WellboreResponsibleLicenceId']
         wellbore.LicenseOperatorCompanyId = data['LicenseOperatorCompanyId']
         wellbore.DrillingContractorCompanyId = data['DrillingContractorCompanyId']
         wellbore.WellBoreRigName = data['WellBoreRigName']
@@ -148,9 +139,7 @@ def edit_wellbore(WellboreId):
         wellbore.TDMD = data['TDMD']
         wellbore.TDTVD = data['TDTVD']
         wellbore.TDDate = data['TDDate']
-        # WellboreCoreId = db.Column(db.Integer)
         wellbore.CoreContractorId = data['CoreContractorId']
-        # wellbore.RCI_TakenId = data['RCI_TakenId']
         wellbore.MDTDoneId = data['MDTDoneId']
         wellbore.FETDoneId = data['FETDoneId']
         wellbore.WFTContractor = data['WFTContractor']

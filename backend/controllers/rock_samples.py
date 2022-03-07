@@ -5,7 +5,6 @@ from flask_jwt_extended import (
     jwt_required,
     get_jwt
     )
-# reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
 import datetime
 import traceback
 from ..models.Files import Files
@@ -23,9 +22,6 @@ def add_rock_sample():
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
 
     try:
-        # rock_sample = RockSamples.query.filter_by(SampleId=data['SampleId']).first()
-        # if rock_sample:
-        #     return make_response(jsonify({'message':'SampleId already exists.'}),409)
         if data['SampleBasin'] not in [element.value for element in BasinsEnum]:
             return make_response(jsonify({'message':f"{data['SampleBasin']} basin doesn't exist."}),400)
         new_rock_sample = RockSamples(
@@ -40,7 +36,6 @@ def add_rock_sample():
                         Longitude = data['Longitude'],
                         Operator = data['Operator'],
                         PetrographicDescription = data['PetrographicDescription'],
-                        # Petrographic_analysis_reports = data['Petrographic_analysis_reports'],
                         CreatedById = user.CraneUserId
                     )
         new_rock_sample.save()
@@ -58,10 +53,6 @@ def edit_rock_sample(id):
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
 
     try:
-        # rock_sample = RockSamples.query.filter_by(SampleId=data['SampleId']).first()
-        # if rock_sample:
-        #     if id != rock_sample.id:
-        #         return make_response(jsonify({'message':'SampleId already exists.'}),409)
         if data['SampleBasin'] not in [element.value for element in BasinsEnum]:
             return make_response(jsonify({'message':f"{data['SampleBasin']} basin doesn't exist."}),400)
         rock_sample = RockSamples.query.get(id)
@@ -76,7 +67,6 @@ def edit_rock_sample(id):
         rock_sample.Longitude = data['Longitude']
         rock_sample.Operator = data['Operator']
         rock_sample.PetrographicDescription = data['PetrographicDescription']
-        # rock_sample.Petrographic_analysis_reports = data['Petrographic_analysis_reports']
         rock_sample.ModifiedBy = user.CraneUserId
         rock_sample.update()
         return make_response(jsonify({'message':'Rock sample updated successfuly.'}),200)

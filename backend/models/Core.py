@@ -1,8 +1,6 @@
 from .. import db
 from .CraneUser import CraneUser, DeleteStatusEnum
 from .Wellbore import Wellbore
-# from .FileSecurityGrade import FileSecurityGrade
-# from .FileFormat import FileFormat
 from .Company import Company
 from .StratLithoUnit import StratLithoUnit
 import enum
@@ -53,10 +51,8 @@ class Cores(db.Model):
     CoreReportHyperlink = db.Column(db.TEXT)
     ReportUploadDate = db.Column(db.DateTime)
     ReportFileFormat = db.Column(db.Enum(ReportFormatEnum))
-    # ReportFormat_id = db.Column(db.Integer, db.ForeignKey(FileFormat.FileFormat_id),nullable=True)
     ReportFileSize = db.Column(db.DECIMAL)
     ReportSecurityGrade = db.Column(db.Enum(SecurityGradeEnum))
-    # CoreReportSecurityGrade_id = db.Column(db.Integer, db.ForeignKey(FileSecurityGrade.FileSecurityGrade_id),nullable=True)
     ReportOpenDueDate = db.Column(db.DateTime)
     ReportDocumentTitle = db.Column(db.NVARCHAR(100))
     ReportReceivedDate = db.Column(db.DateTime)

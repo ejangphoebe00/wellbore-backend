@@ -1,4 +1,3 @@
-# from backend.models.CraneUser import DeleteStatusEnum
 import enum
 from .. import db
 
@@ -18,8 +17,6 @@ class CraneWebSecurityLevel(db.Model):
     DeleteStatus = db.Column(db.Enum(DeleteStatusEnum,
                                      values_callable=lambda x: [str(e.value) for e in DeleteStatusEnum]), nullable=True)
 
-    # relationships
-    # users = db.relationship('geosims_t_CraneUser', backref='geosims_rt_CraneWebSecurityLevel', lazy=True)
     
     def __repr__(self):
         return '<CraneWebSecurityLevel {}>'.format(self.WebSecurityLevelName)

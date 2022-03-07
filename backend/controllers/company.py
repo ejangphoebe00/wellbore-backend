@@ -220,7 +220,7 @@ def get_all_companies():
 
 @company_bp.route('/apiv1/delete_company/<int:CompanyId>',methods=['DELETE'])
 @jwt_required()
-# @only_data_admin
+@only_data_admin
 def delete_company(CompanyId):
     try:
         company = Company.query.get(CompanyId)

@@ -11,10 +11,10 @@ from flask_jwt_extended import (
     get_jwt_identity
     )
 # reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
-from datetime import datetime, timedelta
+from datetime import datetime
 from .helper_functions import send_security_alert_email, upload_file, reset_token, send_reset_email
 import traceback
-from ..middleware.permissions import only_data_admin, only_application_and_data_admin, only_application_admin
+from ..middleware.permissions import only_application_and_data_admin, only_application_admin
 from ..models.PasswordReset import PasswordReset
 
 
@@ -115,7 +115,6 @@ def register_user():
                         CraneUserName = data['CraneUserName'],
                         LoginID = data['LoginID'],
                         LoginIDAlias = data['LoginIDAlias'],
-                        # UserCategory = data['UserCategory'],
                         UserCompanyId = data['UserCompanyId'],
                         UserPremsUserId = data['UserPremsUserId'],
                         UserStaffId = data['UserStaffId'],
@@ -255,7 +254,6 @@ def edit_profile(CraneUserId):
             user.CraneUserName = data['CraneUserName']
             user.LoginID = data['LoginID']
             user.LoginIDAlias = data['LoginIDAlias']
-            # user.UserCategory = data['UserCategory']
             user.UserCompanyId = data['UserCompanyId']
             user.UserPremsUserId = data['UserPremsUserId']
             user.UserStaffId = data['UserStaffId']
@@ -290,9 +288,6 @@ def edit_profile(CraneUserId):
             if staff_name:
                 if CraneUserId != staff_name.CraneUserId:
                     return make_response(jsonify({'message': 'Username already exists!'}), 400)
-            # user.FirstName = data['FirstName']
-            # user.MiddleName = data['MiddleName']
-            # user.Surname = data['Surname']
             user.UserEmailAddress = data['UserEmailAddress']
             user.CraneUserName = data['CraneUserName']
             if user.UserPassword != data['UserPassword']:
@@ -379,10 +374,6 @@ def upload_profile_picture(CraneUserId):
 def get_profileImage(CraneUserId):
     try:
         user = CraneUser.query.get(CraneUserId)
-        # upload_path = "/static/files"
-        # filename = str(user.ProfilePicture).split('/')[-1]
-        # print(filename)
-        # return send_from_directory(upload_path, filename)
         return make_response(jsonify({'ProfilePicture': user.ProfilePicture}),200)
     except:
         return make_response(str(traceback.format_exc()),500)

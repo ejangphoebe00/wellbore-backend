@@ -1,4 +1,3 @@
-from enum import unique
 from .. import db
 from .CraneUser import CraneUser, DeleteStatusEnum
 
@@ -11,8 +10,6 @@ class Company(db.Model):
     NSDNumber = db.Column(db.NVARCHAR(255),nullable=False)
     CompanyCategoryId = db.Column(db.Integer)
     Country = db.Column(db.String)
-    # CountryOfOrigin_id = db.Column(db.Integer)
-    # CountryOfRegistration_id = db.Column(db.Integer)
     RegistrationNumber = db.Column(db.NVARCHAR(255),nullable=False, unique=True)
     TINNumber = db.Column(db.NVARCHAR(255),nullable=False, unique=True)
     CompanyTelephone = db.Column(db.NVARCHAR(255), nullable=True)
@@ -30,7 +27,6 @@ class Company(db.Model):
     CompanyOtherEmails = db.Column(db.NVARCHAR(255))
     NSDQualificationDate = db.Column(db.DateTime)
     NSDQualificationYear = db.Column(db.String(10))
-    # CompanyOtherEmails = db.Column(db.NVARCHAR(100))
     PrimaryContactEntity = db.Column(db.NVARCHAR(50))
     ContactEntityEmail = db.Column(db.NVARCHAR(100))
     ContactEntityTelephone = db.Column(db.NVARCHAR(55))

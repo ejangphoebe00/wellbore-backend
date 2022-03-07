@@ -1,11 +1,10 @@
 from flask import Blueprint, request, make_response, jsonify
 from ..models.StratLithoUnit import StratLithoUnit
-from ..models.CraneUser import CraneUser, DeleteStatusEnum, UserCatgoryEnum
+from ..models.CraneUser import CraneUser, DeleteStatusEnum
 from flask_jwt_extended import (
     jwt_required,
     get_jwt
     )
-# reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
 import datetime
 import traceback
 from ..middleware.permissions import only_data_admin
@@ -29,7 +28,6 @@ def add_strat_litho_unit():
         new_strat_litho_unit = StratLithoUnit(
                         PAUID = data['PAUID'],
                         StratLithoName = data['StratLithoName'],
-                        # ReserviorUnit = data['ReserviorUnit'],  # should be 0 or 1
                         LithoStratAlias = data['LithoStratAlias'],
                         IsReservoirUnitId = data['IsReservoirUnitId'],
                         LithoStratAge = data['LithoStratAge'],
@@ -66,7 +64,6 @@ def edit_strat_litho_unit(StratLithoId):
         strat_litho_unit = StratLithoUnit.query.get(StratLithoId)
         strat_litho_unit.PAUID = data['PAUID']
         strat_litho_unit.StratLithoName = data['StratLithoName']
-        # strat_litho_unit.ReserviorUnit = data['ReserviorUnit']
         strat_litho_unit.LithoStratAlias = data['LithoStratAlias']
         strat_litho_unit.IsReservoirUnitId = data['IsReservoirUnitId']
         strat_litho_unit.LithoStratAge = data['LithoStratAge']

@@ -24,10 +24,6 @@ def add_file(sampleId):
     current_user_email = get_jwt()
     user = CraneUser.query.filter_by(UserEmailAddress=current_user_email['sub']).first()
     try:
-        # get last inserted core
-        # core = Cores.query.order_by(Cores.Core_sampleId.desc()).first()
-
-        # check if file in incoming data
         report_name = None
         image = None
         CoresId = None

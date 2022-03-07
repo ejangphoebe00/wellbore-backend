@@ -5,7 +5,6 @@ from flask_jwt_extended import (
     jwt_required,
     get_jwt
     )
-# reference for api changes https://flask-jwt-extended.readthedocs.io/en/stable/v4_upgrade_guide/#api-changes
 import datetime
 import traceback
 from ..middleware.permissions import only_data_admin
@@ -28,11 +27,9 @@ def add_core_catalog():
     try:
         new_core_catalog = CoreCatalog(
                         WellboreCoreId = data['WellboreCoreId'], # comes from welbore core
-                        # CoreType = data['CoreType'], # comes from core type
                         StoreIdentifier = data['StoreIdentifier'],
                         CatalogCoreFromDepth = data['CatalogCoreFromDepth'],
                         CatalogCoreToDepth = data['CatalogCoreToDepth'],
-                        # CoreCatalogSecurityFlagId = data['CoreCatalogSecurityFlagId'], # comes from catalog security flag
                         WasAnalysedId = data['WasAnalysedId'],
                         TopStratLithoId = data['TopStratLithoId'], # comes from strat litho
                         BottomStratLithoId = data['BottomStratLithoId'], # comes from strat litho
@@ -43,9 +40,7 @@ def add_core_catalog():
                         CatalogueReportSoftcopyPath = data['CatalogueReportSoftcopyPath'],
                         CatalogueReportHyperlink = data['CatalogueReportHyperlink'],
                         CatReportUploadDate = data['CatReportUploadDate'],
-                        # CatalogReportFormatId = data['CatalogReportFormatId'], # comes from file format
                         CatalogReportFileSize = data['CatalogReportFileSize'],
-                        # CatalogReportSecurityGradeId = data['CatalogReportSecurityGradeId'], # comes from file security grade
                         CoreCatalogName = data['CoreCatalogName'],
                         Comments = data['Comments'],
                         CreatedById = user.CraneUserId,
@@ -73,11 +68,9 @@ def edit_core_catalog(CoreCatalogId):
     try:
         core_catalog = CoreCatalog.query.get(CoreCatalogId)
         core_catalog.WellboreCoreId = data['WellboreCoreId'] # comes from welbore core
-        # core_catalog.CoreType = data['CoreType'] # comes from core type
         core_catalog.StoreIdentifier = data['StoreIdentifier']
         core_catalog.CatalogCoreFromDepth = data['CatalogCoreFromDepth']
         core_catalog.CatalogCoreToDepth = data['CatalogCoreToDepth']
-        # core_catalog.CoreCatalogSecurityFlagId = data['CoreCatalogSecurityFlagId'] # comes from catalog security flag
         core_catalog.WasAnalysedId = data['WasAnalysedId']
         core_catalog.TopStratLithoId = data['TopStratLithoId'] # comes from strat litho
         core_catalog.BottomStratLithoId = data['BottomStratLithoId'] # comes from strat litho
@@ -88,9 +81,7 @@ def edit_core_catalog(CoreCatalogId):
         core_catalog.CatalogueReportSoftcopyPath = data['CatalogueReportSoftcopyPath']
         core_catalog.CatalogueReportHyperlink = data['CatalogueReportHyperlink']
         core_catalog.CatReportUploadDate = data['CatReportUploadDate']
-        # core_catalog.CatalogReportFormatId = data['CatalogReportFormatId'] # comes from file format
         core_catalog.CatalogReportFileSize = data['CatalogReportFileSize']
-        # core_catalog.CatalogReportSecurityGradeId = data['CatalogReportSecurityGradeId'] # comes from file security grade
         core_catalog.CoreCatalogName = data['CoreCatalogName']
         core_catalog.ModifiedOn = datetime.datetime.now()
         core_catalog.ModifiedBy = user.CraneUserId
