@@ -3,4 +3,5 @@ env
 */__pycache__
 __pycache__
 app.cpython*
+.DS_Store
 */__pycache__/__init__.*

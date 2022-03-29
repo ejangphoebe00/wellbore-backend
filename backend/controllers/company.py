@@ -91,6 +91,7 @@ def add_company():
                         ImportedDate = data['ImportedDate'],
                         ExportedDate = data['ExportedDate'],
                         ExportedToNogtr = data['ExportedToNogtr'],
+                        CompanyType = data['CompanyType'],
                         CreatedBy = user.CraneUserId,
                         DateCreated = datetime.datetime.now(),
                         PreviousLegalName = data['PreviousLegalName'],
@@ -186,6 +187,7 @@ def edit_company(CompanyId):
         company.ImportedDate = data['ImportedDate']
         company.ExportedDate = data['ExportedDate']
         company.ExportedToNogtr = data['ExportedToNogtr']
+        company.CompanyType = data['CompanyType']
         company.ModifiedBy = user.CraneUserId
         company.ModifiedOn = datetime.datetime.now()
         company.PreviousLegalName = data['PreviousLegalName']

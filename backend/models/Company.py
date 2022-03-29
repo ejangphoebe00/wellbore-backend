@@ -1,5 +1,10 @@
+from enum import Enum
 from .. import db
 from .CraneUser import CraneUser, DeleteStatusEnum
+
+class CompanyTypeEnum(Enum):
+    Licensing = "Licensing"
+    Operator = "Operator"
 
 class Company(db.Model):
     __tablename__ = 'geosims_t_Company'
@@ -34,6 +39,8 @@ class Company(db.Model):
     ContactDesignation = db.Column(db.NVARCHAR(100))
     OperatorSortOrder = db.Column(db.Integer)
     ContractorSortOrder = db.Column(db.Integer)
+    CompanyType = db.Column(db.Enum(CompanyTypeEnum,
+                                     values_callable=lambda x: [str(e.value) for e in CompanyTypeEnum]), nullable=True)
     PAURegistrationDate = db.Column(db.DateTime)
     CraneNOGTRID = db.Column(db.NVARCHAR(100))
     TempNOGTRIPwd = db.Column(db.TEXT)
